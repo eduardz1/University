@@ -1,11 +1,11 @@
 import java.io.*;
 
-public class Parser {
+public class Parser3x1 {
     private Lexer lex;
     private BufferedReader pbr;
     private Token look;
 
-    public Parser(Lexer l, BufferedReader br) {
+    public Parser3x1(Lexer l, BufferedReader br) {
         lex = l;
         pbr = br;
         move();
@@ -34,14 +34,16 @@ public class Parser {
         switch(look.tag){
 
             case '(':
-                match(Tag.LPT);
+                // match(Tag.LPT);
                 expr();
                 match(Tag.EOF);
+                break;
 
             case Tag.NUM:
-                match(Tag.NUM);
+                // match(Tag.NUM);
                 expr();
                 match(Tag.EOF);
+                break;
 
             default:
                 error("error in start");
@@ -93,12 +95,13 @@ public class Parser {
                 break;
             
             case -1:
-                match(Tag.EOF);
+                // match(Tag.EOF);
                 break;
 
             /// ERROR
-            default:
-                error("error in exprp");
+            default: // if epsilon there's nothign to match and we just break;
+                // error("error in exprp");
+                break;
 
         }
     }
@@ -144,18 +147,32 @@ public class Parser {
                 termp();
                 break;
 
-            /// GUIDA(termp --> epsilon) ==> {)} U EOF
+            case '+':
+                match(Tag.SUM);
+                fact();
+                termp();
+                break;
+
+            case '-':
+                match(Tag.SUB);
+                fact();
+                termp();
+                break; 
+
+
+            /// GUIDA(termp --> epsilon) ==> {)} U EOF U {+} U {-} 
             case ')':
-                match(Tag.EOF);
+                match(Tag.RPT);
                 break;
             
             case -1:
-                match(Tag.EOF);
+                // match(Tag.EOF);
                 break;
 
             /// ERROR
             default:
                 error("error in termp");
+                break;
 
         }
     }
@@ -166,6 +183,7 @@ public class Parser {
             case '(':
                 match(Tag.LPT);
                 expr();
+                break;
 
             case Tag.NUM:
                 match(Tag.NUM);
@@ -178,10 +196,10 @@ public class Parser {
 
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "C:\\Users\\occhi\\Github\\university\\LFT_lab\\prova.txt"; // il percorso del file da leggere
+        String path = "C:\\Users\\occhi\\Github\\university\\LFT_lab\\File_Prova\\prova.lft"; // il percorso del file da leggere
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
-            Parser parser = new Parser(lex, br);
+            Parser3x1 parser = new Parser3x1(lex, br);
             parser.start();
             System.out.println("Input OK");
             br.close();

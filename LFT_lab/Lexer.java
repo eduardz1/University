@@ -1,10 +1,10 @@
 import java.io.*;
-import java.util.*;
+// import java.util.*; <-- never utilized
 // this is a random comment
 public class Lexer {
 
     private final String identifier_RE = "[a-zA-Z[_[_]*[a-zA-Z0-9]]][a-zA-Z0-9_]*"; // espressione regolare per gli identificatori
-    public static int line = 1;
+    public int line = 1;
     private char peek = ' ';
 
     private void readch(BufferedReader br) {
@@ -74,7 +74,7 @@ public class Lexer {
                         }
                     }
                 }
-                System.err.println("ERROR");
+                System.err.println("Erroneous comment");
                 return null;
             }
             peek = ' ';
@@ -116,8 +116,8 @@ public class Lexer {
             } else if (peek == '=') {
                 peek = ' ';
                 return Word.le;
-            } else if (peek == ' ') {
-                peek = ' ';
+            } else if (peek == ' ' || Character.isLetterOrDigit(peek)) {
+                // NO --> peek = ' '; otherwise we eat an extra char
                 return Word.lt;
             } else {
                 System.err.println("Erroneous character" + " after < : " + peek);
@@ -129,8 +129,8 @@ public class Lexer {
             if (peek == '=') {
                 peek = ' ';
                 return Word.ge;
-            } else if (peek == ' ') {
-                peek = ' ';
+            } else if (peek == ' ' || Character.isLetterOrDigit(peek)) {
+                // NO --> peek = ' '; otherwise we eat an extra char
                 return Word.gt;
             } else {
                 System.err.println("Erroneous character" + " after > : " + peek);
