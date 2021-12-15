@@ -31,32 +31,27 @@
  .limit stack 1024
  .limit locals 256
  invokestatic Output/read()I
- invokestatic Output/read()I
- invokestatic Output/read()I
- iload 0
+ istore 0
+ ldc 2
+ istore 1
+ ldc 1
+ istore 2
+L3:
  iload 1
- if_icmpgt L1
+ iload 0
+ if_icmple L1
  goto L2
 L1:
- iload 0
  iload 2
- if_icmpgt L3
- goto L4
-L3:
- iload 0
- invokestatic Output/print(I)V
-L4:
- iload 2
- invokestatic Output/print(I)V
+ iload 1
+ imul 
+ istore 2
+ iload 1
+ ldc 1
+ iadd 
+ istore 1
+ goto L3
 L2:
- iload 1
- iload 2
- if_icmpgt L5
- goto L6
-L5:
- iload 1
- invokestatic Output/print(I)V
-L6:
  iload 2
  invokestatic Output/print(I)V
 L0:
