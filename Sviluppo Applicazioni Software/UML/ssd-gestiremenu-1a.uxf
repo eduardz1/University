@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>136</x>
+      <y>0</y>
+      <w>48</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Chef</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>488</x>
+      <y>48</y>
+      <w>32</w>
+      <h>712</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;870.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>96</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+1.predisponiMenù(titolo?)
+fg=gray</panel_attributes>
+    <additional_attributes>430.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>120</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+menù registrato
+fg=gray</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>88</x>
+      <y>152</y>
+      <w>440</w>
+      <h>464</h>
+    </coordinates>
+    <panel_attributes>LOOP
+layer=-1
+fg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>184</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+2.definisciSezione(nome)
+fg=gray</panel_attributes>
+    <additional_attributes>430.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>320</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+4.consultaRicettario()
+fg=gray</panel_attributes>
+    <additional_attributes>430.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>352</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+ricette (nel ricettario)
+fg=gray</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>112</x>
+      <y>176</y>
+      <w>408</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>LOOP
+fg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>392</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+5.inserisciVoce(ricetta,sezione?,descrizione?)
+fg=gray</panel_attributes>
+    <additional_attributes>430.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>416</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+voce (registrata)
+fg=gray</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>208</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+sezione registrata
+fg=gray</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>112</x>
+      <y>384</y>
+      <w>400</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>LOOP
+fg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>616</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+8.pubblica()
+fg=gray</panel_attributes>
+    <additional_attributes>430.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>640</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+ok
+fg=gray</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>72</y>
+      <w>24</w>
+      <h>696</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;850.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>248</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+3.consultaInfoEventi()
+fg=gray</panel_attributes>
+    <additional_attributes>430.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>272</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+eventi (assegnati a chef)
+fg=gray</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>504</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+ok
+fg=gray</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>472</y>
+      <w>360</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+6.annotaInfoAggiuntive(richiedeCuoco, richiedeCucina, 
+piattiCaldi, buffet, fingerFood)
+fg=gray</panel_attributes>
+    <additional_attributes>430.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLDeployment</id>
+    <coordinates>
+      <x>448</x>
+      <y>16</y>
+      <w>88</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>System</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>112</x>
+      <y>248</y>
+      <w>408</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>OPT
+fg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>104</x>
+      <y>320</y>
+      <w>416</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>OPT
+fg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>112</x>
+      <y>464</y>
+      <w>408</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>OPT
+fg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>112</x>
+      <y>544</y>
+      <w>408</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>OPT
+fg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>552</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+7.modificaTitolo(nuovoTitolo)
+fg=gray</panel_attributes>
+    <additional_attributes>430.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>576</y>
+      <w>360</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+ok
+fg=gray</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>80</x>
+      <y>80</y>
+      <w>456</w>
+      <h>656</h>
+    </coordinates>
+    <panel_attributes>ALT
+fg=#761C8C
+bg=#e7bfff
+lw=2
+--
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-.
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>680</y>
+      <w>368</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+1a.1 eliminaMenu(unMenu)
+fg=#9E1C8C</panel_attributes>
+    <additional_attributes>440.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>712</y>
+      <w>368</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+fg=#9E1C8C</panel_attributes>
+    <additional_attributes>10.0;10.0;440.0;10.0</additional_attributes>
+  </element>
+</diagram>
