@@ -2,5 +2,6 @@
     "java.project.sourcePaths": [
         "LFT_lab/Automi 1.x",
         "LFT_lab"
-    ]
+    ],
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
 }

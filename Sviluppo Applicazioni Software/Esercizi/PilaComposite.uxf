@@ -1,0 +1,22 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>260</x><y>200</y><w>210</w><h>110</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+/Pila/
+--
++inserisci(int): Pila
++estrai(): Pila
++vuota(): bool
++leggiCima(): int</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>440</y><w>210</w><h>130</h></coordinates><panel_attributes>PilaNonVuota
+--
+-item: int
+--
++create(int, Pila)
++inserisci(int): Pila
++estrai(): Pila
++vuota(): bool
++leggiCima(): int</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>350</x><y>300</y><w>170</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90;150;90;150;140</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>250</y><w>110</w><h>210</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+tail</panel_attributes><additional_attributes>80;190;80;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>140</x><y>440</y><w>210</w><h>130</h></coordinates><panel_attributes>PilaVuota
+--
++create()
++inserisci(int): Pila
++estrai(): Pila
++vuota(): bool
++leggiCima(): int</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>300</y><w>180</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>160;10;160;90;10;90;10;140</additional_attributes></element></diagram>
