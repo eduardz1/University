@@ -52,7 +52,3 @@ void printarray(int A[], int n) {
         printf("%d  ", A[i]);
     printf("\n");
 }
-
-int main () {
-    return 0;
-}

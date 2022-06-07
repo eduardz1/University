@@ -2,6 +2,8 @@
 * Struttura dati degli alberi k-ari
 ************************************/
 
+#include "Queue.h"
+#include "List.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -17,6 +19,8 @@ struct kTreeVertex {
 };
 
 typedef struct kTreeVertex* kTree;
+
+#define Type kTree
 
 kTree consTree(int k, kTree c, kTree s) {
     kTree t = malloc(sizeof(struct kTreeVertex));
@@ -48,38 +52,39 @@ void printTree(kTree t, int d) {
     }
 }
 
+// post: ritorna la somma delle etichette delle foglie di t
+int sumLeaf(kTree t)
+{
+    if(t == NULL) return 0;
+    if(t->child == NULL) return t->key;
 
-
-int main() {
-
-// test 1
-    kTree t =
-       root(12, 
-            consTree(22, 
-                leaf(1,NULL), 
-                leaf(2, 
-                    root(32, 
-                        leaf(3, 
-                            leaf(4, NULL)
-                        )
-                    )
-                )
-            )
-       );
-
-    
-
-/* t in forma indentata:
-12
-	22
-		1
-	2
-	32
-		3
-		4
-*/
-
-    printf("Albero dato:\n");
-    printTree(t, 0);
-
+    kTree tmp = t->child;
+    int s = 0;
+    while(tmp != NULL)
+    {
+        s = s + sumLeaf(tmp);
+        tmp = tmp->sibling;
+    }
+    return s;
 }
+
+// // post: ritorna la lista delle etichette (chiavi) di t visitato in ampiezza
+// list kTreeBFS(kTree t) {
+//     if (t == NULL)
+//         return NULL;
+//     list l = NULL; 
+//     queue q = NewQueue();
+//     EnQueue(t, q);
+//     while(!isEmptyQueue(q)) {
+//         kTree node = DeQueue(q);
+//         l = Cons(node->key, l); // visita
+//         // l = Add(node->key, l); // versione con Add
+//         node = node->child;
+//         while (node != NULL) {
+//             EnQueue(node, q);
+//             node = node->sibling;
+//         }
+//     }
+//     return reverse(l);
+//     // return l; // versione con Add
+// }

@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon May 30 23:40:22 2022
+# Make data base, printed on Tue Jun  7 12:52:28 2022
 
 # Variables
 
@@ -25,7 +25,7 @@ SNAP_INSTANCE_KEY =
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-8c02b535-1a1f-4778-8a40-72af1f52b4db.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-32ada6eb-ecdf-4ae7-93be-d67b84bca1a0.sock
 # environment
 MANDATORY_PATH = /usr/share/gconf/ubuntu.mandatory.path
 # environment
@@ -111,7 +111,7 @@ ZSH = /home/eduard/.oh-my-zsh
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 61349
+VSCODE_PID = 48078
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
@@ -119,7 +119,7 @@ XDG_SESSION_TYPE = x11
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # environment
-SESSION_MANAGER = local/eduard-Pro-I5-11F-3060Ti:@/tmp/.ICE-unix/4157,unix/eduard-Pro-I5-11F-3060Ti:/tmp/.ICE-unix/4157
+SESSION_MANAGER = local/eduard-Pro-I5-11F-3060Ti:@/tmp/.ICE-unix/4151,unix/eduard-Pro-I5-11F-3060Ti:/tmp/.ICE-unix/4151
 # automatic
 *F = $(notdir $*)
 # environment
@@ -153,7 +153,7 @@ MAKE = $(MAKE_COMMAND)
 # environment
 SNAP_COOKIE = Zt7oZ33PlyXVGS3EOHTzXN1HAZ9DRYzYayeARDZv-rBB802qQCnF
 # environment
-PATH = /home/eduard/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
+PATH = /home/eduard/.cargo/bin:/home/eduard/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
 # default
 MAKEFILES := 
 # environment
@@ -167,7 +167,7 @@ LC_TIME = it_IT.UTF-8
 # environment
 SNAP = /snap/code/97
 # environment
-INVOCATION_ID = b12bc702b5f246a4942dc2284b6e6692
+INVOCATION_ID = 9d4933208f384693ba79684ce669170d
 # environment
 SNAP_REVISION = 97
 # environment
@@ -203,7 +203,7 @@ SNAP_ARCH = amd64
 # makefile
 .DEFAULT_GOAL := 
 # environment
-SYSTEMD_EXEC_PID = 4180
+SYSTEMD_EXEC_PID = 4174
 # environment
 DISPLAY = :0
 # environment
@@ -221,11 +221,11 @@ SNAP_DATA = /var/snap/code/97
 # environment
 SNAP_CONTEXT = Zt7oZ33PlyXVGS3EOHTzXN1HAZ9DRYzYayeARDZv-rBB802qQCnF
 # environment
-MANAGERPID = 3899
+MANAGERPID = 3891
 # environment
 LC_MEASUREMENT = it_IT.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 61304
+GIO_LAUNCHED_DESKTOP_FILE_PID = 48026
 # environment
 PAGER = less
 # environment
@@ -239,7 +239,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/eduard/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
-JOURNAL_STREAM = 8:30481
+JOURNAL_STREAM = 8:22181
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -285,6 +285,7 @@ LC_IDENTIFICATION = it_IT.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # variable set hash-table stats:
+ 
 # Load=136/1024=13%, Rehash=0, Collisions=6/163=4%
 
 # Pattern-specific Variable Values
@@ -293,7 +294,6 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 
 # Directories
 
- 
 # . (device 2050, inode 12062542): 13 files, no impossibilities.
 
 # 13 files, no impossibilities in 1 directories.
@@ -352,6 +352,6 @@ GNUmakefile:
 # strcache performance: lookups = 24 / hit rate = 12%
 # hash-table stats:
 # Load=21/8192=0%, Rehash=0, Collisions=0/24=0%
-# Finished Make data base on Mon May 30 23:40:22 2022
+# Finished Make data base on Tue Jun  7 12:52:28 2022
 
  

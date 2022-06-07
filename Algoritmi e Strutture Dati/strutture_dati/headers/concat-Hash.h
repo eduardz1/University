@@ -75,7 +75,3 @@ void showTable (HashTable T) {
         printlist(T->array[i]);
     }
 }
-
-int main () {
-    return 0;
-}

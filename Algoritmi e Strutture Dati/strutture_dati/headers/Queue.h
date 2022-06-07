@@ -73,7 +73,3 @@ Type DeQueue(queue q) {
     free(oldFirst);
     return t;
 }
-
-int main () {
-    return 0;
-}

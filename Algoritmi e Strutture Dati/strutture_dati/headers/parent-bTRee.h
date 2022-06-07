@@ -44,8 +44,3 @@ void printtree(btree bt, int n) {
         printtree(bt->right, n + 1);
     }
 }
-
-int main ()
-{
-    return 0;
-}
