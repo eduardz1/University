@@ -10,12 +10,10 @@
 #include <math.h>
 #define SEPARATOR "#<ab@17943918#@>#"
 
-// nelle applicazioni il tipo int può essere sostituito con qualunque altro
-
-typedef int Type;
 
 // coda di el. di tipo T, ossia di puntatori a kTreeVertex
 
+typedef int Type;
 struct queueEl {
     Type            info;
     struct queueEl* next;

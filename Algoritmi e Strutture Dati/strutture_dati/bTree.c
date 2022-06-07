@@ -1,5 +1,11 @@
 #include "headers/bTree.h"
 
+bool containsBranchOfLengthN(btree t, int n)
+{
+    if(t = NULL) return false;
+
+}
+
 int main()
 {
 
