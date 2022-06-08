@@ -23,7 +23,7 @@
 //     return array;
 // }
 
-void printMaxElemOfEveryLayer(kTree t)
+void printMinElemOfEveryLayer(kTree t)
 {
     if(t == NULL) return;
 
@@ -117,4 +117,6 @@ int main() {
     // printf("Sum:\t%d\n", sumLeaf(t));
     printf("\n###############################\n\n");
     printSumNodesOfEveryLayer(t);
+    printf("\n###############################\n\n");
+    printMinElemOfEveryLayer(t);
 }
