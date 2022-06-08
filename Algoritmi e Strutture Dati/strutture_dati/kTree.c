@@ -49,12 +49,11 @@ void printMinElemOfEveryLayer(kTree t)
 void printSumNodesOfEveryLayer(kTree t)
 {
     if(t == NULL) return;
-    printf("%d\n", t->key);
     
     queue q = NewQueue();
     EnQueue(t, q);
     int sum;
-    int i = 1;
+    int i = 0;
     int j = 0;
     /**
      * @invariant j == NUM_NODES in layer of tmp
