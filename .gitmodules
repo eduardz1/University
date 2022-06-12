@@ -1,0 +1,12 @@
+[submodule "SO/Simulazione-Transazioni"]
+	path = SO/Simulazione-Transazioni
+	url = https://github.com/eduardz1/Simulazione-Transazioni
+[submodule "SAS/Cat_e_Ring"]
+	path = SAS/Cat_e_Ring
+	url = https://github.com/eduardz1/Cat_e_Ring
+[submodule "DB/Home-Booking"]
+	path = DB/Home-Booking
+	url = https://github.com/eduardz1/Home-Booking
+[submodule "LFT/Progetto-LFT"]
+	path = LFT/Progetto-LFT
+	url = https://github.com/eduardz1/Progetto-LFT
