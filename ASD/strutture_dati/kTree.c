@@ -52,7 +52,7 @@ void printSumNodesOfEveryLayer(kTree t)
     
     queue q = NewQueue();
     EnQueue(t, q);
-    int sum;
+    int sum = 0;
     int i = 0;
     int j = 0;
     /**
@@ -81,6 +81,96 @@ void printSumNodesOfEveryLayer(kTree t)
     }
 }
 
+// bool containsDups(kTree t)
+// {
+//     if(t == NULL) return false;
+//     queue q = NewQueue();
+//     EnQueue(t, q);
+//     list l = NewList();
+
+//     while(!isEmptyQueue(q))
+//     {
+//         kTree tmp = DeQueue(q);
+//         l = Cons(tmp->key, l);
+//         tmp = tmp->child;
+//         while(tmp != NULL)
+//         {
+//             EnQueue(tmp, q);
+//             tmp = tmp->sibling;
+//         }
+//     }
+
+//     MergeSort(l);
+//     /**
+//      * @pre l is an ordered list
+//      */
+//     while(l != NULL && l->next != NULL)
+//     {
+//         if(l->info == l->next->info) return true;
+//         l = l->next;
+//     }
+//     return false;
+// }
+
+int max(int a, int b)
+{
+    if(a < b) return b;
+    return a;
+}
+
+int height(kTree t)
+{
+    if(t == NULL) return 0;
+
+    int s = 0;
+    kTree tmp = t->child;
+    while(tmp != NULL)
+    {
+        s = max(s, height(tmp));
+        tmp = tmp->sibling;
+    }
+    return s + 1;
+}
+
+void sumPath(kTree t, int k)
+{
+    k = k + t->key;
+    if(t->child == NULL) // leaf
+    {
+        kTree new = consTree(k, NULL, NULL);
+        t->child = new;
+    }
+
+    kTree tmp = t->child;
+    while(tmp != NULL)
+    {
+        sumPath(tmp, k);
+        tmp = tmp->sibling;
+    }
+}
+
+int sumBranch(kTree t)
+{
+    sumPath(t, 0);
+}
+
+bool fatherChildSum(kTree t)
+{
+    if (t == NULL) return true;
+    if (t->child == NULL) return true;
+
+    kTree tmp = t;
+    bool res = true;
+    int sum = 0;
+    while (tmp != NULL)
+    {
+        res && = fatherChildSum(tmp);
+        sum += tmp->key;
+        tmp = tmp->sibling;
+    }
+    return res && (t->key == sum);
+}
+
 int main() {
 
 // test 1
@@ -98,7 +188,6 @@ int main() {
             )
        );
 
-    
 
 /* t in forma indentata:
 12
@@ -118,4 +207,6 @@ int main() {
     printSumNodesOfEveryLayer(t);
     printf("\n###############################\n\n");
     printMinElemOfEveryLayer(t);
+    printf("\n###############################\n\n");
+    printf("%d\n", height(t));
 }
