@@ -39,7 +39,7 @@ void printlist (list l) {
     printf("\n");
 }
 
-// Tabelle hash con concatenzaione
+// Tabelle hash con concatenazione
 
 struct hashFrame {
     int       dim;  // dimensione della tabella
