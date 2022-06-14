@@ -171,6 +171,51 @@ bool fatherChildSum(kTree t)
     return res && (t->key == sum);
 }
 
+/*
+ * Sia dato un albero T (non vuoto), rappresentato con puntatori child e sibling. Si dia
+ * un algoritmo ottimo di nome NumNodiProfondi(T , h) il quale, presi come argomenti il nodo radice T
+ * dell’albero e un intero h, restituisca il numero dei nodi dell’albero che si trovano a livello ≤ h (dove si assume
+ * come 0 il livello della radice). L’algoritmo non deve usare funzioni o procedure ausiliarie, né variabili esterne
+ * o campi aggiuntivi nei record che rappresentano i nodi.
+ */
+int numNodiProfondi(kTree t, int h)
+{
+    if(t == NULL) return 0;
+
+    int res = 0;
+    queue q = NewQueue();
+    EnQueue(t, q);
+    while(!isEmptyQueue(q) && h >= 0)
+    {
+        kTree tmp = DeQueue(q);
+        res++;
+        tmp = tmp->child;
+        while(tmp != NULL)
+        {
+            EnQueue(tmp, q);
+            tmp = tmp->sibling;
+            h++;
+        }
+        h--;
+    }
+    return res;
+}
+
+int numNodiProfondi_rec(kTree t, int h)
+{
+    if(t == NULL) return 0;
+    if(h == 0) return 1;
+
+    int sum = 1;
+    kTree tmp = t->child;
+    while(tmp != NULL)
+    {
+        sum += numNodiProfondi_rec(tmp, h - 1);
+        tmp = tmp->sibling;
+    }
+    return sum;
+}
+
 int main() {
 
 // test 1

@@ -10,3 +10,6 @@
 [submodule "LFT/Progetto-LFT"]
 	path = LFT/Progetto-LFT
 	url = https://github.com/eduardz1/Progetto-LFT
+[submodule "ASD/Laboratorio-Algoritmi"]
+	path = ASD/Laboratorio-Algoritmi
+	url = https://github.com/eduardz1/Laboratorio-Algoritmi
