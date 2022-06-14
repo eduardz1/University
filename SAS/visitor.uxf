@@ -1,0 +1,21 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>155</x><y>80</y><w>110</w><h>30</h></coordinates><panel_attributes>Client</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>595</x><y>150</y><w>120</w><h>70</h></coordinates><panel_attributes>Element
+(interface)
+--
+--
++accept(v: Visitor)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>605</x><y>300</y><w>120</w><h>70</h></coordinates><panel_attributes>ConcreteElement
+--
+--
++accept(v: Visitor)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>655</x><y>210</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>435</x><y>160</y><w>180</w><h>50</h></coordinates><panel_attributes>lt=&lt;-
+m1=*
+</panel_attributes><additional_attributes>160;20;10;20</additional_attributes></element><element><id>UMLNote</id><coordinates><x>375</x><y>470</y><w>180</w><h>90</h></coordinates><panel_attributes>accept(v: Visitor) {
+    ...
+    v.visitConcreteElement(this);
+    ....
+}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>335</x><y>380</y><w>140</w><h>110</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;120;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>85</x><y>230</y><w>260</w><h>70</h></coordinates><panel_attributes>Visitor
+(interface)
+--
+--
++visitConcreteElement(ce: ConcreteElement)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>195</x><y>100</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>85</x><y>370</y><w>260</w><h>70</h></coordinates><panel_attributes>ConcreteVisitor
+--
+--
++visitConcreteElement(ce: ConcreteElement)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>195</x><y>290</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>335</x><y>160</y><w>110</w><h>30</h></coordinates><panel_attributes>ObjectStructure</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>255</x><y>90</y><w>180</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>160;70;10;10</additional_attributes></element></diagram>

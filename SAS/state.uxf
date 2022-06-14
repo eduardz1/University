@@ -1,0 +1,14 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>150</x><y>80</y><w>170</w><h>70</h></coordinates><panel_attributes>Context
+--
+--
++request()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>510</x><y>80</y><w>140</w><h>70</h></coordinates><panel_attributes>State
+(interface)
+--
+--
++handle()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>510</x><y>290</y><w>140</w><h>60</h></coordinates><panel_attributes>ConcreteState
+--
+--
++handle()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>340</x><y>200</y><w>130</w><h>60</h></coordinates><panel_attributes>request() {
+    state.handle();
+}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>140</y><w>90</w><h>80</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;70;60</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>140</y><w>30</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>100</y><w>220</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-&gt;
+state</panel_attributes><additional_attributes>10;20;200;20</additional_attributes></element></diagram>
