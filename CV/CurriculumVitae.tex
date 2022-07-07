@@ -1,5 +1,9 @@
 \documentclass[english, a4paper]{europasscv}
 
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{graphics}
+
 \ecvname{Eduard Antonovic Occhipinti}
 \ecvmobile{+39 340 8294 310}
 \ecvemail{occhipinti.eduard@icloud.com}
@@ -7,21 +11,18 @@
 \ecvdateofbirth{14 February 2001}
 \ecvnationality{Italian}
 
-\ecvpicture{
-  \includegraphics[width=0.8\textwidth]{
-    \input{images/profile.jpg}
-  }
-}
+\ecvpicture[width=0.22\textwidth]{images/profile.jpg}
 
 \begin{document}
     \begin{europasscv}
     \ecvpersonalinfo
-
     \ecvsection{Education and Training}
+    \ecvtitlelevel{2020--TBD}{Bachelor Degree in Informatics}{}
+    \ecvitem{}{University of Turin, Italy}
 
     \ecvtitlelevel{2015--2020}{Scientific High School}{100}
     \ecvitem{}{I.I.S. Curie-Vittorini, Italy}
-    
+
     \ecvsection{Personal Skills}
 
     \ecvmothertongue{Italian}
@@ -43,4 +44,5 @@
     }
 
     \ecvblueitem{Driving licence}{B, AB}
+  \end{europasscv}
 \end{document}
