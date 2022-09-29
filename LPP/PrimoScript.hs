@@ -1,4 +1,3 @@
-import Distribution.Simple.Setup (falseArg)
 -- orbite
 
 annoTerra :: Float
@@ -42,24 +41,28 @@ f7 = f5 + f6
 -- funzioni con guardie, esercizi
 -- 1
 succOrAbs :: Int -> Int
-succOrAbs n | even n = n + 1
-            | otherwise = abs n
+succOrAbs n
+  | even n = n + 1
+  | otherwise = abs n
 
 -- 2
 giorni :: Int -> Int
-giorni n | bisestile n = 366
-         | otherwise = 365
+giorni n
+  | bisestile n = 366
+  | otherwise = 365
 
 bisestile :: Int -> Bool
-bisestile n | n `mod` 4 == 0 && n `mod` 100 /= 0 = True
-            | n `mod` 400 == 0 = True
-            | otherwise = False
+bisestile n
+  | n `mod` 4 == 0 && n `mod` 100 /= 0 = True
+  | n `mod` 400 == 0 = True
+  | otherwise = False
 
 -- funzioni ricorsive esercizi
 
 fattoriale :: Int -> Int
-fattoriale n | n == 0 = 1
-             | otherwise = n * fattoriale (n - 1)
+fattoriale n
+  | n == 0 = 1
+  | otherwise = n * fattoriale (n - 1)
 
 fibonacci :: Int -> Int
 fibonacci 0 = 0
@@ -78,12 +81,66 @@ pow2 n = 2 * pow2 (n - 1)
 
 --3
 bits :: Int -> Int
-bits n | n == 0 = 0
-       | even n = bits (n `div` 2)
-       | otherwise = 1 + bits (n `div` 2)
+bits n
+  | n == 0 = 0
+  | even n = bits (n `div` 2)
+  | otherwise = 1 + bits (n `div` 2)
 
 --4
 potenzaDi2 :: Int -> Bool
-potenzaDi2 n | n == 0 = False
-             | n == 1 = True
-             | otherwise = even n && potenzaDi2 (n `div` 2)
+potenzaDi2 n
+  | n == 0 = False
+  | n == 1 = True
+  | otherwise = even n && potenzaDi2 (n `div` 2)
+
+-- dall'iterazione alla ricorsione
+
+-- public static int fattoriale(int n) {
+--     assert n >= 0;
+--     int res = 1;
+--     while (n > 0) {
+--        res = res * n;
+--        n = n - 1;
+--     }
+--     return res;
+-- }
+
+fattorialeR :: Int -> Int
+fattorialeR = aux 1
+  where
+    aux res 0 = res
+    aux res n = aux (res * n) (n - 1)
+
+-- public static int bits(int n) {
+--     assert n >= 0;
+--     int bits = 0;
+--     while (n > 0) {
+--         bits = bits + n % 2;
+--         n = n / 2;
+--     }
+--     return bits;
+-- }
+
+bitsR :: Int -> Int
+bitsR = aux 0
+  where
+    aux bitss 0 = bitss
+    aux bitss k = aux (bitss + k `mod` 2) (k `div` 2)
+
+-- public static int euclide(int m, int n) {
+--     assert m > 0 && n > 0;
+--     while (m != n)
+--         if (m < n) n -= m; else m -= n;
+--     return n;
+-- }
+
+euclide :: Int -> Int -> Int
+euclide m n
+  | m == n = m
+  | m < n = euclide m (n - m)
+  | otherwise = euclide (m - n) n
+
+quickSort :: Ord a => [a] -> [a]
+quickSort [] = []
+quickSort (x : xs) =
+  quickSort (filter (< x) xs) ++ [x] ++ quickSort (filter (>= x) xs)
