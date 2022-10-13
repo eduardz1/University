@@ -26,6 +26,10 @@ public class Geometries {
         return this.polygons.size();
     }
 
+    public String printAreas() {
+        return this.polygons.stream().map(p -> p.getArea() + " ").reduce("", String::concat);
+    }
+
     @Override
     public String toString() {
         return "Geometries [polygons=" + polygons + "]";

@@ -46,5 +46,6 @@ public class Main {
         scanner.close();
         System.out.println("Number of polygons: " + geometries.countPolygons());
         System.out.println("Polygons: " + geometries);
+        System.out.println("Areas: " + geometries.printAreas());
     }
 }
