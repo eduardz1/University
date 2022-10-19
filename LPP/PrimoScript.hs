@@ -144,3 +144,40 @@ quickSort :: Ord a => [a] -> [a]
 quickSort [] = []
 quickSort (x : xs) =
   quickSort (filter (< x) xs) ++ [x] ++ quickSort (filter (>= x) xs)
+
+media :: [Int] -> Float
+media xs = fromIntegral (sum xs) / fromIntegral (length xs) -- qui non va bene usare il `div` perché non stiamo dividendo due interi
+
+fattorialeL :: Int -> Int
+fattorialeL n = product [2 .. n]
+
+intervallo :: Int -> Int -> [Int]
+intervallo m n
+  | m > n = []
+  | otherwise = m : intervallo (m + 1) n -- oppure semplicemente = [m..n]
+
+primo :: Int -> Bool
+primo n = aux 2
+  where
+    aux k
+      | k >= n = k == n
+      | n `mod` k == 0 = False
+      | otherwise = aux (k + 1)
+
+primi :: Int -> [Int]
+primi n = aux 2
+  where
+    aux k
+      | k > n = []
+      | primo k = k : aux (k + 1)
+      | otherwise = aux (k + 1)
+
+inverti :: [Int] -> [Int]
+inverti [] = []
+inverti (x : xs) = inverti xs ++ [x]
+
+sommaCongiunta :: [Int] -> [Int] -> [Int]
+sommaCongiunta [] [] = []
+sommaCongiunta _ [] = []
+sommaCongiunta [] _ = []
+sommaCongiunta (x : xs) (y : ys) = x + y : sommaCongiunta xs ys
