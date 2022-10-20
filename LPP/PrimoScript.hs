@@ -181,3 +181,37 @@ sommaCongiunta [] [] = []
 sommaCongiunta _ [] = []
 sommaCongiunta [] _ = []
 sommaCongiunta (x : xs) (y : ys) = x + y : sommaCongiunta xs ys
+
+massimo :: Ord a => [a] -> a
+massimo [] = error "massimo: lista vuota"
+massimo (x : xs) = foldr max x xs
+
+occorrenze :: Eq a => a -> [a] -> Int
+occorrenze k = length . filter (== k)
+
+membro :: Eq a => a -> [a] -> Bool
+membro = elem
+
+{-
+  Diciamo che (a, b, c) è una terna pitagorica primitiva se a^2 + b^2 = c^2 e
+  a e b sono co-primi (cioè l’unico divisore che hanno in comune è 1).
+  Definire nel modo più compatto possibile la funzione
+  terne :: Int -> [(Int, Int, Int)] che, applicata a n,
+  generi tutte le terne pitagoriche primitive tali che a < b < c <= n.
+-}
+
+terne :: Int -> [(Int, Int, Int)]
+terne n =
+  [ (a, b, c)
+    | a <- [1 .. n],
+      b <- [a + 1 .. n],
+      coprimi a b,
+      c <- [b + 1 .. n],
+      a ^ (2 :: Int) + b ^ (2 :: Int) == c ^ (2 :: Int)
+  ]
+  where
+    coprimi a b = mcd a b == 1
+
+    mcd 0 k = k
+    mcd m k | m > k = mcd k m
+    mcd m k = mcd m (k - m)
