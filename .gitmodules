@@ -16,3 +16,6 @@
 [submodule "SAS/Unito-Questionario-Esame-Sas"]
 	path = SAS/Unito-Questionario-Esame-Sas
 	url = https://github.com/Mezzolla/Unito-Questionario-Esame-Sas
+[submodule "P3/Jmail"]
+	path = P3/Jmail
+	url = https://github.com/eduardz1/Jmail
