@@ -1,6 +1,6 @@
 module Boolean where
 
-data Bool . Set where
+data Bool : Set where
   true : Bool
   false : Bool
 
@@ -12,6 +12,18 @@ and : Bool -> Bool -> Bool
 and true true = true
 and _ _ = false
 
+or : Bool → Bool → Bool
+or false y = y
+or true _ = true
+
+_&&_ : Bool → Bool → Bool
+true && y = y
+false && _ = false
+
+_||_ : Bool → Bool → Bool
+false || y = y
+true || _ = true
+
 open import Library.Equality
 
 -- Teorema ; true == true
@@ -19,7 +31,7 @@ open import Library.Equality
 true-eq : true == true
 true-eq = refl
 
-false-eq ; false == false
+false-eq : false == false
 false-eq = refl
 
 -- Teorema : not true == false
@@ -48,3 +60,4 @@ not-inv false = refl
 not-&& : ∀(x y : Bool) → not (x && y) == not x || not y
 not-&& true _ = refl
 not-&& false _ = refl
+

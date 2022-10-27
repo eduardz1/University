@@ -1,7 +1,6 @@
 package P3.esercizi.kernelmodulo;
 
 public class Main {
-
     public static void main(String[] args) {
         SortableList<Integer> sortableList = new SortableListImpl<>();
         SortableArray<Integer> sortableArray = new SortableArray<>(sortableList);

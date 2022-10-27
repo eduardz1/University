@@ -1,2 +1,5 @@
 # compiled agda files
 *.agdai
+
+# temporary emacs files
+\#*#
