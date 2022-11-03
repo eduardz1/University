@@ -78,3 +78,30 @@ infixl 7 _*_
     (succ y) + x ==⟨ +-succ y x ⟩ -- a questo punto il Goal (C-,) è y + succ x == y + succ x quindi lo tolgo perché è l'identità
     y + succ x
   end
+
+-- Dimostrazione della commutatività del *
+
+-- Lemma *-zero-r : ∀(x : ℕ) → zero == x * zero
+*-zero-r : ∀(x : ℕ) → zero == x * zero
+*-zero-r zero = refl
+*-zero-r (succ x) = *-zero-r x -- voglio dimostrare che zero == succ x * zero
+
+*-succ : ∀(y x : ℕ) → y + (y * x) == y * succ x
+*-succ zero x = refl
+*-succ (succ y) x =
+  begin
+    succ (y + (x + (y * x))) ==⟨ cong succ (+-assoc y x (y * x)) ⟩
+    succ ((y + x) + (y * x)) ==⟨ cong (λ z -> succ (z + (y * x))) (+-comm y x) ⟩ 
+    succ ((x + y) + (y * x)) ==⟨ cong succ (symm (+-assoc x y (y * x))) ⟩
+    succ (x + (y + (y * x))) ==⟨ cong (λ z -> succ (x + z)) (*-succ y x) ⟩
+    succ (x + (y * succ x))
+  end
+
+*-comm : ∀(x y : ℕ) → x * y == y * x
+*-comm zero y = *-zero-r y
+*-comm (succ x) y = -- come Goal abbiamo y + x * y == y * succ x
+  begin
+    (y + (x * y)) ==⟨ cong (λ z -> y + z) (*-comm x y) ⟩
+    (y + (y * x)) ==⟨ *-succ y x ⟩
+    (y * succ x)
+  end
