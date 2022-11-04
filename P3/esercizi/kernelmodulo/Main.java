@@ -1,4 +1,4 @@
-package P3.esercizi.kernelmodulo;
+package esercizi.kernelmodulo;
 
 public class Main {
     public static void main(String[] args) {

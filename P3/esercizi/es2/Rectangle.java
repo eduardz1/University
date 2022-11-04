@@ -1,4 +1,4 @@
-package P3.esercizi.es2;
+package esercizi.es2;
 
 public class Rectangle implements Polygon {
     private int base;

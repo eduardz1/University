@@ -1,4 +1,4 @@
-package P3.esercizi.es2;
+package esercizi.es2;
 
 public interface Polygon {
     public int getArea();

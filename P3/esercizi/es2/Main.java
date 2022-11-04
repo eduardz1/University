@@ -1,4 +1,4 @@
-package P3.esercizi.es2;
+package esercizi.es2;
 
 import java.lang.reflect.Field;
 import java.util.Scanner;

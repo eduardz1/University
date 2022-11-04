@@ -1,9 +1,9 @@
-package P3.esercizi.es2;
+package esercizi.es2;
 
 import java.util.Comparator;
 import java.util.List;
 
-import P3.esercizi.es2.summable.Summable;
+import esercizi.es2.summable.Summable;
 
 public class Calculator {
     public static <T> String print(List<T> list) {

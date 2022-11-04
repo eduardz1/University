@@ -1,4 +1,4 @@
-package P3.esercizi.es2.summable;
+package esercizi.es2.summable;
 
 public class IntegerSummable extends Summable<Integer> {
 

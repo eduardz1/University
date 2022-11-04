@@ -1,4 +1,4 @@
-package P3.esercizi.kernelmodulo;
+package esercizi.kernelmodulo;
 
 public interface SortableList<T extends Comparable<T>> {
     
