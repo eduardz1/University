@@ -8,3 +8,13 @@ summatory = aux 0
 summatoryp :: Num a => [a] -> a
 summatoryp [] = 0
 summatoryp xs = sum (zipWith (*) (map (2^) [0..]) xs)
+
+ultimoPariLib :: Integral a => [a] -> Maybe a
+ultimoPariLib = foldl aux Nothing
+    where
+        aux _ x | even x = Just x
+        aux ris _ = ris
+
+-- ritorna true se la prima lista è sottoinsieme della seconda
+diversoLib :: Eq a => [a] -> [a] -> Bool
+diversoLib xs ys = any (`notElem` ys) xs

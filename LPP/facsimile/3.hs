@@ -4,9 +4,16 @@ elements :: Tree a -> [a]
 elements Empty = []
 elements (Node a ts) = a : concatMap elements ts
 
+-- normalize :: Tree a -> Tree a
+-- normalize Empty = Empty
+-- normalize (Node a ts) = Node a (concatMap (aux . normalize) ts)
+--     where
+--         aux Empty = []
+--         aux t = [t]
+
 normalize :: Tree a -> Tree a
 normalize Empty = Empty
-normalize (Node a ts) = Node a (concatMap (aux . normalize) ts)
+normalize (Node a ts) = Node a (filter aux (map normalize ts))
     where
-        aux Empty = []
-        aux t = [t]
+        aux Empty = False
+        aux _ = True

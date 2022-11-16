@@ -105,3 +105,12 @@ infixl 7 _*_
     (y + (y * x)) ==⟨ *-succ y x ⟩
     (y * succ x)
   end
+
+comm+ : ∀(x y : ℕ) → x + y == y + x
+comm+ zero y = {!   !}
+comm+ (succ x) y = 
+  begin
+    succ (x + y) 
+  ==⟨ {!   !} ⟩
+    y + succ x
+  end

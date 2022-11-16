@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
+<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.javafxml5correttoreesercizi.HelloController">
+    <children>
+        <TextField fx:id="testoEsercizio" layoutX="14.0" layoutY="24.0" prefHeight="31.0" prefWidth="287.0" />
+        <TextField fx:id="risposta" layoutX="115.0" layoutY="69.0" prefHeight="31.0" prefWidth="50.0" />
+        <Label layoutX="14.0" layoutY="74.0" prefHeight="21.0" prefWidth="126.0" text="Inserisci risultato" />
+        <Button fx:id="chiediAltroEsercizio" layoutX="85.0" layoutY="145.0" onAction="#handleAltroEsercizioAction" prefHeight="31.0" prefWidth="150.0" text="Altro esercizio" />
+        <Label fx:id="valutazione" layoutX="114.0" layoutY="114.0" prefHeight="21.0" prefWidth="102.0" text="" />
+        <Button fx:id="submitRisposta" layoutX="201.0" layoutY="72.0" mnemonicParsing="false" onAction="#handleVerificaRisultato" text="Conferma" />
+    </children>
+</AnchorPane>
