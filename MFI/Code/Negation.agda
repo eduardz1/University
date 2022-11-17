@@ -78,21 +78,21 @@ Nat-eq-decidable (succ x) (succ y) with Nat-eq-decidable x y
 ... | yes p = yes (cong succ p) -- with goal as (succ x == succ y -> ⊥) ∨ (succ x == succ y), in this line we demonstrated the right side expression
 ... | no  q = no λ{refl → q refl} -- uso λ{z -> ?} and then C-c C-SPC and then C-c C-c on z
 
-List-eq-decidable : ∀{A : Set} -> (∀(x y : A) -> Decidable (x == y)) -> (xs ys : List A) -> Decidable (xs == ys)
+List-eq-decidable : ∀{A : Set} -> (∀(x y : A) -> Decidable (x == y)) -> ∀(xs ys : List A) -> Decidable (xs == ys)
 List-eq-decidable p [] [] = yes refl
 List-eq-decidable p [] (x :: ys) = no (λ ())
 List-eq-decidable p (x :: xs) [] = no (λ ())
 List-eq-decidable p (x :: xs) (y :: ys) with p x y | List-eq-decidable p xs ys
-... | yes u | yes v = yes  q
-    where
-        q : x :: xs == y :: ys
-        q = begin 
-                x :: xs 
-            ==⟨ {! cong (λ z -> z :: xs) u !} ⟩
-                y :: ys
-            ==⟨ {! cong (λ z -> y :: z) v  !} ⟩ 
-                y :: ys
-            end   
-... | yes u | no n = no λ{z -> {!   !}}
-... | no n | _ = {!   !}
+... | yes u | yes v = yes q
+  where
+    q : x :: xs == y :: ys
+    q = begin
+            x :: xs
+        ==⟨ cong (λ z -> z :: xs) u ⟩
+            y :: xs
+        ==⟨ cong (λ z -> y :: z) v ⟩
+            y :: ys
+        end
+... | yes u | no  n = no λ { refl -> n refl}
+... | no  n | _     = no λ { refl -> n refl}
  
