@@ -63,3 +63,41 @@ x ∣ y = ∃[ z ] (z * x == y)
 
 ⊢refl : ∀ x -> x ∣ x
 ⊢refl x = 1 , +-unit-r x
+
+open import Library.Equality.Reasoning
+
+∣-trans : ∀(x y z : ℕ) -> x ∣ y -> y ∣ z -> x ∣ z
+∣-trans x y z (p , p₁) (q , q₁) = (q * p) , th -- th == symm (*-assoc q p _)
+   where 
+      th : (q * p) * x == z
+      th = 
+         begin
+            (q * p) * x
+         ⟨ *-assoc q p x ⟩==
+            q * (p * x)
+         ==⟨ cong (λ k -> q * k) p₁ ⟩
+            q * y
+         ==⟨ q₁ ⟩
+            z
+         end
+
++-succ-neq : ∀{x y : ℕ} -> x + succ y != x
++-succ-neq {succ x} {y} h = +-succ-neq (succ-injective h) -- succ-injective : {x y : ℕ} -> succ x == succ y -> x == y
+-- can split x : x -> 0 is implicitly false
+-- we don´t really need y
+
+*-zero-neq-one : ∀(x : ℕ) -> x * 0 != 1 -- equivalent to (x * 0 == 1) -> ⊥
+*-zero-neq-one (succ x) h = *-zero-neq-one x h
+
+*-one : ∀(x y : ℕ) -> x * y == 1 -> x == 1 ∧ y == 1
+*-one (succ x) zero hp = ex-falso (*-zero-neq-one x hp) -- devo dimostrare succ x == 1 ∧ zero == 1 dove quest'ultimo è un assurdo
+*-one (succ zero) (succ zero) hp = refl , refl -- (succ x) * y == 1 -> succ x == 1 ∧ y == 1 
+
+*-same : ∀(x y : ℕ) -> x * y == y -> x == 1 ∨ y == 0
+*-same zero zero hp = inr refl
+*-same (succ x) zero hp = inr refl
+*-same (succ zero) (succ y) hp = inl refl
+*-same (succ (succ x)) (succ y) hp = ex-falso (+-succ-neq k)
+   where
+      k : y + succ (y + x * succ y) == y
+      k = succ-injective hp
