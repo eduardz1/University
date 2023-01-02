@@ -69,14 +69,16 @@ Corrisponde a:
 
 
 data _∨_ (A B : Set) : Set where
-    inl : A → A ∨ B -- "inject left"
-    inr : B → A ∨ B -- "inject right"
+    inl : A -> A ∨ B -- "inject left"
+    inr : B -> A ∨ B -- "inject right"
+
+infixr 2 _∨_
 
 -- Se x : A allora inl x : A + B; se y : B allora inr y : A + B
 
 {-
                  [A]^i [B]^j
-                  ⋮    ⋮
+                  ⋮      ⋮
          A ∨ B    C     C
    -i,-j -----------------∨E
                   C
