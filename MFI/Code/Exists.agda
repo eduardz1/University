@@ -45,11 +45,15 @@ List⁺ : Set -> Set
 List⁺ A = Σ (List A) (_!= [])
 
 head : ∀{A : Set} -> List⁺ A -> A
-head ([] , x₁) = ex-falso (x₁ refl) -- devo dimostrare che [] != [] == ¬ ( [] == [] ) == ( [] == [] ) -> ⊥
-head ((x :: x₂) , x₁) = x
+head ([] , not-empty) = ex-falso (not-empty refl) -- devo dimostrare che [] != [] == ¬ ( [] == [] ) == ( [] == [] ) -> ⊥
+head ((x :: _) , _) = x
+
+tail : ∀{A : Set} -> List⁺ A -> List A
+tail ([] , not-empty) = ex-falso (not-empty refl)
+tail ((_ :: xs) , _) = xs
 
 ∃ : ∀{A : Set} (B : A -> Set) -> Set
-∃ {A} B = Σ A B
+∃ {A} B = Σ A B 
 
 ∃-syntax = ∃
 syntax ∃-syntax (λ x -> B) = ∃[ x ] B
@@ -66,20 +70,21 @@ x ∣ y = ∃[ z ] (z * x == y)
 
 open import Library.Equality.Reasoning
 
-∣-trans : ∀(x y z : ℕ) -> x ∣ y -> y ∣ z -> x ∣ z
-∣-trans x y z (p , p₁) (q , q₁) = (q * p) , th -- th == symm (*-assoc q p _)
-   where 
-      th : (q * p) * x == z
-      th = 
-         begin
-            (q * p) * x
-         ⟨ *-assoc q p x ⟩==
-            q * (p * x)
-         ==⟨ cong (λ k -> q * k) p₁ ⟩
-            q * y
-         ==⟨ q₁ ⟩
-            z
-         end
+∣-trans : ∀{x y z : ℕ} -> x ∣ y -> y ∣ z -> x ∣ z
+∣-trans (p , refl) (q , refl) = q * p , symm (*-assoc q p _)
+-- ∣-trans x y z (p , p₁) (q , q₁) = (q * p) , th
+--    where 
+--       th : (q * p) * x == z
+--       th = 
+--          begin
+--             (q * p) * x
+--          ⟨ *-assoc q p x ⟩==
+--             q * (p * x)
+--          ==⟨ cong (λ k -> q * k) p₁ ⟩
+--             q * y
+--          ==⟨ q₁ ⟩
+--             z
+--          end
 
 +-succ-neq : ∀{x y : ℕ} -> x + succ y != x
 +-succ-neq {succ x} {y} h = +-succ-neq (succ-injective h) -- succ-injective : {x y : ℕ} -> succ x == succ y -> x == y
@@ -101,3 +106,13 @@ open import Library.Equality.Reasoning
    where
       k : y + succ (y + x * succ y) == y
       k = succ-injective hp
+
+∣-antisymm : ∀{x y : ℕ} -> x ∣ y -> y ∣ x -> x == y
+∣-antisymm (p , p₁) (q , q₁) = {!   !}
+
+
+funct : ∀{A : Set} -> A -> Set
+funct x = {!   !}
+
+_ : ∀(x : Set) -> ∃[ x ] (funct x)
+_ = {!   !}

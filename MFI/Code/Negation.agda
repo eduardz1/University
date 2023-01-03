@@ -99,5 +99,12 @@ List-eq-decidable p (x :: xs) (y :: ys) with p x y | List-eq-decidable p xs ys
 ntop : ¬ ⊤ -> ⊥
 ntop x = x <>
 
-em-dne : (∀{A : Set} -> ¬ A ∨ A) -> (∀{A : Set} -> ¬ ¬ A -> A)
-em-dne p₁ p₂ = {!   !}
+EM : ∀{A : Set} -> ¬ A ∨ A
+EM {A} = inr {!  !}
+
+DNE : ∀{A : Set} -> ¬ ¬ A -> A
+DNE x = {!   !}
+
+-- EM-DNE : EM -> DNE
+-- EM-DNE = ?
+-- FIXME: idk how to solve

@@ -93,7 +93,7 @@ infixr 2 _∨_
 -- Distributività dell'and sull'or
 
 _<=>_ : Set -> Set -> Set
-A <=> B = (A → B) ∧ (B → A)
+A <=> B = (A -> B) ∧ (B -> A)
 
 infix 2 _<=>_
 
