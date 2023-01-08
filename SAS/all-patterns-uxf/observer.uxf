@@ -1,0 +1,28 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>150</x><y>60</y><w>170</w><h>100</h></coordinates><panel_attributes>Subject
+(abstract)
+--
+--
++attach(obs: Observer)
++detach(obs: Observer)
++notify()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>150</x><y>280</y><w>160</w><h>150</h></coordinates><panel_attributes>ConcreteSubject
+--
+-subjectState: State
+--
++attach(obs: Observer)
++detach(obs: Observer)
++notify()
+
++getState(): State
++setState(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>510</x><y>80</y><w>140</w><h>70</h></coordinates><panel_attributes>Observer
+(interface)
+--
+--
++update()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>150</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>510</x><y>290</y><w>140</w><h>60</h></coordinates><panel_attributes>ConcreteObserver
+--
+--
++update()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>340</x><y>200</y><w>150</w><h>90</h></coordinates><panel_attributes>notify() {
+    for all o in observers {
+          o.update();
+    }
+}</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>120</y><w>90</w><h>100</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;70;80</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>140</y><w>30</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>100</y><w>220</w><h>30</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>200;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>310</y><w>230</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+subject</panel_attributes><additional_attributes>10;20;210;20</additional_attributes></element></diagram>

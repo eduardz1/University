@@ -37,8 +37,8 @@ infixl 7 _*_
 {-
 
         x + (y + z) == (x + y) + z
-  --------------------------------------[cong]
-  succ(x + (y + z)) == succ((x + y) + z)
+  ----------------------------------------[cong]
+  succ (x + (y + z)) == succ ((x + y) + z)
 
 -}
 
@@ -61,7 +61,7 @@ infixl 7 _*_
 
 +-unit-r : ∀(x : ℕ) → x == x + zero
 +-unit-r zero =  refl
-+-unit-r (succ x)  = cong succ (+-unit-r x) -- il Goal è succ (x + 0) == succ (x + 0 + 0)
++-unit-r (succ x) = cong succ (+-unit-r x) -- il Goal è succ (x + 0) == succ (x + 0 + 0)
 
 +-succ : ∀(x y : ℕ) → (succ x) + y == x + (succ y) -- nota che è lo stesso che mettiamo come quarto caso nel begin sottostante
 +-succ zero y = refl
@@ -104,13 +104,4 @@ infixl 7 _*_
     (y + (x * y)) ==⟨ cong (λ z -> y + z) (*-comm x y) ⟩
     (y + (y * x)) ==⟨ *-succ y x ⟩
     (y * succ x)
-  end
-
-comm+ : ∀(x y : ℕ) → x + y == y + x
-comm+ zero y = {!   !}
-comm+ (succ x) y = 
-  begin
-    succ (x + y) 
-  ==⟨ {!   !} ⟩
-    y + succ x
   end

@@ -61,3 +61,6 @@ not-&& : ∀(x y : Bool) → not (x && y) == not x || not y
 not-&& true _ = refl
 not-&& false _ = refl
 
+not-|| : ∀(x y : Bool) → not (x || y) == not x && not y
+not-|| true y = refl
+not-|| false y = refl

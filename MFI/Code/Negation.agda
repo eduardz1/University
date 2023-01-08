@@ -48,7 +48,7 @@ double-negation : ∀{A : Set} -> A -> ¬ ¬ A -- non possiamo dimostrare l'inve
 double-negation x y = y x
 
 Decidable : Set -> Set -- in realtà non appartiene a Set
-Decidable A = (¬ A) ∨ A
+Decidable A = ¬ A ∨ A
 
 {-
     Bool-eq-decidable : ∀(x y : Bool) -> Decidable (x == y) -- l'eguaglianza tra booleani è decidibile
@@ -95,4 +95,16 @@ List-eq-decidable p (x :: xs) (y :: ys) with p x y | List-eq-decidable p xs ys
         end
 ... | yes u | no  n = no λ { refl -> n refl}
 ... | no  n | _     = no λ { refl -> n refl}
- 
+
+ntop : ¬ ⊤ -> ⊥
+ntop x = x <>
+
+EM : ∀{A : Set} -> ¬ A ∨ A
+EM {A} = inr {!  !}
+
+DNE : ∀{A : Set} -> ¬ ¬ A -> A
+DNE x = {!   !}
+
+-- EM-DNE : EM -> DNE
+-- EM-DNE = ?
+-- FIXME: idk how to solve
