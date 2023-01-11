@@ -34,7 +34,7 @@ _!=_ : ∀{A : Set} -> A -> A -> Set
 x != y = ¬ (x == y)
 
 zero-succ : ∀{x : ℕ} -> 0 != succ x
-zero-succ ()
+zero-succ () 
 
 ne-ne : ∀{x y : ℕ} -> succ x != succ y -> x != y
 ne-ne neq refl = neq refl
@@ -42,3 +42,7 @@ ne-ne neq refl = neq refl
 ::-injective : ∀{A : Set} {x y : A} {xs ys : List A} -> x :: xs == y :: ys 
                                                      -> x == y ∧ xs == ys
 ::-injective refl = refl , refl
+
+cong2 : ∀{A B C : Set} (f : A -> B -> C) 
+        {x y : A} {u v : B} -> x == y -> u == v -> f x u == f y v
+cong2 f refl refl = refl

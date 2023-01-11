@@ -2,6 +2,7 @@ module Inequality where
 
 open import Library.Bool
 open import Library.Nat
+open import Library.Nat.Properties
 open import Library.Equality
 open import Library.Logic
 
@@ -79,14 +80,13 @@ le-trans : ∀{x y z : ℕ} -> x <= y -> y <= z -> x <= z
 le-trans le-zero _ = le-zero
 le-trans (le-succ hp₁) (le-succ hp₂) = le-succ (le-trans hp₁ hp₂)
 
--- TODO: dimostrare che <= è una pre-congruenza ossia la somma è monotona
 <=-cong : ∀{x y z : ℕ} -> x <= y -> x + z <= y + z
-<=-cong le-zero = lemma
+<=-cong {_} {y} {z} le-zero rewrite (+-comm y z) = lemma
     where
-        lemma : ∀{z y : ℕ} -> z <= y + z
+        lemma : ∀{z y : ℕ} -> z <= z + y
         lemma {zero} = le-zero
-        lemma {succ z} = {!   !}
-<=-cong (le-succ hp) = le-succ (<=-cong hp)
+        lemma {succ z} = le-succ lemma
+<=-cong (le-succ p) = le-succ (<=-cong p)
 
 -- La relazione <= è totale
 le-total : ∀{x y : ℕ} -> x <= y ∨ y <= x
@@ -95,3 +95,31 @@ le-total {succ x} {zero}   = inr le-zero
 le-total {succ x} {succ y} with le-total {x} {y}
 ... | inl x≤y = inl (le-succ x≤y)
 ... | inr y≤x = inr (le-succ y≤x)
+
+_<=?_ : ∀(x y : ℕ) -> Decidable (x <= y)
+zero <=? zero = yes le-zero
+zero <=? succ y = yes le-zero
+succ x <=? zero = no (λ ())
+succ x <=? succ y with x <=? y
+... | yes x≤y = yes (le-succ x≤y)
+... | no  x≤y = no λ{(le-succ z) → x≤y z}
+
+min' : ℕ -> ℕ -> ℕ
+min' x y with x <=? y
+... | yes x≤y = x
+... | no x≤y  = y
+
+max' : ℕ -> ℕ -> ℕ
+max' x y with x <=? y
+... | yes x≤y = y
+... | no x≤y  = x
+
+le-min : ∀{x y z : ℕ} -> x <= y -> x <= z -> x <= min y z
+le-min le-zero le-zero = le-zero
+le-min (le-succ p) (le-succ q) = le-succ (le-min p q)
+
+le-max : ∀{x y z : ℕ} -> x <= z -> y <= z -> max x y <= z
+le-max le-zero le-zero = le-zero
+le-max le-zero (le-succ q) = le-succ q
+le-max (le-succ p) le-zero = le-succ p
+le-max (le-succ p) (le-succ q) = le-succ (le-max p q)

@@ -94,3 +94,26 @@ map-length f (x :: xs) = cong succ (map-length f xs)
 map-++ : {A B : Set} (f : A -> B) (xs ys : List A) -> map f (xs ++ ys) == map f xs ++ map f ys
 map-++ f [] ys = refl
 map-++ f (x :: xs) ys = cong (λ z → f x :: z) (map-++ f xs ys) -- faccio induzione sulla variabile di rango più elevato, ossia quella con più occorrenze a sinistra di una variabile definita a sinistra. ys non sta mai a sinistra dell'append mentre xs ci sta 1 volta esplicitamente e 2 volte implicitamente
+
+map-reverse : ∀{A B : Set} (f : A -> B) (xs : List A) -> map f (reverse xs) == reverse (map f xs)
+map-reverse f [] = refl
+map-reverse f (x :: xs) rewrite map-++ f (reverse xs) (x :: []) = cong (_++ (f x :: [])) (map-reverse f xs)
+
+map-∘ : ∀{A B C : Set} (f : B -> C) (g : A -> B) (xs : List A) -> (map f ∘ map g) xs == map (f ∘ g) xs
+map-∘ f g [] = refl
+map-∘ f g (x :: xs) =
+  begin
+    (map f ∘ map g) (x :: xs)
+  ==⟨⟩
+    map f (map g (x :: xs))
+  ==⟨⟩
+    map f (g x :: map g xs)
+  ==⟨⟩
+    f (g x) :: map f (map g xs)
+  ==⟨⟩
+    (f ∘ g) x :: map f (map g xs)
+  ==⟨⟩
+    (f ∘ g) x :: (map f ∘ map g) xs
+  ==⟨ cong ((f ∘ g) x ::_) (map-∘ f g xs) ⟩
+    (f ∘ g) x :: map (f ∘ g) xs
+  end

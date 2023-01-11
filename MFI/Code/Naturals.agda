@@ -2,6 +2,7 @@ module Naturals where
 
 open import Library.Equality
 open import Library.Equality.Reasoning
+open import Library.Fun
 
 data ℕ : Set where
   zero : ℕ
@@ -104,4 +105,119 @@ infixl 7 _*_
     (y + (x * y)) ==⟨ cong (λ z -> y + z) (*-comm x y) ⟩
     (y + (y * x)) ==⟨ *-succ y x ⟩
     (y * succ x)
+  end
+
+_-_ : ℕ -> ℕ -> ℕ
+x - zero = x
+zero - _ = zero
+succ x - succ y = x - y
+
+infixl 6 _-_
+
+plus-minus-l : ∀(x y : ℕ) -> (x + y) - x == y
+plus-minus-l zero y = refl
+plus-minus-l (succ x) y = plus-minus-l x y
+
+plus-minus-r : ∀(x y : ℕ) -> (x + y) - y == x
+plus-minus-r x y rewrite +-comm x y = plus-minus-l y x
+
+fact : ℕ -> ℕ
+fact zero = 1
+fact (succ n) = (succ n) * fact n
+
+*-unit-l : ∀(x : ℕ) -> x == 1 * x
+*-unit-l zero = refl
+*-unit-l (succ x) = cong succ (*-unit-l x)
+
+*-unit-r : ∀(x : ℕ) -> x == x * 1
+*-unit-r zero = refl
+*-unit-r (succ x) = cong succ (*-unit-r x)
+
+*-dist-r : ∀(x y z : ℕ) -> (x + y) * z == x * z + y * z
+*-dist-r zero y z = refl
+*-dist-r (succ x) y z rewrite (*-dist-r) x y z = 
+  begin
+    z + (x * z + y * z)
+  ==⟨ +-assoc z (x * z) (y * z) ⟩
+    z + x * z + y * z
+  end
+
+*-dist-l : ∀(x y z : ℕ) -> x * (y + z) == x * y + x * z
+*-dist-l x y z = 
+  begin
+    x * (y + z)
+  ==⟨ *-comm x (y + z) ⟩
+    (y + z) * x
+  ==⟨ *-dist-r y z x ⟩
+    y * x + z * x
+  ==⟨ cong (_+ z * x) (*-comm y x) ⟩
+    x * y + z * x
+  ==⟨ cong (x * y +_) (*-comm z x) ⟩
+    x * y + x * z
+  end
+
+*-assoc : ∀(x y z : ℕ) -> x * (y * z) == (x * y) * z
+*-assoc zero y z = refl
+*-assoc (succ x) y z rewrite *-assoc x y z = 
+  begin
+    y * z + x * y * z
+  ==⟨ refl ⟩
+    y * z + (x * y) * z
+    ⟨ *-dist-r y (x * y) z ⟩==
+    (y + x * y) * z
+  end
+
+infixl 8 _^_
+
+_^_ : ℕ -> ℕ -> ℕ
+_ ^ zero = 1
+x ^ succ y = x * x ^ y
+
+^-assoc : ∀(x m n : ℕ) -> x ^ m * x ^ n == x ^ (m + n)
+^-assoc x zero n rewrite +-comm (x ^ n) zero = refl
+^-assoc x (succ m) n =
+  begin
+    x ^ succ m * x ^ n
+  ==⟨⟩
+    x * x ^ m * x ^ n
+  ⟨ *-assoc x (x ^ m) (x ^ n) ⟩==
+    x * (x ^ m * x ^ n)
+  ==⟨ cong (x *_) (^-assoc x m n) ⟩
+    x * x ^ (m + n)
+  ⟨⟩==
+    x ^ (succ m + n)
+  end
+
+^-dist : ∀(x y n : ℕ) -> (x * y) ^ n == x ^ n * y ^ n
+^-dist x y zero = refl
+^-dist x y (succ n) =
+  begin
+    x * y * (x * y) ^ n
+  ==⟨ cong (x * y *_) (^-dist x y n) ⟩
+    x * y * (x ^ n * y ^ n)
+  ==⟨ *-assoc (x * y) (x ^ n) (y ^ n) ⟩
+    (x * y * x ^ n) * y ^ n
+  ⟨ cong (_* y ^ n) (*-assoc x y (x ^ n)) ⟩==
+    x * (y * x ^ n) * y ^ n
+  ==⟨ cong (λ u -> x * u * y ^ n) (*-comm y (x ^ n)) ⟩
+    x * (x ^ n * y) * y ^ n
+  ==⟨ cong (_* y ^ n) (*-assoc x (x ^ n) y) ⟩
+    ((x * x ^ n) * y) * y ^ n
+  ⟨ *-assoc (x * x ^ n) y (y ^ n) ⟩==
+    x * x ^ n * (y * y ^ n)
+  end
+
+^-trans : ∀(x m n : ℕ) -> x ^ m ^ n == x ^ (m * n)
+^-trans x zero n = lemma n
+  where
+    lemma : ∀(n : ℕ) -> 1 ^ n == 1
+    lemma zero = refl
+    lemma (succ n) rewrite lemma n = refl
+^-trans x (succ m) n rewrite ^-dist x (x ^ m) n = 
+  begin
+    x ^ n * x ^ m ^ n
+  ==⟨ cong (x ^ n *_) (^-trans x m n) ⟩
+    x ^ n * x ^ (m * n)
+  ==⟨ ^-assoc x n (m * n) ⟩
+    x ^ (n + m * n)
   end
