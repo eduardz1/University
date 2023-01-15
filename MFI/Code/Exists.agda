@@ -108,7 +108,10 @@ open import Library.Equality.Reasoning
       k = succ-injective hp
 
 ∣-antisymm : ∀{x y : ℕ} -> x ∣ y -> y ∣ x -> x == y
-∣-antisymm (p , p₁) (q , q₁) = {!   !}
+∣-antisymm (zero , x₁) (zero , x₃) = {!   !}
+∣-antisymm (zero , x₁) (succ x₂ , x₃) = {!   !}
+∣-antisymm (succ x , x₁) (zero , x₃) = {!   !}
+∣-antisymm (succ x , x₁) (succ x₂ , x₃) = {!   !}
 
 
 funct : ∀{A : Set} -> A -> Set

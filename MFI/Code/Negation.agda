@@ -64,9 +64,9 @@ pattern no x  = inl x
 
 -- we can then rewrite Bool-eq-decidable as:
 Bool-eq-decidable : ∀(x y : Bool) -> Decidable (x == y)
-Bool-eq-decidable true true   = yes refl
-Bool-eq-decidable true false  = no (λ ())
-Bool-eq-decidable false true  = no (λ ())
+Bool-eq-decidable true true = yes refl
+Bool-eq-decidable true false = no (λ ())
+Bool-eq-decidable false true = no (λ ())
 Bool-eq-decidable false false = yes refl
 -- and that is more legibile, is it true that true == true? yes! using refl, is it true that true == false? no! using the absurdity pattern
 
@@ -78,33 +78,28 @@ Nat-eq-decidable (succ x) (succ y) with Nat-eq-decidable x y
 ... | yes p = yes (cong succ p) -- with goal as (succ x == succ y -> ⊥) ∨ (succ x == succ y), in this line we demonstrated the right side expression
 ... | no  q = no λ{refl → q refl} -- uso λ{z -> ?} and then C-c C-SPC and then C-c C-c on z
 
-List-eq-decidable : ∀{A : Set} -> (∀(x y : A) -> Decidable (x == y)) -> ∀(xs ys : List A) -> Decidable (xs == ys)
+List-eq-decidable : ∀{A : Set} -> 
+                    (∀(x y : A) -> Decidable (x == y)) -> 
+                    ∀(xs ys : List A) -> 
+                    Decidable (xs == ys)
 List-eq-decidable p [] [] = yes refl
 List-eq-decidable p [] (x :: ys) = no (λ ())
 List-eq-decidable p (x :: xs) [] = no (λ ())
-List-eq-decidable p (x :: xs) (y :: ys) with p x y | List-eq-decidable p xs ys
-... | yes u | yes v = yes q
-  where
-    q : x :: xs == y :: ys
-    q = begin
-            x :: xs
-        ==⟨ cong (λ z -> z :: xs) u ⟩
-            y :: xs
-        ==⟨ cong (λ z -> y :: z) v ⟩
-            y :: ys
-        end
-... | yes u | no  n = no λ { refl -> n refl}
-... | no  n | _     = no λ { refl -> n refl}
+List-eq-decidable p (x :: xs) (y :: ys) with p x y | List-eq-decidable p xs ys 
+... | no x     | yes y    = no λ{refl -> x refl}
+... | _        | no y     = no λ{refl → y refl}
+... | yes refl | yes refl = yes refl
 
 ntop : ¬ ⊤ -> ⊥
 ntop x = x <>
 
-EM : ∀{A : Set} -> ¬ A ∨ A
-EM {A} = inr {!  !}
+em-dn : (∀{A : Set} -> ¬ A ∨ A) -> ∀{A : Set} -> ¬ ¬ A -> A
+em-dn em {A} dn with em {A}
+... | inl x = ex-falso (dn x)
+... | inr x = x
 
-DNE : ∀{A : Set} -> ¬ ¬ A -> A
-DNE x = {!   !}
+nndec : ∀{A : Set} -> ¬ ¬ Decidable A
+nndec {A} = λ z → z (no (λ x → z (yes x)))
 
--- EM-DNE : EM -> DNE
--- EM-DNE = ?
--- FIXME: idk how to solve
+dn-em : (∀{A : Set} -> (¬ ¬ A -> A)) -> ∀{A : Set} -> Decidable A
+dn-em p = p nndec

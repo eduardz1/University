@@ -43,6 +43,10 @@ ne-ne neq refl = neq refl
                                                      -> x == y ∧ xs == ys
 ::-injective refl = refl , refl
 
-cong2 : ∀{A B C : Set} (f : A -> B -> C) 
-        {x y : A} {u v : B} -> x == y -> u == v -> f x u == f y v
+cong2 : ∀{A B C : Set} 
+        (f : A -> B -> C) 
+        {x y : A} {u v : B} -> 
+        x == y -> 
+        u == v -> 
+        f x u == f y v
 cong2 f refl refl = refl
