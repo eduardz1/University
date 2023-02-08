@@ -142,3 +142,15 @@ uniqueNoLib (x : xs) ys = check x ys || uniqueNoLib xs ys
     where
         check _ [] = True
         check z (w : ws) = z /= w && check z ws
+
+{-
+a function that takes a base 8 number represented as an array of numbers from 0 to 7 as a parameter and returns the same number in base 10
+-}
+dieci :: [Int] -> Int
+dieci = foldl (\acc x -> acc * 8 + x) 0
+
+dieci' :: [Int] -> Int
+dieci' = aux 0
+    where
+        aux acc [] = acc
+        aux acc (x : xs) = aux (acc * 8 + x) xs
