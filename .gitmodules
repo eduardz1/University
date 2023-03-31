@@ -19,3 +19,6 @@
 [submodule "P3/Jmail"]
 	path = P3/Jmail
 	url = https://github.com/eduardz1/Jmail
+[submodule "Bachelor-Thesis"]
+	path = Bachelor-Thesis
+	url = https://github.com/eduardz1/Bachelor-Thesis
