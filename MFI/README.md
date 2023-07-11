@@ -1,6 +1,3 @@
-# Useful links
+# Metodi Formali dell'Informatica
 
-## With-abstraction
-
-* [Agda docs](https://agda.readthedocs.io/en/latest/language/with-abstraction.html)
-* [Interesting StackOverflow question](https://stackoverflow.com/questions/10320052/%e2%89%a1-reasoning-and-with-patterns/10386087#10386087)
+Repository per il corso di Metodi Formali dell'Informatica (A.A. 2022/2023) dell'Università degli Studi di Torino. In [Code](Code) c'è tutto il codice Agda che abbiamo trattato, in particolare l'esonero si può trovare in [Esonero.agda](Code/Esonero.agda) mentre la consegna in [CompilerEx.agda](Code/CompilerEx.agda)

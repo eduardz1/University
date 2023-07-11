@@ -12,34 +12,32 @@ open import AexpBexp
 open import BigStep
 
 data _⟶_ : Config -> Config -> Set where  -- the symbol ⟶ is written \-->
+    Loc : ∀{x a s}
+        ------------------------------------------------
+        -> ⦅ x := a , s ⦆ ⟶ ⦅ SKIP , s [ x ::= aval a s ] ⦆
 
-
-  Loc : ∀{x a s}
-        --------------------------------------------------
-      -> ⦅ x := a , s ⦆ ⟶ ⦅ SKIP , s [ x ::= aval a s ] ⦆
-
-  Comp₁ : ∀{c s}
-          ---------------------------------
-          -> ⦅ SKIP :: c , s ⦆ ⟶ ⦅ c , s ⦆
+    Comp₁ : ∀{c s}
+            -------------------------------
+            -> ⦅ SKIP :: c , s ⦆ ⟶ ⦅ c , s ⦆
         
-  Comp₂ : ∀{c₁ c₁′ c₂ s s′}
-          -> ⦅ c₁ , s ⦆ ⟶ ⦅ c₁′ , s′ ⦆
-          -----------------------------------------
-          -> ⦅ c₁ :: c₂ , s ⦆ ⟶ ⦅ c₁′ :: c₂ , s′ ⦆
+    Comp₂ : ∀{c₁ c₁′ c₂ s s′}
+            -> ⦅ c₁ , s ⦆ ⟶ ⦅ c₁′ , s′ ⦆
+            ---------------------------------------
+            -> ⦅ c₁ :: c₂ , s ⦆ ⟶ ⦅ c₁′ :: c₂ , s′ ⦆
         
-  IfTrue  : ∀{b s c₁ c₂}
-          -> bval b s == true
-          ---------------------------------------------
-          -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⟶ ⦅ c₁ , s ⦆
-          
-  IfFalse : ∀{b s c₁ c₂}
-          -> bval b s == false
-          ---------------------------------------------
-          -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⟶ ⦅ c₂ , s ⦆
-          
-  While : ∀{b c s}
-          ----------------------------------------------------------------------------
-          -> ⦅ WHILE b DO c , s ⦆ ⟶ ⦅ IF b THEN (c :: (WHILE b DO c)) ELSE SKIP , s ⦆
+    IfTrue  : ∀{b s c₁ c₂}
+            -> bval b s == true
+            -------------------------------------------
+            -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⟶ ⦅ c₁ , s ⦆
+            
+    IfFalse : ∀{b s c₁ c₂}
+            -> bval b s == false
+            -------------------------------------------
+            -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⟶ ⦅ c₂ , s ⦆
+            
+    While : ∀{b c s}
+            --------------------------------------------------------------------------
+            -> ⦅ WHILE b DO c , s ⦆ ⟶ ⦅ IF b THEN (c :: (WHILE b DO c)) ELSE SKIP , s ⦆
 
 
 -- Definition of -->* as a reflexive and transitive closure of -->
@@ -47,14 +45,13 @@ data _⟶_ : Config -> Config -> Set where  -- the symbol ⟶ is written \-->
 -- ⦅ c , s ⦆ == ⦅ c₀ , s₀ ⦆ --> ⦅ c₁ , s₁ ⦆ --> ... --> ⦅ cₖ , sₖ ⦆ == ⦅ c' , s' ⦆
 
 data  _⟶*_ : Config -> Config -> Set where
+    ⟶*-refl : ∀ {c s} -> ⦅ c , s ⦆ ⟶* ⦅ c , s ⦆  -- reflexivity, case k == 0
 
-   ⟶*-refl : ∀ {c s} -> ⦅ c , s ⦆ ⟶* ⦅ c , s ⦆  -- reflexivity, case k == 0
-
-   ⟶*-incl : ∀ {c₁ s₁ c₂ s₂ c₃ s₃} ->         -- including ⟶
-             ⦅ c₁ , s₁ ⦆ ⟶ ⦅ c₂ , s₂ ⦆ ->
-             ⦅ c₂ , s₂ ⦆ ⟶* ⦅ c₃ , s₃ ⦆ ->
-             ---------------------------
-             ⦅ c₁ , s₁ ⦆ ⟶* ⦅ c₃ , s₃ ⦆
+    ⟶*-incl : ∀ {c₁ s₁ c₂ s₂ c₃ s₃} ->         -- including ⟶
+                ⦅ c₁ , s₁ ⦆ ⟶ ⦅ c₂ , s₂ ⦆ ->
+                ⦅ c₂ , s₂ ⦆ ⟶* ⦅ c₃ , s₃ ⦆ ->
+                ---------------------------
+                ⦅ c₁ , s₁ ⦆ ⟶* ⦅ c₃ , s₃ ⦆
 
 ⟶*-tran : ∀ {c₁ s₁ c₂ s₂ c₃ s₃} ->
           ⦅ c₁ , s₁ ⦆ ⟶* ⦅ c₂ , s₂ ⦆ ->

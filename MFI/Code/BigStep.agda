@@ -14,58 +14,57 @@ open import AexpBexp
 -- Com ∋ c, c' ::= SKIP | x := a | c :: c' | IF b THEN c ELSE c' | WHILE b DO c
 
 data Com : Set where
-  SKIP  : Com                             -- inaction
-  _:=_  : Vname → Aexp → Com              -- assignment
-  _::_  : Com → Com → Com                 -- sequence
-  IF_THEN_ELSE_ : Bexp → Com → Com → Com  -- conditional
-  WHILE_DO_     : Bexp → Com → Com        -- iteration
+    SKIP : Com                               -- inaction
+    _:=_ : Vname -> Aexp -> Com              -- assignment
+    _::_ : Com -> Com -> Com                 -- sequence
+    IF_THEN_ELSE_ : Bexp -> Com -> Com -> Com  -- conditional
+    WHILE_DO_     : Bexp -> Com -> Com         -- iteration
 
 --------------------------
 -- Semantica Operazionale
 --------------------------
 
 data Config : Set where
-    ⦅_,_⦆ : Com → State → Config
+    ⦅_,_⦆ : Com -> State -> Config
 
-data _⇒_ : Config → State → Set  where
-
+data _⇒_ : Config -> State -> Set  where
     Skip : ∀ {s}
          ----------------
-         → ⦅ SKIP , s ⦆ ⇒ s
+         -> ⦅ SKIP , s ⦆ ⇒ s
 
     Loc : ∀{x a s}
         ---------------------------------------
-        → ⦅ x := a , s ⦆ ⇒ (s [ x ::= aval a s ])
+        -> ⦅ x := a , s ⦆ ⇒ (s [ x ::= aval a s ])
 
     Comp : ∀{c₁ c₂ s₁ s₂ s₃}
-         → ⦅ c₁ , s₁ ⦆ ⇒ s₂
-         → ⦅ c₂ , s₂ ⦆ ⇒ s₃
+         -> ⦅ c₁ , s₁ ⦆ ⇒ s₂
+         -> ⦅ c₂ , s₂ ⦆ ⇒ s₃
            --------------------
-         → ⦅ c₁ :: c₂ , s₁ ⦆ ⇒ s₃
+         -> ⦅ c₁ :: c₂ , s₁ ⦆ ⇒ s₃
        
     IfTrue : ∀{c₁ c₂ b s t}
-           → bval b s == true
-           → ⦅ c₁ , s ⦆ ⇒ t
+           -> bval b s == true
+           -> ⦅ c₁ , s ⦆ ⇒ t
              -------------------------------
-           → ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⇒ t
+           -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⇒ t
          
     IfFalse : ∀{c₁ c₂ b s t}
-            → bval b s == false
-            → ⦅ c₂ , s ⦆ ⇒ t
+            -> bval b s == false
+            -> ⦅ c₂ , s ⦆ ⇒ t
               -------------------------------
-            → ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⇒ t
+            -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⇒ t
 
     WhileFalse : ∀{c b s}
-               → bval b s == false
+               -> bval b s == false
                  -----------------------
-               → ⦅ WHILE b DO c , s ⦆ ⇒ s
+               -> ⦅ WHILE b DO c , s ⦆ ⇒ s
              
     WhileTrue  : ∀{c b s₁ s₂ s₃}
-               → bval b s₁ == true
-               → ⦅ c , s₁ ⦆ ⇒ s₂
-               → ⦅ WHILE b DO c , s₂ ⦆ ⇒ s₃
+               -> bval b s₁ == true
+               -> ⦅ c , s₁ ⦆ ⇒ s₂
+               -> ⦅ WHILE b DO c , s₂ ⦆ ⇒ s₃
                  ------------------------
-               → ⦅ WHILE b DO c , s₁ ⦆ ⇒ s₃
+               -> ⦅ WHILE b DO c , s₁ ⦆ ⇒ s₃
 
 infix 10 _⇒_
 
@@ -75,11 +74,12 @@ _=>_ = _⇒_
 lemma-while-true : ∀{c s t} -> ¬ (⦅ WHILE B true DO c , s ⦆ ⇒ t)
 lemma-while-true (WhileTrue x hp₁ hp₂) = lemma-while-true hp₂
 
-
 -- The relationship ⦅ c , s ⦆ ⇒ t is deterministic
 true-neq-false : ¬ (true == false)
 true-neq-false ()
 
+-- We use simultaneus induction on the two derivations and ex-falso to prove
+-- the thesis when it depends on an absurd hypotesis
 theorem-det : ∀{c s t t'} -> ⦅ c , s ⦆ ⇒ t -> ⦅ c , s ⦆ ⇒ t' -> t == t'
 theorem-det Skip Skip = refl
 theorem-det Loc Loc   = refl
@@ -133,3 +133,35 @@ lemma-if-c-c b c {s} {t} = only-if , if
         if hp with lemma-bval-tot b s
         ... | inl x = IfTrue x hp
         ... | inr y = IfFalse y hp
+
+lemma-if-false : ∀ (c₁ c₂ : Com) → IF B false THEN c₁ ELSE c₂ ∼ c₂
+lemma-if-false c₁ c₂ {s} {t} = only-if , if
+    where
+        only-if : ⦅ IF B false THEN c₁ ELSE c₂ , s ⦆ => t -> ⦅ c₂ , s ⦆ => t
+        only-if (IfFalse x hp) = hp
+
+        if : ⦅ c₂ , s ⦆ => t -> ⦅ IF B false THEN c₁ ELSE c₂ , s ⦆ => t
+        if hp = IfFalse refl hp
+
+lemma-while-false-skip : ∀ {c} → WHILE B false DO c ∼ SKIP
+lemma-while-false-skip {c} {s} {t} = only-if , if
+    where
+        only-if : ⦅ WHILE B false DO c , s ⦆ => t -> ⦅ SKIP , s ⦆ => t
+        only-if (WhileFalse x) = Skip
+
+        if : ⦅ SKIP , s ⦆ => t -> ⦅ WHILE B false DO c , s ⦆ => t
+        if Skip = WhileFalse refl
+
+lemma-while-if : ∀ (b : Bexp) (c : Com) -> 
+                 (WHILE b DO c) ∼ (IF b THEN (c :: (WHILE b DO c)) ELSE SKIP)
+lemma-while-if b c {s} {t} = only-if , if
+    where
+        only-if : ⦅ WHILE b DO c , s ⦆ => t -> 
+                  ⦅ IF b THEN c :: (WHILE b DO c) ELSE SKIP , s ⦆ => t
+        only-if (WhileFalse x) = IfFalse x Skip
+        only-if (WhileTrue x hp hp₁) = IfTrue x (Comp hp hp₁)
+
+        if : ⦅ IF b THEN c :: (WHILE b DO c) ELSE SKIP , s ⦆ => t -> 
+             ⦅ WHILE b DO c , s ⦆ => t
+        if (IfTrue x (Comp hp hp₁)) = WhileTrue x hp hp₁
+        if (IfFalse x Skip) = WhileFalse x

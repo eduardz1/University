@@ -30,12 +30,28 @@ _=Vn_ : (x y : Vname) -> Bool
 Vn i =Vn Vn j = i =ℕ j
 
 data Aexp : Set where
-   N : ℕ -> Aexp                  -- numerals
-   V : Vname -> Aexp              -- variables
-   Plus : Aexp -> Aexp -> Aexp    -- sum
+    N : ℕ -> Aexp                  -- numerals
+    V : Vname -> Aexp              -- variables
+    Plus : Aexp -> Aexp -> Aexp    -- sum
+
+aexp0 : Aexp
+aexp0 = Plus (V X) (Plus (N 1) (V Y))
 
 Val = ℕ
 State = Vname -> Val
+
+-- Update function: s [ x ::= v ] where s ∈ State, x ∈ Vname, v ∈ Val
+_[_::=_] : State -> Vname -> Val -> State
+(s [ x ::= v ]) y = if x =Vn y then v else s y
+
+st0 : State
+st0 = λ x -> 0
+
+st1 : State
+st1 = st0 [ X ::= 1 ]
+
+st2 : State
+st2 = st1 [ Y ::= 2 ]  -- equivalently:  st2 = (st0 [ X ::= 1 ]) [ Y ::= 2 ]
 
 -- arithmetic expression interpreter with only the
 -- sum as an operator
@@ -44,9 +60,8 @@ aval (N n) s       = n
 aval (V vn) s      = s vn
 aval (Plus a a₁) s = aval a s + aval a₁ s
 
--- Update function: s [ x ::= v ] where s ∈ State, x ∈ Vname, v ∈ Val
-_[_::=_] : State -> Vname -> Val -> State
-(s [ x ::= v ]) y = if x =Vn y then v else s y
+aval-example1 : Val
+aval-example1 = aval aexp0 st2
 
 -- Sostitution: a [ a' / x ] where a, a' ∈ Aexp, x ∈ Vname is the sostitution of 
 -- a' to x in a
@@ -56,6 +71,9 @@ V y [ a' / x ] = if x =Vn y then a' else V y
 Plus a₁ a₂ [ a' / x ] = Plus (a₁ [ a' / x ]) (a₂ [ a' / x ])
 
 -- Substitution lemma
+-- when we substitute a value for a variable in an arithmetic expression, 
+-- the resulting expression evaluates to the same value as the original 
+-- expression but with the updated value for the variable
 lemma-subst-aexp : ∀(a a' : Aexp) (x : Vname) (s : State) -> 
                    aval (a [ a' / x ]) s == aval a (s [ x ::= aval a' s ])
 lemma-subst-aexp (N n) a' x s = refl
@@ -67,10 +85,10 @@ lemma-subst-aexp (Plus a₁ a₂) a' x s = cong2 _+_ (lemma-subst-aexp a₁ a' x
 
 -- Boolean expressions: Bexp ∋ b, b' ::= B bc | Less a a' | Not b | And b b'
 data Bexp : Set where
-   B : Bool -> Bexp             -- boolean constants
-   Less : Aexp -> Aexp -> Bexp  -- less than
-   Not : Bexp -> Bexp           -- negation
-   And : Bexp -> Bexp -> Bexp   -- conjunction
+    B : Bool -> Bexp             -- boolean constants
+    Less : Aexp -> Aexp -> Bexp  -- less than
+    Not : Bexp -> Bexp           -- negation
+    And : Bexp -> Bexp -> Bexp   -- conjunction
 
 _<ℕ_ : ℕ -> ℕ -> Bool
 zero <ℕ zero     = false
@@ -83,6 +101,18 @@ bval (B c) s        = c
 bval (Less a₁ a₂) s = aval a₁ s <ℕ aval a₂ s
 bval (Not b) s      = not (bval b s)
 bval (And b₁ b₂) s  = bval b₁ s && bval b₂ s
+
+bexp1 : Bexp
+bexp1 = Not (Less (V X) (N 1))       -- not (X < 1)
+
+bexp2 : Bexp
+bexp2 = And bexp1 (Less (N 0) (V Y)) -- (not (X < 1)) && (0 < Y)
+
+st3 : State
+st3 = st2
+
+st4 : State
+st4 = st0
 
 lemma-bval-tot : ∀(b : Bexp) (s : State) ->
                  bval b s == true ∨ bval b s == false
