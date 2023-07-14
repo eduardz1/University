@@ -72,11 +72,11 @@ compile a = comp' a []
 ++-assoc' : ∀{A : Set} (xs ys zs : List A) -> (xs ++ ys) ++ zs == xs ++ (ys ++ zs)
 ++-assoc' xs ys zs = symm (++-assoc xs ys zs)
 
-comp-lemma : ∀(a : Aexp) (p p' : Prog) -> comp' a p ++ p' == comp' a (p ++ p')
-comp-lemma (N x) p p' = refl
-comp-lemma (V x) p p' = refl
-comp-lemma (Plus a a₁) p p' rewrite comp-lemma a₁ (comp' a (ADD :: p)) p'
-                                  | comp-lemma a (ADD :: p) p' = refl
+comp'-assoc : ∀(a : Aexp) (p p' : Prog) -> comp' a p ++ p' == comp' a (p ++ p')
+comp'-assoc (N x) p p' = refl
+comp'-assoc (V x) p p' = refl
+comp'-assoc (Plus a a₁) p p' rewrite comp'-assoc a₁ (comp' a (ADD :: p)) p'
+                                   | comp'-assoc a (ADD :: p) p' = refl
 
 lemma-comp : ∀(a : Aexp) (p : Prog) -> comp a ++ p == comp' a p
 lemma-comp (N x) p = refl
@@ -84,7 +84,7 @@ lemma-comp (V x) p = refl
 lemma-comp (Plus a a₁) p rewrite lemma-comp a (ADD :: []) 
                                | lemma-comp a₁ (comp' a (ADD :: [])) 
                                | symm (lemma-comp a (ADD :: [])) 
-                               | comp-lemma a₁ (comp a ++ ADD :: []) p
+                               | comp'-assoc a₁ (comp a ++ ADD :: []) p
                                | ++-assoc' (comp a) (ADD :: []) p 
                                | lemma-comp a (ADD :: p) = refl
 
