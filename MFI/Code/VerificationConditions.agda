@@ -49,7 +49,7 @@ vc (IF b THEN C₁ ELSE C₂) Q = vc C₁ Q ∧ vc C₂ Q
     pre (WHILE[ I ] b DO C) Q ≡ I
     
                                             vc C I
-                                    ------------------- IH
+                                       ------------------- IH
         I ∧ b == true ==> pre C I      [ pre C I ] C [ I ]
         -------------------------------------------------- H-Str
             [ I ∧ b == true ] C [ I ]

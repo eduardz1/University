@@ -15,7 +15,7 @@ open import BigStep
 
 -- Tripla {P} c {Q} dove P, Q sono asserzioni, ossia predicati dello stato
 -- c ∈ Com e la semantica della tripla consiste nell'affermazione
--- che ogni esecuzione di c a partire da un stotato s t.c. P s (P è vero di s)
+-- che ogni esecuzione di c a partire da un stato s t.c. P s (P è vero di s)
 -- se termina in uno stato t, allora Q t.
 
 -- ^^^ Correttezza parziale

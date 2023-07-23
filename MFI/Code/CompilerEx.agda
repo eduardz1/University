@@ -81,11 +81,11 @@ comp'-assoc (Plus a a₁) p p' rewrite comp'-assoc a₁ (comp' a (ADD :: p)) p'
 lemma-comp : ∀(a : Aexp) (p : Prog) -> comp a ++ p == comp' a p
 lemma-comp (N x) p = refl
 lemma-comp (V x) p = refl
-lemma-comp (Plus a a₁) p rewrite lemma-comp a (ADD :: []) 
-                               | lemma-comp a₁ (comp' a (ADD :: [])) 
-                               | symm (lemma-comp a (ADD :: [])) 
+lemma-comp (Plus a a₁) p rewrite lemma-comp a (ADD :: [])
+                               | lemma-comp a₁ (comp' a (ADD :: []))
+                               | symm (lemma-comp a (ADD :: []))
                                | comp'-assoc a₁ (comp a ++ ADD :: []) p
-                               | ++-assoc' (comp a) (ADD :: []) p 
+                               | ++-assoc' (comp a) (ADD :: []) p
                                | lemma-comp a (ADD :: p) = refl
 
 
@@ -95,7 +95,7 @@ lemma-comp (Plus a a₁) p rewrite lemma-comp a (ADD :: [])
 
 -- Il teorema stabilisce che l'esecuzione mediante un automa a pila
 -- del risultato della compilazione di un'espressione a nello stato s
--- produce una pila il cui unico elemento è aval a s.
+-- a partire dalla pila vuota produce una pila il cui unico elemento è aval a s.
 
 -- Per dimostrare il teorema si dimostri il seguente lemma, che
 -- generalizza l'enunciato del teorema al caso in cui a sia compilato
@@ -106,7 +106,7 @@ Lemma : ∀(a : Aexp) (s : State) (stk : Stack) (p : Prog)
            -> exec (comp' a p) s stk == exec p s ((aval a s) :: stk)
 Lemma (N x) s stk p = refl
 Lemma (V x) s stk p = refl
-Lemma (Plus a a₁) s stk p rewrite Lemma a₁ s stk (comp' a (ADD :: p)) 
+Lemma (Plus a a₁) s stk p rewrite Lemma a₁ s stk (comp' a (ADD :: p))
                                 | Lemma a s (aval a₁ s :: stk) (ADD :: p) = refl
 
 -- A questo punto basta specializzare Lemma al caso in cui p == [] e stk == []

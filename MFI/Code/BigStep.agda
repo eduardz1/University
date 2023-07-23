@@ -27,44 +27,44 @@ data Com : Set where
 data Config : Set where
     ⦅_,_⦆ : Com -> State -> Config
 
-data _⇒_ : Config -> State -> Set  where
+data _⇒_ : Config -> State -> Set where
     Skip : ∀ {s}
-         ----------------
-         -> ⦅ SKIP , s ⦆ ⇒ s
+           -------------------
+           -> ⦅ SKIP , s ⦆ ⇒ s
 
     Loc : ∀{x a s}
-        ---------------------------------------
-        -> ⦅ x := a , s ⦆ ⇒ (s [ x ::= aval a s ])
+          ------------------------------------------
+          -> ⦅ x := a , s ⦆ ⇒ (s [ x ::= aval a s ])
 
     Comp : ∀{c₁ c₂ s₁ s₂ s₃}
-         -> ⦅ c₁ , s₁ ⦆ ⇒ s₂
-         -> ⦅ c₂ , s₂ ⦆ ⇒ s₃
-           --------------------
-         -> ⦅ c₁ :: c₂ , s₁ ⦆ ⇒ s₃
+           -> ⦅ c₁ , s₁ ⦆ ⇒ s₂
+           -> ⦅ c₂ , s₂ ⦆ ⇒ s₃
+           -------------------------
+           -> ⦅ c₁ :: c₂ , s₁ ⦆ ⇒ s₃
        
     IfTrue : ∀{c₁ c₂ b s t}
-           -> bval b s == true
-           -> ⦅ c₁ , s ⦆ ⇒ t
-             -------------------------------
-           -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⇒ t
+             -> bval b s == true
+             -> ⦅ c₁ , s ⦆ ⇒ t
+             -----------------------------------
+             -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⇒ t
          
     IfFalse : ∀{c₁ c₂ b s t}
-            -> bval b s == false
-            -> ⦅ c₂ , s ⦆ ⇒ t
-              -------------------------------
-            -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⇒ t
+              -> bval b s == false
+              -> ⦅ c₂ , s ⦆ ⇒ t
+              -----------------------------------
+              -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⇒ t
 
     WhileFalse : ∀{c b s}
-               -> bval b s == false
-                 -----------------------
-               -> ⦅ WHILE b DO c , s ⦆ ⇒ s
+                 -> bval b s == false
+                 ---------------------------
+                 -> ⦅ WHILE b DO c , s ⦆ ⇒ s
              
     WhileTrue  : ∀{c b s₁ s₂ s₃}
-               -> bval b s₁ == true
-               -> ⦅ c , s₁ ⦆ ⇒ s₂
-               -> ⦅ WHILE b DO c , s₂ ⦆ ⇒ s₃
-                 ------------------------
-               -> ⦅ WHILE b DO c , s₁ ⦆ ⇒ s₃
+                 -> bval b s₁ == true
+                 -> ⦅ c , s₁ ⦆ ⇒ s₂
+                 -> ⦅ WHILE b DO c , s₂ ⦆ ⇒ s₃
+                 -----------------------------
+                 -> ⦅ WHILE b DO c , s₁ ⦆ ⇒ s₃
 
 infix 10 _⇒_
 

@@ -43,7 +43,7 @@ lemma-Hoare-loop-exit (WhileTrue x hp hp₁) = lemma-Hoare-loop-exit hp₁
 
 lemma-Hoare-sound : ∀ {P c Q s t} -> |- [ P ] c [ Q ] -> P s -> ⦅ c , s ⦆ => t -> Q t
 lemma-Hoare-sound H-Skip Ps Skip = Ps
-lemma-Hoare-sound H-Loc Ps Loc   = Ps
+lemma-Hoare-sound H-Loc  Ps Loc  = Ps
 lemma-Hoare-sound (H-Comp ⊢PcQ ⊢PcQ₁) Ps (Comp cs⇒t cs⇒t₁) = lemma-Hoare-sound ⊢PcQ₁ Ps₁ cs⇒t₁
     where
         Ps₁ = lemma-Hoare-sound ⊢PcQ Ps cs⇒t

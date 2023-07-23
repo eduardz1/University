@@ -13,8 +13,8 @@ open import BigStep
 
 data _⟶_ : Config -> Config -> Set where  -- the symbol ⟶ is written \-->
     Loc : ∀{x a s}
-        ------------------------------------------------
-        -> ⦅ x := a , s ⦆ ⟶ ⦅ SKIP , s [ x ::= aval a s ] ⦆
+          --------------------------------------------------
+          -> ⦅ x := a , s ⦆ ⟶ ⦅ SKIP , s [ x ::= aval a s ] ⦆
 
     Comp₁ : ∀{c s}
             -------------------------------
@@ -26,14 +26,14 @@ data _⟶_ : Config -> Config -> Set where  -- the symbol ⟶ is written \-->
             -> ⦅ c₁ :: c₂ , s ⦆ ⟶ ⦅ c₁′ :: c₂ , s′ ⦆
         
     IfTrue  : ∀{b s c₁ c₂}
-            -> bval b s == true
-            -------------------------------------------
-            -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⟶ ⦅ c₁ , s ⦆
+              -> bval b s == true
+              -------------------------------------------
+              -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⟶ ⦅ c₁ , s ⦆
             
     IfFalse : ∀{b s c₁ c₂}
-            -> bval b s == false
-            -------------------------------------------
-            -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⟶ ⦅ c₂ , s ⦆
+              -> bval b s == false
+              -------------------------------------------
+              -> ⦅ IF b THEN c₁ ELSE c₂ , s ⦆ ⟶ ⦅ c₂ , s ⦆
             
     While : ∀{b c s}
             --------------------------------------------------------------------------
@@ -62,7 +62,7 @@ data  _⟶*_ : Config -> Config -> Set where
 
 -- Relationship between big-step and small-step semantics in IMP
 -- ∀ c, s, t . ⦅ c , s ⦆ => t <=> ⦅ c , s ⦆ -->* ⦅ SKIP , t ⦆
- 
+
 ⦅_,_⦆∎ : ∀ c s -> ⦅ c , s ⦆ ⟶* ⦅ c , s ⦆
 ⦅ c , s ⦆∎ = ⟶*-refl
 
