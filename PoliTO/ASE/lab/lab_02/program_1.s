@@ -66,21 +66,21 @@ for_loop:
     l.d     F6,     v6(R11)
     l.d     F7,     v7(R11)
 
-    mul.d   R1,     F1,         F2                      ; R1 = v1[i]*v2[i]
-    add.d   R1,     R1,         F3                      ; R1 = R1 + v3[i]
-    add.d   R1,     R1,         F4                      ; R1 = R1 + v4[i]
-    s.d     R1,     v5(R11)                             ; v5[i] = R1
+    mul.d   F1,     F1,         F2                      ; F1 = v1[i]*v2[i]
+    add.d   F1,     F1,         F3                      ; F1 = F1 + v3[i]
+    add.d   F1,     F1,         F4                      ; F1 = F1 + v4[i]
+    s.d     F1,     v5(R11)                             ; v5[i] = F1
 
-    add.d   R1,     F4,         F1                      ; R1 = v4[i] + v1[i]
-    div.d   R1,     F5,         R1                      ; R1 = v5[i]/R1
-    s.d     R1,     v6(R11)                             ; v6[i] = R1
+    add.d   F1,     F4,         F1                      ; F1 = v4[i] + v1[i]
+    div.d   F1,     F5,         F1                      ; F1 = v5[i]/F1
+    s.d     F1,     v6(R11)                             ; v6[i] = F1
 
-    add.d   R1,     F2,         F3                      ; R1 = v2[i] + v3[i]
-    mul.d   R1,     F6,         R1                      ; R1 = v6[i]*R1
-    s.d     R1,     v7(R11)                             ; v7[i] = R1
+    add.d   F1,     F2,         F3                      ; F1 = v2[i] + v3[i]
+    mul.d   F1,     F6,         F1                      ; F1 = v6[i]*F1
+    s.d     F1,     v7(R11)                             ; v7[i] = F1
 
     daddi   R11,    R11,        -8                      ; i--
     bnez    R11,    for_loop                            ; if i != 0, repeat
 
 end:
-    halt    
+    halt
