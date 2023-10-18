@@ -1,0 +1,30 @@
+plugins {
+    id 'application'
+    id 'java'
+    id 'com.adarshr.test-logger' version '3.2.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+compileJava {
+    sourceCompatibility = '16'
+}
+
+application {
+    mainClass = 'Main'
+}
+
+test {
+    useJUnit()
+}
+
+run { // run task with arguments: -q --console=plain
+    standardInput = System.in
+}
+

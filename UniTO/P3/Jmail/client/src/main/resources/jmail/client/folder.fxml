@@ -1,0 +1,41 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<?import java.net.*?>
+
+<AnchorPane minHeight="480.0" minWidth="91.0"
+    prefHeight="768.0" prefWidth="146.0"
+    xmlns="http://javafx.com/javafx/17.0.2-ea"
+    xmlns:fx="http://javafx.com/fxml/1" fx:id="root">
+    <VBox AnchorPane.leftAnchor="8" AnchorPane.rightAnchor="8"
+        spacing="8.0" style="-fx-padding: 8;" prefHeight="96.0">
+        <Label fx:id="connectionLabel" prefHeight="18.0"
+            prefWidth="165.0" />
+        <Region VBox.vgrow="ALWAYS" />
+        <HBox HBox.hgrow="ALWAYS">
+            <VBox>
+                <Label fx:id="currentUserName" prefHeight="25.0"
+                    prefWidth="132.0" styleClass="f20,fwb" />
+                <Label fx:id="currentUserEmail" prefHeight="25.0"
+                    prefWidth="285.0" styleClass="fc999" />
+            </VBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <VBox>
+                <Region VBox.vgrow="ALWAYS" />
+                <Button fx:id="newMailButton" minWidth="48.0"
+                    mnemonicParsing="false" onAction="#buttonNewMail" prefHeight="48.0"
+                    prefWidth="48.0">
+                    <graphic>
+                        <FontIcon iconColor="#afb1b3"
+                            iconLiteral="mdi2e-email-plus" iconSize="20" />
+                    </graphic>
+                </Button>
+            </VBox>
+        </HBox>
+    </VBox>
+    <HBox AnchorPane.bottomAnchor="8" AnchorPane.leftAnchor="8"
+        AnchorPane.rightAnchor="8" AnchorPane.topAnchor="96">
+        <ListView fx:id="listFolder" HBox.hgrow="ALWAYS" />
+    </HBox>
+</AnchorPane>

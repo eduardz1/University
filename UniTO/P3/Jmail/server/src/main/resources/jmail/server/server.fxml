@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import org.fxmisc.flowless.VirtualizedScrollPane?>
+<?import org.fxmisc.richtext.CodeArea?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+    xmlns="http://javafx.com/javafx"
+    fx:controller="jmail.server.controllers.FXMLMainController">
+    <center>
+        <StackPane layoutX="317.0" layoutY="96.0" prefHeight="176.0"
+            prefWidth="262.0" />
+        <VirtualizedScrollPane>
+            <content>
+                <CodeArea fx:id="codeArea" prefHeight="300.0"
+                    prefWidth="900.0" />
+            </content>
+        </VirtualizedScrollPane>
+    </center>
+</BorderPane>

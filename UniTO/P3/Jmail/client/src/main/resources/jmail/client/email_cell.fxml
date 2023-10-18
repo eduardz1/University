@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+
+<fx:root type="javafx.scene.control.ListCell"
+    xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+    <graphic>
+        <HBox spacing="8.0" styleClass="cell-separator">
+            <children>
+                <Region fx:id="readMarker" minWidth="4.0" prefWidth="4.0"
+                    maxWidth="4.0" />
+                <VBox spacing="8.0" style="-fx-padding: 16 8 16 12;"
+                    HBox.hgrow="ALWAYS">
+                    <children>
+                        <!-- Sender & date -->
+                        <HBox spacing="8.0">
+                            <children>
+                                <Label fx:id="fromLabel" styleClass="f14" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="dateLabel" minWidth="40.0"
+                                    VBox.vgrow="ALWAYS" text="Data" styleClass="f14,fc999" />
+                            </children>
+                        </HBox>
+                        <!-- Subject -->
+                        <Label fx:id="subjectLabel" styleClass="fwb,f16" />
+                        <!-- Body -->
+                        <Label fx:id="bodyLabel" VBox.vgrow="ALWAYS" wrapText="true"
+                            maxHeight="40.0" styleClass="f14" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </graphic>
+</fx:root>

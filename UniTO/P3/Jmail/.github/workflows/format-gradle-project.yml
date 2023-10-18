@@ -1,0 +1,23 @@
+name: Format Gradle Project
+
+on: pull_request
+jobs:
+  format-gradle-project:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: gradle/gradle-build-action@v2
+        with:
+          arguments: spotlessApply
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_options: '--no-verify'
+          commit_user_name: GitHub Actions
+          commit_user_email: github-actions[bot]@users.noreply.github.com
+          commit_author: GitHub Actions <github-actions[bot]@users.noreply.github.com>

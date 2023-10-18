@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import org.kordamp.ikonli.javafx.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+
+<fx:root type="javafx.scene.control.ListCell"
+    xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+    <graphic>
+        <HBox spacing="8.0" styleClass="p8">
+            <Label fx:id="iconLabel" styleClass="f20" />
+            <VBox>
+                <Region VBox.vgrow="ALWAYS" />
+                <Label fx:id="folderLabel" styleClass="f16,fwb" />
+                <Region VBox.vgrow="ALWAYS" />
+            </VBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="counterLabel" styleClass="badge" text="20"
+                visible="false" />
+        </HBox>
+    </graphic>
+</fx:root>

@@ -1,0 +1,30 @@
+<configuration>
+    <appender name="STDOUT"
+        class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="fileAppender"
+        class="ch.qos.logback.core.FileAppender">
+        <file>logs/server.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>"%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36}
+                - %msg%n"</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="streamAppender"
+        class="jmail.lib.logger.ObservableStreamAppender">
+        <!-- <layout> <jmail class="server layout LogLayout"></jmail> </layout> -->
+    </appender>
+
+    <root level="TRACE">
+        <appender-ref ref="fileAppender" />
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="streamAppender" />
+    </root>
+</configuration>

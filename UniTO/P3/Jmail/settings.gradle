@@ -1,0 +1,32 @@
+pluginManagement {
+    plugins {
+        id 'io.freefair.lombok' version '6.6.1'
+        id 'com.diffplug.spotless' version '6.13.0'
+        id 'org.openjfx.javafxplugin' version '0.0.13'
+    }
+}
+
+plugins {
+    id("com.gradle.enterprise") version("3.9")
+}
+
+gradleEnterprise {
+    if (System.getenv("CI") != null) {
+        buildScan {
+            publishAlways()
+            termsOfServiceUrl = "https://gradle.com/terms-of-service"
+            termsOfServiceAgree = "yes"
+        }
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven { url "https://jitpack.io" } // allows usage of non-published git repos
+    }
+}
+
+rootProject.name = 'jmail'
+include 'client', 'server', 'lib'

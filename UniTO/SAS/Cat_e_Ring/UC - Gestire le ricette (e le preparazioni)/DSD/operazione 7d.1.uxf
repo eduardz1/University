@@ -1,0 +1,151 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;1104&lt;/x&gt;&lt;y&gt;540&lt;/y&gt;&lt;w&gt;170&lt;/w&gt;&lt;h&gt;60&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=-&amp;gt;&amp;gt;&amp;gt;
+this.published=false&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;10;50;10;50;40;10;40&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;788&lt;/x&gt;&lt;y&gt;310&lt;/y&gt;&lt;w&gt;280&lt;/w&gt;&lt;h&gt;40&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=-&amp;gt;&amp;gt;&amp;gt;
+create(name, isRicetta)&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;20;260;20&lt;/additional_attributes&gt;&lt;/element&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;1090&lt;/x&gt;&lt;y&gt;330&lt;/y&gt;&lt;w&gt;30&lt;/w&gt;&lt;h&gt;170&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=.&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;10;10;150&lt;/additional_attributes&gt;&lt;/element&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;1104&lt;/x&gt;&lt;y&gt;360&lt;/y&gt;&lt;w&gt;160&lt;/w&gt;&lt;h&gt;60&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=-&amp;gt;&amp;gt;&amp;gt;
+this.name=name&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;10;50;10;50;40;10;40&lt;/additional_attributes&gt;&lt;/element&gt;&lt;element&gt;&lt;id&gt;UMLGeneric&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;1090&lt;/x&gt;&lt;y&gt;360&lt;/y&gt;&lt;w&gt;20&lt;/w&gt;&lt;h&gt;110&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;1104&lt;/x&gt;&lt;y&gt;410&lt;/y&gt;&lt;w&gt;170&lt;/w&gt;&lt;h&gt;60&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=-&amp;gt;&amp;gt;&amp;gt;
+this.published=false&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;10;50;10;50;40;10;40&lt;/additional_attributes&gt;&lt;/element&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;798&lt;/x&gt;&lt;y&gt;450&lt;/y&gt;&lt;w&gt;310&lt;/w&gt;&lt;h&gt;40&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=&amp;lt;.
+Pro&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;20;290;20&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;1104&lt;/x&gt;&lt;y&gt;370&lt;/y&gt;&lt;w&gt;160&lt;/w&gt;&lt;h&gt;60&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=-&amp;gt;&amp;gt;&amp;gt;
+this.name=name&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;10;50;10;50;40;10;40&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;560&lt;/x&gt;&lt;y&gt;550&lt;/y&gt;&lt;w&gt;310&lt;/w&gt;&lt;h&gt;60&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=-&amp;gt;&amp;gt;&amp;gt;
+notifyIngredientAdded(currentProcedure)&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;10;70;10;70;40;20;40&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;410&lt;/x&gt;&lt;y&gt;320&lt;/y&gt;&lt;w&gt;390&lt;/w&gt;&lt;h&gt;40&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=-&amp;gt;&amp;gt;&amp;gt;
+extrapolateProcedure(name, isRicetta)&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;20;370;20&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;640&lt;/x&gt;&lt;y&gt;200&lt;/y&gt;&lt;w&gt;300&lt;/w&gt;&lt;h&gt;30&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;ProMgr.currentProcedure: Procedure&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLFrame&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;130&lt;/x&gt;&lt;y&gt;150&lt;/y&gt;&lt;w&gt;1410&lt;/w&gt;&lt;h&gt;810&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;ALT [ProMgr.currentProcedure != null]
+fg=#4CAF50
+lw=2
+--
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-.&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;Space for diagram notes&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;560&lt;/x&gt;&lt;y&gt;520&lt;/y&gt;&lt;w&gt;490&lt;/w&gt;&lt;h&gt;40&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=&amp;lt;.
+&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;20;470;20&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;</help_text><element><id>UMLPackage</id><coordinates><x>200</x><y>0</y><w>60</w><h>60</h></coordinates><panel_attributes>UI
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>50</y><w>30</w><h>970</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;950;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>550</x><y>20</y><w>160</w><h>40</h></coordinates><panel_attributes>proMgr:
+ProcedureManager</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>50</y><w>30</w><h>970</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;950;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>610</x><y>90</y><w>20</w><h>890</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>70</y><w>410</w><h>40</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+extrapolateProcedure(name, isRicetta)</panel_attributes><additional_attributes>10;20;390;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>20</y><w>180</w><h>40</h></coordinates><panel_attributes>proMgr.currentProcedure:
+Procedure</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>990</x><y>50</y><w>30</w><h>580</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;560;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>990</x><y>150</y><w>20</w><h>460</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>130</y><w>390</w><h>40</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+extrapolateProcedure(name, isRicetta)</panel_attributes><additional_attributes>10;20;370;20</additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>590</y><w>390</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+pro</panel_attributes><additional_attributes>10;20;370;20</additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>900</y><w>410</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+pro</panel_attributes><additional_attributes>10;20;390;20</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>0</x><y>110</y><w>1740</w><h>890</h></coordinates><panel_attributes>ALT [proMgr.currentProcedure != null]
+fg=#4CAF50
+lw=2
+--
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-.</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>750</y><w>220</w><h>50</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+notifyProcedureAdded(pro)</panel_attributes><additional_attributes>10;10;60;10;60;30;20;30</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>620</x><y>780</y><w>20</w><h>100</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>810</y><w>1090</w><h>40</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+updateProcedureAdded(pro)</panel_attributes><additional_attributes>10;20;1070;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1310</x><y>220</y><w>20</w><h>130</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLFrame</id><coordinates><x>370</x><y>790</y><w>1360</w><h>80</h></coordinates><panel_attributes>LOOP [for all er in eventReceivers]
+fg=#fcdc00
+lw=2</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>960</y><w>410</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+throw UseCaseLogicException</panel_attributes><additional_attributes>10;20;390;20</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>840</x><y>160</y><w>650</w><h>410</h></coordinates><panel_attributes>ALT [isRicetta==true]
+fg=#4CAF50
+lw=2
+--
+
+
+
+
+
+
+
+
+
+
+
+
+-.</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1270</x><y>190</y><w>100</w><h>30</h></coordinates><panel_attributes>Pro: Recipe</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>170</y><w>290</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
+create(owner, name)</panel_attributes><additional_attributes>10;20;270;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1310</x><y>210</y><w>30</w><h>160</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>1320</x><y>220</y><w>150</w><h>60</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+this.name=name</panel_attributes><additional_attributes>10;10;40;10;40;40;10;40</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>330</y><w>330</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+pro</panel_attributes><additional_attributes>12;20;310;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>380</y><w>270</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
+create(owner, name)</panel_attributes><additional_attributes>10;20;250;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1300</x><y>420</y><w>30</w><h>160</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>1310</x><y>430</y><w>150</w><h>60</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+this.name=name</panel_attributes><additional_attributes>10;10;40;10;40;40;10;40</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1300</x><y>430</y><w>20</w><h>130</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1310</x><y>470</y><w>160</w><h>60</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+this.published=false</panel_attributes><additional_attributes>10;10;40;10;40;40;10;40</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>540</y><w>320</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+pro</panel_attributes><additional_attributes>10;20;300;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1320</x><y>260</y><w>160</w><h>60</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+this.published=false</panel_attributes><additional_attributes>10;10;40;10;40;40;10;40</additional_attributes></element><element><id>Relation</id><coordinates><x>1320</x><y>300</y><w>150</w><h>60</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+this.owner=owner</panel_attributes><additional_attributes>10;10;40;10;40;40;10;40</additional_attributes></element><element><id>UMLNote</id><coordinates><x>1130</x><y>120</y><w>140</w><h>30</h></coordinates><panel_attributes>owner=this.owner
+fg=#9900EF</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1250</x><y>400</y><w>120</w><h>30</h></coordinates><panel_attributes>Pro: Preparation</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1310</x><y>510</y><w>150</w><h>60</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+this.owner=owner</panel_attributes><additional_attributes>10;10;40;10;40;40;10;40</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1440</x><y>20</y><w>150</w><h>40</h></coordinates><panel_attributes>pb:
+ProcedureBook</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1510</x><y>50</y><w>30</w><h>590</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;570;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>580</y><w>530</w><h>40</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+addProcedure(Pro)</panel_attributes><additional_attributes>10;20;510;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1510</x><y>600</y><w>20</w><h>20</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1610</x><y>20</y><w>200</w><h>40</h></coordinates><panel_attributes>er: ProcedureEventReceiver: 
+Procedure</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1700</x><y>830</y><w>20</w><h>20</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1700</x><y>50</y><w>30</w><h>820</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;800;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>630</y><w>290</w><h>60</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+setOldProcedure(this.currentProcedure)</panel_attributes><additional_attributes>10;10;60;10;60;40;20;40</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>620</x><y>670</y><w>20</w><h>20</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>690</y><w>220</w><h>60</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+setCurrentProcedure(pro)</panel_attributes><additional_attributes>10;10;60;10;60;40;20;40</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>620</x><y>730</y><w>20</w><h>20</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element></diagram>

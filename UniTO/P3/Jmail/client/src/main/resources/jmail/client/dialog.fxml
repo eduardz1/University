@@ -1,0 +1,25 @@
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<DialogPane xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml" prefWidth="400"
+    style="-fx-background: #333">
+
+    <content>
+        <VBox spacing="16.0" style="-fx-padding: 24;">
+            <HBox spacing="12.0">
+                <Label fx:id="icon" styleClass="f20" />
+                <Label fx:id="titleLabel" text="Email inviata con successo"
+                    styleClass="f20" />
+            </HBox>
+            <Label fx:id="messageLabel" text="Messaggione molto lungo"
+                wrapText="true" styleClass="f16" />
+        </VBox>
+    </content>
+
+    <!-- <buttonTypes> <ButtonType fx:id="noBtn" text="No" buttonData="CANCEL_CLOSE" 
+        /> <ButtonType fx:id="okBtn" text="Yes" buttonData="OK_DONE" /> </buttonTypes> -->
+
+</DialogPane>

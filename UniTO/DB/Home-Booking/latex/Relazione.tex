@@ -1,0 +1,149 @@
+\documentclass[letterpaper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{csvsimple}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{makecell}
+% \usepackage{multirow}
+% \usepackage{array, makecell}
+\usepackage{adjustbox}
+% \usepackage{showframe}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{listingsutf8}
+\usepackage{enumitem} % noitemsep in lists
+
+\usepackage{contour} % used to make better underlining
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% \usepackage{pstricks}
+% \usepackage{auto-pst-pdf}
+% \usepackage{pstricks-add}
+% \usepackage{pst-eps}
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\renewcommand{\ULdepth}{1.8pt} % underline depth
+\contourlength{0.8pt}
+
+\newcommand{\myuline}[1]{% better underline
+  \uline{\phantom{#1}}%
+  \llap{\contour{white}{#1}}%
+}
+
+\definecolor{mygreen}{RGB}{154,255,77}
+\definecolor{mygray}{gray}{0.5}
+\definecolor{mylightgray}{gray}{0.95}
+\definecolor{myblue}{RGB}{41,141,255}
+\definecolor{myteal}{RGB}{0,150,136}
+
+\lstset{
+    language=SQL,
+    backgroundcolor=\color{mylightgray},
+    basicstyle=\scriptsize\ttfamily,
+    keywordstyle=\color{myblue},
+    commentstyle=\color{mygray},
+    numberstyle=\color{mygreen},
+    stringstyle=\color{myteal},
+    numbers=left,
+    numberstyle=\tiny\color{mygray},
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    tabsize=2,
+    literate={{–}{\textendash}2
+              {—}{\textemdash}2},
+    inputencoding = utf8/latin1,  % Input encoding
+    extendedchars = true,  % Extended ASCII
+}
+
+\title{
+    \leavevmode{\includegraphics[width=0.8\textwidth]{resources/Universita-degli-studi-di-torino-logo.png}\newline\newline}\\
+    Progetto di Piattaforma di Home Booking \\
+    \large Laboratorio Basi di Dati 2021/2022
+}
+\author{Eduard Antonovic Occhipinti, Iman Solaih, Marco Molica}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Progettazione Concettuale}
+\section{Requisiti Iniziali}
+\input{Requisiti_iniziali.tex}
+
+\section{Glossario dei Termini}
+\input{Glossario.tex}
+\newpage
+
+\section{Requisiti rivisti e strutturati in gruppi di frasi omogenee}
+\input{Requisiti_rivisti_e_strutturati_in_gruppi_di_frasi_omogenee.tex}
+
+\newpage
+\section{Schema E-R + Business Rules}
+\includegraphics[width=\textwidth]{resources/pdf/ER.pdf}
+
+\chapter{Progettazione Logica}
+\section{Tavola dei Volumi}
+\input{Tavola_volumi.tex}
+
+
+\section{Tavola delle Operazioni}
+\input{Tavola_operazioni.tex}
+
+
+\section{Ristrutturazione dello schema E-R}
+\input{Ristrutturazione_er.tex}
+
+% \subsection{Analisi delle Ridondanze}
+% \subsection{Eliminazione delle Generalizzazioni}
+% \subsection{Partizionamento/Accorpamento di entità e associazioni}
+% \subsection{Eventuale scelta degli identificatori principali}
+
+\section{Schema E-R ristrutturato + Business Rules}
+\includegraphics[width=\textwidth]{resources/pdf/ER-Ristrutturato.pdf}
+\clearpage
+\input{Business_rules.tex}
+
+\clearpage
+\section{Schema Relazionale}
+\input{Schema_relazionale.tex}
+
+\chapter{Implementazione}
+
+Riportiamo in seguito alcune query significative per il nostro database
+
+\section{DDL di Creazione dei Database}
+\lstinputlisting{../sql/DDL/db_init.sql}
+\clearpage
+\lstinputlisting{../sql/DDL/1.sql}
+\lstinputlisting{../sql/DDL/2.sql}
+\lstinputlisting{../sql/DDL/3.sql}
+\clearpage
+\lstinputlisting{../sql/DDL/4.sql}
+\lstinputlisting{../sql/DDL/5.sql}
+\clearpage
+\lstinputlisting{../sql/DDL/6.sql}
+\clearpage
+\lstinputlisting{../sql/DDL/7.sql}
+\lstinputlisting{../sql/DDL/8.sql}
+\lstinputlisting{../sql/DDL/9.sql}
+\lstinputlisting{../sql/DDL/10.sql}
+\lstinputlisting{../sql/DDL/11.sql}
+
+\clearpage
+\section{DML di Popolamento di Tutte le Tabelle del Database}
+\lstinputlisting{../sql/DML/dummy_data.sql}
+
+\clearpage
+\section{Qualche Operazione di cancellazione e modifica}
+\lstinputlisting{../sql/DML/crud_data.sql}
+
+\subsection{Qualche operazione di sistema}
+\lstinputlisting{../sql/DML/operation.sql}
+
+\end{document}

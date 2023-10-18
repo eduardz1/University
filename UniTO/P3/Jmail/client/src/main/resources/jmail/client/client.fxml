@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import jmail.client.controllers.FXMLEmailController?>
+<?import jmail.client.controllers.FXMLFolderController?>
+<?import jmail.client.controllers.FXMLListEmailController?>
+<SplitPane minHeight="480.0" minWidth="640.0"
+    prefHeight="768.0" prefWidth="1024.0" snapToPixel="false"
+    xmlns="http://javafx.com/javafx/17.0.2-ea"
+    xmlns:fx="http://javafx.com/fxml/1" fx:id="root"
+    fx:controller="jmail.client.controllers.FXMLController">
+    <FXMLFolderController fx:id="folderController" />
+    <FXMLListEmailController
+        fx:id="listEmailController" />
+    <FXMLEmailController fx:id="emailController" />
+</SplitPane>

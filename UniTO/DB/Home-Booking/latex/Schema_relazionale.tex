@@ -1,0 +1,44 @@
+\begin{itemize}
+      \item Utente(\myuline{Email}, Nome, Cognome, Password, Host, Superhost, Verificato, Carta di identità)
+      \item Telefono(\myuline{Utente}, \myuline{Numero}, Prefisso)
+      \item Pagamento(\myuline{Utente}, \myuline{Numero}, Circuito)
+      \item Alloggio(\myuline{ID Alloggio}, Nome, Host, Descrizione, Tipologia, Orario check-in, Orario check-out, Costo, Costo pulizia, Posti letto, CAP, Comune, Civico, Via)
+            \setlist{nolistsep}
+            \begin{itemize}[noitemsep]
+                  \item Alloggio(Host) \textbf{referenzia} Utente(Email)
+            \end{itemize}
+      \item Foto(\myuline{Path}, \myuline{Alloggio})
+            \setlist{nolistsep}
+            \begin{itemize}[noitemsep]
+                  \item Alloggio(Foto) \textbf{referenzia} Alloggio(ID Alloggio)
+            \end{itemize}
+      \item Prenotazione(\myuline{ID Prenotazione}, Richiedente, ID Alloggio, Data inizio, Data fine, Soggiorno, Stato, Numero ospiti)
+            \setlist{nolistsep}
+            \begin{itemize}[noitemsep]
+                  \item Prenotazione(ID Alloggio) \textbf{referenzia} Alloggio(ID Alloggio)
+                  \item Prenotazione(Richiedente) \textbf{referenzia} Utente(Email)
+            \end{itemize}
+      \item Recensione(\myuline{ID Recensione}, Autore, ID Prenotazione, Data, Categoria, Valutazione posizione, Valutazione pulizia, Valutazione qualità-prezzo, Valutazione comunicazione, Corpo)
+            \setlist{nolistsep}      
+            \begin{itemize}[noitemsep]
+                  \item Recensione(Autore) \textbf{referenzia} Utente(Email)
+                  \item Recensione(ID Prenotazione) \textbf{referenzia} Prenotazione(ID Prenotazione)
+            \end{itemize}
+      \item Commento(\myuline{ID Commento}, Data, ID Recensione, Autore, Corpo)
+            \setlist{nolistsep}      
+            \begin{itemize}[noitemsep]
+                  \item Commento(Autore) \textbf{referenzia} Utente(Email)
+                  \item Commento(ID Recensione) \textbf{referenzia} Recensione(ID Recensione)
+            \end{itemize}
+      \item Lista(\myuline{ID Lista}, Nome, Descrizione, Autore)
+            \setlist{nolistsep}      
+            \begin{itemize}[noitemsep]
+                  \item Lista(Autore) \textbf{referenzia} Utente(Email)
+            \end{itemize}
+      \item Contenuto(\myuline{ID Lista}, \myuline{ID Alloggio})
+            \setlist{nolistsep}      
+            \begin{itemize}[noitemsep]
+                  \item Contenuto(ID Lista) \textbf{referenzia} Lista(ID Lista)
+                  \item Contenuto(ID Alloggio) \textbf{referenzia} Alloggio(ID Alloggio)
+            \end{itemize}
+\end{itemize}

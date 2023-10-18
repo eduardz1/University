@@ -1,0 +1,87 @@
+.f14 {
+  -fx-font-size: 14px;
+}
+
+.f15 {
+  -fx-font-size: 15px;
+}
+
+.f16 {
+  -fx-font-size: 16px;
+}
+
+.f20 {
+  -fx-font-size: 20px;
+}
+
+.fwb {
+  -fx-font-weight: bold;
+}
+
+.fc666 {
+  -fx-text-fill: #666;
+}
+
+.fc999 {
+  -fx-text-fill: #999;
+}
+
+.cell-separator {
+  -fx-border-color: #444;
+  -fx-border-width: 0 0 1 0;
+}
+
+.badge {
+  -fx-hgap: 20px;
+  -fx-padding: 8px;
+  -fx-background-color: teal;
+  -fx-background-radius: 50px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #fff;
+  -fx-border-insets: 4px;
+}
+
+.p8 {
+  -fx-padding: 8px;
+}
+
+.br1 {
+  -fx-border-width: 1px;
+  -fx-border-color: red;
+}
+
+.bb1 {
+  -fx-border-width: 1px;
+  -fx-border-color: blue;
+}
+
+.bg1 {
+  -fx-border-width: 1px;
+  -fx-border-color: green;
+}
+
+.button {
+  -fx-pref-width: 48px;
+  -fx-pref-height: 24px;
+}
+
+.scrollpane {
+  -fx-border-color: #4e4e4e;
+  -fx-border-insets: 0 0 -1 0;
+  -fx-border-width: 0;
+  -fx-background-insets: 10;
+}
+
+.scrollpane:focused {
+  -fx-border-width: 1;
+}
+
+.scrollpane:hover {
+  -fx-border-width: 1;
+}
+
+.radius {
+  -fx-background-radius: 13;
+  -fx-border-radius: 13;
+  -fx-background-color: transparent;
+}

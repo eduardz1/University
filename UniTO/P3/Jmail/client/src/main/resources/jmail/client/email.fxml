@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import javafx.scene.image.ImageView?>
+
+<AnchorPane fx:id="root" minHeight="480.0" minWidth="274.0"
+    prefHeight="768.0" prefWidth="439.0"
+    xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <AnchorPane fx:id="emailPane">
+        <children>
+            <VBox fx:id="topPane" prefHeight="96.0" style="-fx-padding: 8;">
+                <Region VBox.vgrow="ALWAYS" />
+                <HBox spacing="8.0">
+                    <children>
+                        <Button fx:id="backButton" layoutX="14.0"
+                            mnemonicParsing="false" onAction="#buttonBack"
+                            styleClass="button">
+                            <graphic>
+                                <FontIcon iconColor="#afb1b3"
+                                    iconLiteral="mdi2k-keyboard-backspace" iconSize="20" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="replyButton" layoutY="14.0"
+                            mnemonicParsing="false" onAction="#buttonReply"
+                            styleClass="button">
+                            <graphic>
+                                <FontIcon iconColor="#afb1b3" iconLiteral="mdi2r-reply"
+                                    iconSize="20" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="replyAllButton" layoutY="14.0"
+                            mnemonicParsing="false" onAction="#buttonReplyAll"
+                            styleClass="button">
+                            <graphic>
+                                <FontIcon iconColor="#afb1b3"
+                                    iconLiteral="mdi2r-reply-all" iconSize="20" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="forwardButton" layoutY="14.0"
+                            mnemonicParsing="false" onAction="#buttonFwd" styleClass="button">
+                            <graphic>
+                                <FontIcon iconColor="#afb1b3" iconLiteral="mdi2s-share"
+                                    iconSize="20" />
+                            </graphic>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="trashButton" accessibleHelp="trash"
+                            accessibleText="trash" graphicTextGap="0.0"
+                            mnemonicParsing="false" onAction="#buttonTrash"
+                            styleClass="button">
+                            <graphic>
+                                <FontIcon iconColor="#afb1b3"
+                                    iconLiteral="mdi2d-delete" iconSize="20" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="sendButton" accessibleHelp="send"
+                            accessibleText="send" graphicTextGap="0.0"
+                            mnemonicParsing="false" onAction="#buttonSend"
+                            styleClass="button">
+                            <graphic>
+                                <FontIcon iconColor="#afb1b3" iconLiteral="mdi2s-send"
+                                    iconSize="20" />
+                            </graphic>
+                        </Button>
+                    </children>
+                </HBox>
+            </VBox>
+        </children>
+        <ScrollPane fx:id="bottomPane" fitToWidth="true"
+            hbarPolicy="NEVER" AnchorPane.leftAnchor="8.0"
+            AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="96.0"
+            styleClass="scrollpane,radius">
+            <content>
+                <AnchorPane fx:id="scrollContentPane" styleClass="radius">
+                    <VBox fx:id="editPane" spacing="16.0"
+                        AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="32.0"
+                        AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="32.0">
+                        <children>
+                            <HBox spacing="16.0">
+                                <children>
+                                    <VBox>
+                                        <!-- Region helps to center label -->
+                                        <Region VBox.vgrow="ALWAYS" />
+                                        <Label text="Recipients" minWidth="96.0"
+                                            styleClass="fwb,f15,fc666">
+                                        </Label>
+                                        <Region VBox.vgrow="ALWAYS" />
+                                    </VBox>
+                                    <TextField fx:id="recipientsField"
+                                        HBox.hgrow="ALWAYS" promptText="..;.." minHeight="54.0"
+                                        styleClass="f15" />
+                                </children>
+                            </HBox>
+                            <HBox spacing="16.0">
+                                <children>
+                                    <VBox>
+                                        <!-- Region helps to center label -->
+                                        <Region VBox.vgrow="ALWAYS" />
+                                        <Label text="Subject" minWidth="96.0"
+                                            styleClass="f15,fwb,fc666" />
+                                        <Region VBox.vgrow="ALWAYS" />
+                                    </VBox>
+                                    <TextField fx:id="subjectField" HBox.hgrow="ALWAYS"
+                                        promptText=".." minHeight="54.0" styleClass="f15" />
+                                </children>
+                            </HBox>
+                            <TextArea fx:id="bodyField" VBox.vgrow="ALWAYS"
+                                promptText="Corpo" wrapText="true" styleClass="f15" />
+                        </children>
+                    </VBox>
+                    <VBox fx:id="viewPane" spacing="16.0"
+                        AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="32.0"
+                        AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="32.0">
+                        <children>
+                            <HBox>
+                                <children>
+                                    <VBox spacing="16.0" HBox.hgrow="ALWAYS">
+                                        <HBox spacing="8.0">
+                                            <children>
+                                                <Label text="From:" minWidth="40.0"
+                                                    styleClass="fwb,f15" />
+                                                <Label fx:id="fromLabel" styleClass="f15" />
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <Label fx:id="dateLabel" minWidth="40.0"
+                                                    VBox.vgrow="ALWAYS" text="Data" styleClass="fc999,f15" />
+                                            </children>
+                                        </HBox>
+                                        <HBox spacing="8.0">
+                                            <children>
+                                                <Label text="To:" minWidth="40.0" styleClass="fwb,f15" />
+                                                <Label fx:id="toLabel" styleClass="f15" />
+                                            </children>
+                                        </HBox>
+                                    </VBox>
+
+                                </children>
+                            </HBox>
+                            <Label fx:id="subjectLabel" wrapText="true"
+                                styleClass="fwb,f20" />
+                            <Label fx:id="bodyLabel" VBox.vgrow="ALWAYS"
+                                wrapText="true" styleClass="f16" />
+                        </children>
+                    </VBox>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </AnchorPane>
+    <BorderPane fx:id="logoPane" AnchorPane.bottomAnchor="16.0"
+        AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0"
+        AnchorPane.topAnchor="16.0" />
+</AnchorPane>

@@ -1,0 +1,168 @@
+<div class="container questions-body">
+  <div class="d-flex justify-content-center align-items-center">
+    <h1 class="my-auto text-danger fw-bold">
+      {{ "Questionario esami sas" | uppercase }}
+    </h1>
+  </div>
+  <div></div>
+  <ol class="mx-auto my-2">
+    <li *ngFor="let examRow of exam; let index = index">
+      <hr />
+      <div>
+        <div class="question-title">{{ "Domanda #" + (index + 1) }}</div>
+        <div class="question">{{ examRow.question.question }}</div>
+        <div
+          class="d-flex justify-content-center align-items-center"
+          *ngIf="examRow.question.imgName"
+        >
+          <img
+            class="img-fluid"
+            [src]="'../assets/img/questions/' + examRow.question.imgName"
+            [alt]="examRow.question.imgName"
+          />
+        </div>
+        <div *ngIf="examRow.question.subQuestion">
+          {{ examRow.question.subQuestion }}
+        </div>
+      </div>
+      <div>
+        <div class="d-flex justify-content-start align-items-center">
+          <div>
+            <select class="my-2" (change)="selectOption($event, examRow)">
+              <option value="">Seleziona un valore</option>
+              <option
+                [value]="option"
+                *ngFor="let option of examRow.question.options"
+              >
+                {{ option | uppercase }}
+              </option>
+            </select>
+          </div>
+          <div class="live-review" *ngIf="liveReview">
+            <div
+              class="text-success d-flex justify-content-center align-items-center"
+              *ngIf="examRow.showCheckValidity.success"
+            >
+              <div>
+                <img
+                  class="mx-3"
+                  src="../assets/img/icon/thumb_up.png"
+                  height="24"
+                  alt="thumb_up"
+                />
+              </div>
+              <div class="fw-bold mx-2">CORRETTO !</div>
+            </div>
+            <div
+              class="text-danger d-flex justify-content-center align-items-center"
+              *ngIf="examRow.showCheckValidity.error"
+            >
+              <div>
+                <img
+                  class="mx-3"
+                  src="../assets/img/icon/thumb_down.png"
+                  height="24"
+                  alt="thumb_down"
+                />
+              </div>
+              <div class="fw-bold mx-2">ERRORE ! Riprova</div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="answers-reason d-flex flex-column justify-content-center align-items-start px-3"
+          [ngClass]="{
+            'alert-success':examRow.showCheckValidity.success,
+            'alert-danger':examRow.showCheckValidity.error
+          }"
+          *ngIf="
+            examRow.question.answer_reason &&
+            (examRow.showCheckValidity.success ||
+              examRow.showCheckValidity.error)
+          "
+        >
+          <div>
+            <h4 class="my-auto fw-bold">Motivo:</h4>
+          </div>
+          <div>
+            {{ examRow.question.answer_reason }}
+          </div>
+        </div>
+      </div>
+    </li>
+  </ol>
+</div>
+<div class="container fixed-bottom">
+  <div class="mb-3 w-100 bg-dark">
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="col-md-4 text-white">
+        <div class="text-end w-100 px-3 py-2" *ngIf="showPoints">
+          <span class="fw-bold me-3 my-2">Punteggio:</span>
+          <span class="my-2">{{
+            scorePoint + "/ " + this.questions.length
+          }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="col-md-6 col-sm-5">
+        <div class="d-flex px-3 py-2 justify-content-start align-items-center">
+          <div
+            class="d-flex flex-column align-items-start justify-content-between"
+          >
+            <mat-slide-toggle
+              color="success"
+              [(ngModel)]="showPoints"
+              (toggleChange)="showPoints = !showPoints"
+              class="d-flex justify-content-center align-items-center mx-3 my-1"
+            >
+              <div class="d-flex justify-content-center align-items-center">
+                <span class="text-white my-auto mx-2"> Punteggio Totale </span>
+                <span
+                  class="fw-bold"
+                  [ngClass]="{
+                    'text-success': showPoints,
+                    'text-danger': !showPoints
+                  }"
+                >
+                  {{ showPoints ? "ON" : "FALSE" }}</span
+                >
+              </div>
+            </mat-slide-toggle>
+            <mat-slide-toggle
+              color="success"
+              [(ngModel)]="liveReview"
+              (toggleChange)="liveReview = !liveReview"
+              class="d-flex justify-content-center align-items-center mx-3"
+            >
+              <span class="text-white my-auto mx-2"> Correzione LIVE </span>
+              <span
+                class="fw-bold"
+                [ngClass]="{
+                  'text-success': liveReview,
+                  'text-danger': !liveReview
+                }"
+              >
+                {{ liveReview ? "ON" : "FALSE" }}</span
+              >
+            </mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-5 text-white">
+        <div class="w-100 d-flex justify-content-center">
+          <button
+            class="mx-2"
+            (click)="resetExam()"
+            mat-fab
+            color="primary"
+            aria-label="Example icon button with a delete icon"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

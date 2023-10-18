@@ -1,0 +1,35 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<?import java.net.*?>
+
+<AnchorPane minHeight="480.0" minWidth="274.0"
+    prefHeight="768.0" prefWidth="439.0"
+    xmlns="http://javafx.com/javafx/17.0.2-ea"
+    xmlns:fx="http://javafx.com/fxml/1" fx:id="root">
+    <VBox AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="0.0"
+        AnchorPane.rightAnchor="8.0" prefHeight="96.0" style="-fx-padding: 8;"
+        spacing="8.0">
+        <Label fx:id="currentFolder" styleClass="f20, fwb"
+            style="-fx-padding: 8 0 0 8;" />
+        <Region VBox.vgrow="ALWAYS" />
+        <HBox spacing="8.0">
+            <TextField fx:id="searchField" minHeight="24.0"
+                prefHeight="24.0" HBox.hgrow="ALWAYS" promptText="search" />
+            <Button fx:id="searchButton" minWidth="48.0"
+                mnemonicParsing="false" onAction="#buttonSearch" prefHeight="48.0"
+                prefWidth="48.0">
+                <graphic>
+                    <FontIcon iconColor="#afb1b3" iconLiteral="mdi2m-magnify"
+                        iconSize="20" />
+                </graphic>
+            </Button>
+        </HBox>
+    </VBox>
+    <HBox AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="96.0"
+        AnchorPane.rightAnchor="8.0" AnchorPane.bottomAnchor="8.0">
+        <ListView fx:id="listEmails" HBox.hgrow="ALWAYS" />
+    </HBox>
+
+</AnchorPane>

@@ -1,0 +1,78 @@
+plugins {
+    id 'application'
+    id 'io.freefair.lombok'
+    id "com.diffplug.spotless"
+    id 'org.openjfx.javafxplugin'
+}
+
+version = '30.0.1'
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    implementation 'com.google.guava:guava:31.1-jre'
+
+    implementation group: 'ch.qos.logback', name: 'logback-core', version: '1.4.5'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.5'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.6'
+
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
+
+    implementation('org.fxmisc.richtext:richtextfx:0.11.0') {
+        because 'syntax highlighting of logs'
+    }
+
+    implementation('com.github.eduardz1:custom_window:50747b0328') {
+        because 'customization of Windows 11 window, no effect on other OS'
+    }
+
+    implementation project(':lib')
+}
+
+application {
+    mainClass = 'jmail.server.Launcher'
+}
+
+javafx {
+    version = "19"
+    modules = [
+        "javafx.controls",
+        "javafx.fxml",
+    ]
+}
+
+spotless {
+    ratchetFrom 'origin/main'
+
+    java {
+        importOrder() // Use the default importOrder configuration
+        palantirJavaFormat()
+        removeUnusedImports()
+        formatAnnotations().addTypeAnnotation("FXML")
+    }
+
+    groovyGradle {
+        target '*.gradle', 'gradle/**/*.gradle'
+        greclipse()
+        indentWithSpaces()
+    }
+
+    format 'xml', {
+        target 'src/**/*.xml', 'src/**/*.fxml'
+        eclipseWtp('xml')
+        indentWithSpaces()
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.named('configJavafxRun').configure {
+    notCompatibleWithConfigurationCache('issue tracked https://github.com/openjfx/javafx-gradle-plugin/issues/136')
+}

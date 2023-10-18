@@ -1,0 +1,68 @@
+# General
+*.csv
+*.zip
+*.log
+*.iml
+prof
+
+# Directories
+**/build
+**/obj
+**/out
+**/es*_dataset
+.vscode
+.obsidian
+.idea
+.iml
+.gradle
+
+# R
+.Rproj.user
+*.Rproj
+.RData
+.Rhistory
+
+# LaTeX
+*.aux
+*.glo
+*.idx
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Build
+*.class
+*.war
+*.ear
+
+# generated files
+bin/**
+gen/**
+# project based files
+.idea/
+*.ipr
+*.iws
+.gradletasknamecache
+.gradle/
+build/
+bin/
+# Ignore Gradle build output directory
+build
