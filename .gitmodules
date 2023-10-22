@@ -1,24 +1,24 @@
 [submodule "SO/Simulazione-Transazioni"]
-	path = SO/Simulazione-Transazioni
+	path = UniTO/SO/Simulazione-Transazioni
 	url = https://github.com/eduardz1/Simulazione-Transazioni
 [submodule "SAS/Cat_e_Ring"]
-	path = SAS/Cat_e_Ring
+	path = UniTO/SAS/Cat_e_Ring
 	url = https://github.com/eduardz1/Cat_e_Ring
 [submodule "DB/Home-Booking"]
-	path = DB/Home-Booking
+	path = UniTO/DB/Home-Booking
 	url = https://github.com/eduardz1/Home-Booking
 [submodule "LFT/Progetto-LFT"]
-	path = LFT/Progetto-LFT
+	path = UniTO/LFT/Progetto-LFT
 	url = https://github.com/eduardz1/Progetto-LFT
 [submodule "ASD/Laboratorio-Algoritmi"]
-	path = ASD/Laboratorio-Algoritmi
+	path = UniTO/ASD/Laboratorio-Algoritmi
 	url = https://github.com/eduardz1/Laboratorio-Algoritmi
 [submodule "SAS/Unito-Questionario-Esame-Sas"]
-	path = SAS/Unito-Questionario-Esame-Sas
+	path = UniTO/SAS/Unito-Questionario-Esame-Sas
 	url = https://github.com/Mezzolla/Unito-Questionario-Esame-Sas
 [submodule "P3/Jmail"]
-	path = P3/Jmail
+	path = UniTO/P3/Jmail
 	url = https://github.com/eduardz1/Jmail
 [submodule "Bachelor-Thesis"]
-	path = Bachelor-Thesis
+	path = UniTO/Bachelor-Thesis
 	url = https://github.com/eduardz1/Bachelor-Thesis
