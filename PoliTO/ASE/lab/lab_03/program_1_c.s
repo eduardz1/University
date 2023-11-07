@@ -80,28 +80,10 @@ loop:
     l.d     F3,     v3(R11)
     l.d     F4,     v4(R11)
 
-if:
     l.d     F13,    p(R0)                               ; loads p regardless
     ld      R12,    m(R0)                               ; loads m regardless
 
-    andi    R18,    R17,        1
-    bnez    R18,    else
-
-then:                                                   ; i is even
-
-    dsllv   R12,    R12,        R11                     ; R12 = m << i, we would need to divide it if we dsll instead
-
-    mtc1    R12,    F13                                 ; move m << i to F13
-    cvt.d.l F13,    F13                                 ; cast m << i to double
-    mul.d   F13,    F13,        F1                      ; p = v1[i] * R12
-
-    cvt.l.d F13,    F13                                 ; cast p to int
-    mfc1    R12,    F13                                 ; move (int)p to R12
-    sd      R12,    m(R0)                               ; store m
-
-    j       fi
-
-else:                                                   ; i is odd
+odd:                                                    ; i is odd
 
     dmul    R19,    R12,        R11                     ; R12 = m * i
     cvt.l.d F22,    F4                                  ; cast v4[i] to int
@@ -117,7 +99,31 @@ else:                                                   ; i is odd
     div.d   F13,    F1,         F14                     ; p = v1[i] / (m * i)
     s.d     F13,    p(R0)                               ; store p
 
-fi:
+    j       common
+
+even:                                                   ; i is even
+    daddi   R11,    R11,        -8                      ; i--
+    daddi   R17,    R17,        -1                      ; (i/8)--
+
+    l.d     F1,     v1(R11)
+    l.d     F2,     v2(R11)
+    l.d     F3,     v3(R11)
+    l.d     F4,     v4(R11)
+
+    l.d     F13,    p(R0)                               ; loads p regardless
+    ld      R12,    m(R0)                               ; loads m regardless
+
+    dsllv   R12,    R12,        R11                     ; R12 = m << i, we would need to divide it if we dsll instead
+
+    mtc1    R12,    F13                                 ; move m << i to F13
+    cvt.d.l F13,    F13                                 ; cast m << i to double
+    mul.d   F13,    F13,        F1                      ; p = v1[i] * R12
+
+    cvt.l.d F13,    F13                                 ; cast p to int
+    mfc1    R12,    F13                                 ; move (int)p to R12
+    sd      R12,    m(R0)                               ; store m
+
+common:
 
     mul.d   F12,    F1,         F2                      ; F12 = v1[i]*v2[i]
     add.d   F20,    F4,         F1                      ; F20 = v4[i] + v1[i]
@@ -136,9 +142,13 @@ fi:
     mul.d   F21,    F6,         F21                     ; F21 = v6[i]*F21
     s.d     F21,    v7(R11)                             ; v7[i] = F21
 
+    beqz    R11,    end                                 ; if i == 0, end
+    andi    R18,    R17,        1
+    beqz    R18,    even
     bnez    R11,    loop                                ; if i != 0, repeat
 
 end:
+    nop
     halt    
 
 

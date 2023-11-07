@@ -139,6 +139,7 @@ fi:
     bnez    R11,    loop                                ; if i != 0, repeat
 
 end:
+    nop
     halt    
 
 

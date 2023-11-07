@@ -103,38 +103,39 @@ then:                                                   ; i is even
 
 else:                                                   ; i is odd
 
-    dmul    R19,    R12,        R11                     ; R12 = m * i
+    dmul    R12,    R12,        R11                     ; R12 = m * i
+    mtc1    R12,    F14                                 ; move m * i to F14
+    cvt.d.l F14,    F14                                 ; cast m * i to double
+    div.d   F13,    F1,         F14                     ; p = v1[i] / (m * i)
+    s.d     F13,    p(R0)                               ; store p
+
     cvt.l.d F22,    F4                                  ; cast v4[i] to int
     mfc1    R12,    F22                                 ; move (int)v4[i] to R12
     dsllv   R13,    R21,        R11                     ; R13 = 2^i
     ddiv    R12,    R12,        R13                     ; LO = v4[i] / 2^i
 
-    mtc1    R19,    F14                                 ; move m * i to F14
-    cvt.d.l F14,    F14                                 ; cast m * i to double
-    cvt.d.l F15,    F15                                 ; cast k to double
     mtc1    R12,    F15                                 ; move R12 to F15
+    cvt.d.l F15,    F15                                 ; cast k to double
     s.d     F15,    k(R0)                               ; store k
-    div.d   F13,    F1,         F14                     ; p = v1[i] / (m * i)
-    s.d     F13,    p(R0)                               ; store p
 
 fi:
 
     mul.d   F12,    F1,         F2                      ; F12 = v1[i]*v2[i]
-    add.d   F20,    F4,         F1                      ; F20 = v4[i] + v1[i]
-    add.d   F21,    F2,         F3                      ; F21 = v2[i] + v3[i]
-
     add.d   F12,    F12,        F3                      ; F12 = F12 + v3[i]
     add.d   F12,    F12,        F4                      ; F12 = F12 + v4[i]
     s.d     F12,    v5(R11)                             ; v5[i] = F12
 
     l.d     F5,     v5(R11)
-    div.d   F20,    F5,         F20                     ; F20 = v5[i]/F20
 
-    s.d     F20,    v6(R11)                             ; v6[i] = F12
+    add.d   F12,    F4,         F1                      ; F12 = v4[i] + v1[i]
+    div.d   F12,    F5,         F12                     ; F12 = v5[i]/F12
+    s.d     F12,    v6(R11)                             ; v6[i] = F12
+
     l.d     F6,     v6(R11)
 
-    mul.d   F21,    F6,         F21                     ; F21 = v6[i]*F21
-    s.d     F21,    v7(R11)                             ; v7[i] = F21
+    add.d   F12,    F2,         F3                      ; F12 = v2[i] + v3[i]
+    mul.d   F12,    F6,         F12                     ; F12 = v6[i]*F12
+    s.d     F12,    v7(R11)                             ; v7[i] = F12
 
     bnez    R11,    loop                                ; if i != 0, repeat
 
