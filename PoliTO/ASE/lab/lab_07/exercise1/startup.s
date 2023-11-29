@@ -125,12 +125,12 @@ Calories_sport  RN      3
 Num_days        RN      4
 Num_days_sport  RN      5
 i               RN      6
-tmp1            RN      7
-tmp2            RN      8
-tmp3            RN      9
+tmp7            RN      7
+tmp8            RN      8
+tmp9            RN      9
 j               RN      10
 Result          RN      11
-tmp5            RN      12
+tmp12            RN      12
 
 
 ; Reset Handler
@@ -140,43 +140,49 @@ Reset_Handler   PROC
                 LDR     R0, =Reset_Handler
                 
                 MOV     i, #0 ; initialize loop index
-                MOV     j, #0 ; initialize loop index
                 MOV     Result, #0 ; initialize result
-                MOV     R8, #8
 
                 ; loads the array indeces in the registers
-                LDR     Calories_food, =_Calories_food
+				LDR     Days, =_Days
                 LDR     Calories_sport, =_Calories_sport
                 LDR     Num_days, =_Num_days
-                LDR     Num_days_sport, =_Num_days_sport
+				LDRB   Num_days, [Num_days]
+				LDR     Num_days_sport, =_Num_days_sport
+				LDRB   Num_days_sport, [Num_days_sport]
 
 loop_days       CMP    Num_days, i
-                BMI     end_loop_days
+                BLE     end_loop_days
                 
-                LDR tmp1, [Days], #4
+                LDRB tmp7, [Days], #1
+				LDR Calories_food, =_Calories_food
 
-loop_calories_food LDR tmp2, [Calories_food], #8
-                TST tmp1, tmp2
+loop_calories_food LDR tmp8, [Calories_food], #8
+                CMP tmp7, tmp8
                 BNE loop_calories_food
 
-                LDR tmp5, [Calories_food, #-4] ; sotres the calories value of food in tmp5 without updating it
-
-loop_calories_sport CMP j, #3
+                LDR tmp12, [Calories_food, #-4] ; sotres the calories value of food in tmp12 without updating it
+				LDR Calories_sport, =_Calories_sport
+				MOV     j, #0 ; initialize loop index
+				
+loop_calories_sport CMP j, Num_days_sport
                 BPL end_loop_calories_sport
 
-                LDR tmp3, [Calories_sport], #8
+                LDR tmp9, [Calories_sport], #8
                 ADD j, j, #1
-                TST tmp3, tmp2
+                CMP tmp9, tmp8
                 BNE loop_calories_sport
                 
-                LDR tmp3, [Calories_sport, #-4] ;stores the calories value of sport in tmp3 without updating it
-                SUB tmp5, tmp5, tmp3
-                CMP tmp5, #500
-                ADDMI Result, #1
+                LDR tmp9, [Calories_sport, #-4] ;stores the calories value of sport in tmp9 without updating it
+                SUB tmp12, tmp12, tmp9
 
 end_loop_calories_sport
 
 end_loop_calories_food
+				
+				CMP tmp12, #500
+                ADDMI Result, #1
+				
+				ADD i, i, #1
                 B       loop_days
 end_loop_days         
 

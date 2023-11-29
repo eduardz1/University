@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\ASM_template.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\ASM_template.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Nov 29 11:23:05 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Wed Nov 29 16:18:58 2023
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -53,8 +53,8 @@ Function Pointers
  <LI><a href="#[29]">QEI_IRQHandler</a> from startup.o(.text) referenced from startup.o(RESET)
  <LI><a href="#[27]">RIT_IRQHandler</a> from startup.o(.text) referenced from startup.o(RESET)
  <LI><a href="#[1b]">RTC_IRQHandler</a> from startup.o(.text) referenced from startup.o(RESET)
- <LI><a href="#[2d]">Reset_Handler</a> from startup.o(.text) referenced from startup.o(.text)
- <LI><a href="#[2d]">Reset_Handler</a> from startup.o(.text) referenced from startup.o(RESET)
+ <LI><a href="#[0]">Reset_Handler</a> from startup.o(.text) referenced from startup.o(.text)
+ <LI><a href="#[0]">Reset_Handler</a> from startup.o(.text) referenced from startup.o(RESET)
  <LI><a href="#[17]">SPI_IRQHandler</a> from startup.o(.text) referenced from startup.o(RESET)
  <LI><a href="#[18]">SSP0_IRQHandler</a> from startup.o(.text) referenced from startup.o(RESET)
  <LI><a href="#[19]">SSP1_IRQHandler</a> from startup.o(.text) referenced from startup.o(RESET)
@@ -77,8 +77,10 @@ Function Pointers
 <H3>
 Global Symbols
 </H3>
-<P><STRONG><a name="[2d]"></a>Reset_Handler</STRONG> (Thumb, 4300 bytes, Stack size 0 bytes, startup.o(.text))
-
+<P><STRONG><a name="[0]"></a>Reset_Handler</STRONG> (Thumb, 4308 bytes, Stack size 0 bytes, startup.o(.text))
+<BR>[Address Reference Count : 2]<UL><LI> startup.o(RESET)
+<LI> startup.o(.text)
+</UL>
 <P><STRONG><a name="[1]"></a>NMI_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, startup.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NMI_Handler
 </UL>
