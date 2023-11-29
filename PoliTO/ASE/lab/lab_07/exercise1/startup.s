@@ -119,28 +119,82 @@ CRP_Key         DCD     0xFFFFFFFF
 					
                 AREA    |.text|, CODE, READONLY, align=3
 
+Days            RN      1
+Calories_food   RN      2
+Calories_sport  RN      3
+Num_days        RN      4
+Num_days_sport  RN      5
+i               RN      6
+tmp1            RN      7
+tmp2            RN      8
+tmp3            RN      9
+j               RN      10
+Result          RN      11
+tmp5            RN      12
+
 
 ; Reset Handler
 
 Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]                                            
                 LDR     R0, =Reset_Handler
+                
+                MOV     i, #0 ; initialize loop index
+                MOV     j, #0 ; initialize loop index
+                MOV     Result, #0 ; initialize result
+                MOV     R8, #8
 
-                LDR     R0, =Days
+                ; loads the array indeces in the registers
+                LDR     Calories_food, =_Calories_food
+                LDR     Calories_sport, =_Calories_sport
+                LDR     Num_days, =_Num_days
+                LDR     Num_days_sport, =_Num_days_sport
+
+loop_days       CMP    Num_days, i
+                BMI     end_loop_days
+                
+                LDR tmp1, [Days], #4
+
+loop_calories_food LDR tmp2, [Calories_food], #8
+                TST tmp1, tmp2
+                BNE loop_calories_food
+
+                LDR tmp5, [Calories_food, #-4] ; sotres the calories value of food in tmp5 without updating it
+
+loop_calories_sport CMP j, #3
+                BPL end_loop_calories_sport
+
+                LDR tmp3, [Calories_sport], #8
+                ADD j, j, #1
+                TST tmp3, tmp2
+                BNE loop_calories_sport
+                
+                LDR tmp3, [Calories_sport, #-4] ;stores the calories value of sport in tmp3 without updating it
+                SUB tmp5, tmp5, tmp3
+                CMP tmp5, #500
+                ADDMI Result, #1
+
+end_loop_calories_sport
+
+end_loop_calories_food
+                B       loop_days
+end_loop_days         
 
 stop            B       stop
 
                 LTORG
 
-Days				DCB 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
+MY_DATA         SPACE 4096
 
-Calories_food 	 	DCD 0x06, 1300, 0x03, 1700, 0x02, 1200, 0x04, 1900,
-DCD 0x05, 1110, 0x01, 1670, 0x07, 1000
+_Days				DCB 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
 
-Calories_sport	 	DCD 0x02, 500, 0x05, 800, 0x06, 400
+_Calories_food 	 	DCD 0x06, 1300, 0x03, 1700, 0x02, 1200, 0x04, 1900
+                    DCD 0x05, 1110, 0x01, 1670, 0x07, 1000
 
-Num_days	 		DCB 7
-Num_days_sport		DCB 3
+_Calories_sport	 	DCD 0x02, 500, 0x05, 800, 0x06, 400
+
+_Num_days	 		DCB 7
+_Num_days_sport		DCB 3
 	
 				
                 BX      R0
