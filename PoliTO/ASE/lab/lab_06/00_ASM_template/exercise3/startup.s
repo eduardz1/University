@@ -47,7 +47,7 @@ Heap_Mem        SPACE   Heap_Size
 __heap_limit
 
 
-                PRESERVE8
+                PRESERVE8		
                 THUMB
 
 
@@ -116,186 +116,29 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
 CRP_Key         DCD     0xFFFFFFFF
                 ENDIF
 
-                AREA    |variables|, DATA, READWRITE
-
-_Calories_food_tmp	    SPACE 56
-_Calories_sport_tmp		SPACE 24
-  
-_Calories_food_ordered		SPACE 28
-_Calories_sport_ordered		SPACE 12 
- 
 					
                 AREA    |.text|, CODE, READONLY, align=3
 
-Days            RN      1
-Calories_food   RN      2
-Calories_sport  RN      3
-Num_days        RN      4
-Num_days_sport  RN      5
-i               RN      6
-tmp7            RN      7
-tmp8            RN      8
-tmp9            RN      9
-j               RN      10
-Result          RN      11
-tmp12            RN      12
-
-; Bubble Sort assembly implementation
-; R0: Array source, R1: Array size, R2: Array destination
-Sort            PROC
-                EXPORT  Sort             [WEAK]                                            
-                
-                PUSH {R0-R11, LR}
-                
-Sort_next       
-                MOV R3, #0 ; R3 = current elem number
-                MOV R11, #0 ; number of swaps
-Sort_loop
-                ADD R4, R3, #1 ; R4 = next elem number
-                CMP R4, R1
-                BGE Sort_check ; check if any swap has been made when we reach the end
-                
-                ADD R9, R0, R3, LSL #3
-                ADD R9, R9, #4
-                LDR R5, [R0, R3, LSL #3] ; R5 = curr elem date
-                LDR R6, [R9] ; R6 = curr elem value
-                
-                ADD R10, R0, R4, LSL #3
-                ADD R10, R10, #4
-                LDR R7, [R0, R4, LSL #3] ; R7 = next elem date
-                LDR R8, [R10] ; R8 = next elem value
-                
-                CMP R6, R8
-                STRLT R7, [R0, R3, LSL #3]
-                STRLT R8, [R9]
-                
-                STRLT R5, [R0, R4, LSL #3]
-                STRLT R6, [R10]
-                
-                ADDLT R11, R11, #1
-                MOV R3, R4
-                B Sort_loop
-Sort_check
-                CMP R11, #0 ; check if any swap occurred
-                SUBGT R1, R1, #1 ; skip last value in the next loop
-                
-                LDR R7, [R0, R1, LSL #3]
-                STRGT R7, [R2, R1, LSL #2]
-                BGT Sort_next
-Sort_end
-                CMP R1, #0 ; check if there are still values left to save
-                SUBGT R1, R1, #1
-                LDRGT R7, [R0, R1, LSL #3]
-                STRGT R7, [R2, R1, LSL #2]
-                BGT Sort_end
-                
-                POP {R0-R11, PC}
-                
-                BX      LR
-                ENDP
 
 ; Reset Handler
 
 Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]                                            
+                LDR     R0, =Reset_Handler
 
-                ; Copy the content from the Calories_food and Calories_sport
-                ; arrays to the Calories_food_ordered and Calories_sport_ordered
-                ; arrays
-                
-                LDR R3, =_Calories_sport
-                LDR R0, =_Calories_sport_tmp
-                LDM R3, {R3-R8} ; loads the values of Calories_sport in R4-R9
-                STM R0, {R3-R8} ; stores the values of Calories_sport in Calories_sport_tmp
-                   
-                LDR R4, =_Num_days_sport
-                LDRB R1, [R4]
-                LDR R2, =_Calories_sport_ordered
-                BL      Sort ; sort(source_array, size, dest_array)
-
-                LDR R4, =_Calories_food
-                LDR R0, =_Calories_food_tmp
-                LDM R4!, {R5-R12} ; loads the values of the first 8 elements of Calories_food in R4-R11
-                STM R0!, {R5-R12} ; stores the values of the first 8 elements of Calories_food in Calories_food_tmp
-                LDM R4, {R5-R10} ; loads the values of the last 6 elements of Calories_food in R4-R9
-                STM R0, {R5-R10} ; stores the values of the last 6 elements of Calories_food in Calories_food_tmp
-
-                LDR R0, =_Calories_food_tmp
-                LDR R5, =_Num_days
-                LDRB R1, [R5]
-                LDR R2, =_Calories_food_ordered
-                BL      Sort
-
-                
-                MOV     i, #0 ; initialize loop index
-                LDR     Result, =MAX_INT
-                LDR     Result, [Result]
-
-                ; loads the array indeces in the registers
-				LDR     Days, =_Days
-                LDR     Calories_sport, =_Calories_sport
-                LDR     Num_days, =_Num_days
-				LDRB   Num_days, [Num_days]
-				LDR     Num_days_sport, =_Num_days_sport
-				LDRB   Num_days_sport, [Num_days_sport] 
-
-loop_days       CMP    Num_days, i
-                BLE     end_loop_days
-                
-                LDRB tmp7, [Days], #1
-				LDR Calories_food, =_Calories_food
-
-loop_calories_food LDR tmp8, [Calories_food], #8
-                CMP tmp7, tmp8
-                BNE loop_calories_food
-
-                LDR tmp12, [Calories_food, #-4] ; sotres the calories value of food in tmp12 without updating it
-				LDR Calories_sport, =_Calories_sport
-				MOV     j, #0 ; initialize loop index
+				; your code here	
+				MOV R1, 2_10100000
+                MOV R2, 0x3
 				
-loop_calories_sport CMP j, Num_days_sport
-                BPL end_loop_calories_sport
+				RBIT R0, R1 ; reverse bit order
+                CLZ  R0, R0 ; count leading zeros
+                TST  R0, #1 ; check if odd
 
-                LDR tmp9, [Calories_sport], #8
-                ADD j, j, #1
-                CMP tmp9, tmp8
-                BNE loop_calories_sport
-                
-                LDR tmp9, [Calories_sport, #-4] ;stores the calories value of sport in tmp9 without updating it
-                SUB tmp12, tmp12, tmp9
-
-end_loop_calories_sport
-
-end_loop_calories_food
+                SUBEQ R4, R2, R3 ; even
+                ADDNE R4, R2, R3 ; odd
 				
-				CMP tmp12, Result
-                MOVLT Result, tmp12
-				
-				ADD i, i, #1
-                B       loop_days
-end_loop_days         
-
-stop            B       stop
-				
+                BX      R0
                 ENDP
-                    
-
-                LTORG
-
-
-MY_DATA         SPACE 4096
-
-_Days				DCB 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
-
-_Calories_food 	 	DCD 0x06, 1300, 0x03, 1700, 0x02, 1200, 0x04, 1900
-                    DCD 0x05, 1110, 0x01, 1670, 0x07, 1000
-
-_Calories_sport	 	DCD 0x02, 500, 0x05, 800, 0x06, 400
-
-_Num_days	 		DCB 7
-_Num_days_sport		DCB 3
-
-MAX_INT             DCD 0x7FFFFFFF
 
  
 ; Dummy Exception Handlers (infinite loops which can be modified)

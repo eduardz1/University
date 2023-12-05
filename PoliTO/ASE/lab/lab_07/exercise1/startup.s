@@ -137,7 +137,6 @@ tmp12            RN      12
 
 Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]                                            
-                LDR     R0, =Reset_Handler
                 
                 MOV     i, #0 ; initialize loop index
                 MOV     Result, #0 ; initialize result
@@ -188,7 +187,9 @@ end_loop_days
 
 stop            B       stop
 
-                LTORG
+                ENDP
+
+                                LTORG
 
 MY_DATA         SPACE 4096
 
@@ -201,10 +202,6 @@ _Calories_sport	 	DCD 0x02, 500, 0x05, 800, 0x06, 400
 
 _Num_days	 		DCB 7
 _Num_days_sport		DCB 3
-	
-				
-                BX      R0
-                ENDP
 
  
 ; Dummy Exception Handlers (infinite loops which can be modified)
