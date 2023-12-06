@@ -133,12 +133,8 @@ Calories_sport  RN      3
 Num_days        RN      4
 Num_days_sport  RN      5
 i               RN      6
-tmp7            RN      7
-tmp8            RN      8
-tmp9            RN      9
 j               RN      10
 Result          RN      11
-tmp12            RN      12
 
 ; Bubble Sort assembly implementation
 ; R0: Array source, R1: Array size, R2: Array destination
@@ -154,23 +150,17 @@ Sort_loop
                 ADD R4, R3, #1 ; R4 = next elem number
                 CMP R4, R1
                 BGE Sort_check ; check if any swap has been made when we reach the end
-                
-                ADD R9, R0, R3, LSL #3
-                ADD R9, R9, #4
-                LDR R5, [R0, R3, LSL #3] ; R5 = curr elem date
-                LDR R6, [R9] ; R6 = curr elem value
-                
-                ADD R10, R0, R4, LSL #3
-                ADD R10, R10, #4
-                LDR R7, [R0, R4, LSL #3] ; R7 = next elem date
-                LDR R8, [R10] ; R8 = next elem value
+				
+				ADD R9, R0, R3, LSL #3 ; calculate offset from R0
+				LDRD r5, r6, [r9] 
+				
+				ADD R10, R0, R4, LSL #3 ; calculate offset from R0
+				LDRD r7, r8, [r10]
                 
                 CMP R6, R8
-                STRLT R7, [R0, R3, LSL #3]
-                STRLT R8, [R9]
-                
-                STRLT R5, [R0, R4, LSL #3]
-                STRLT R6, [R10]
+				
+				STRDLT R7, R8, [R9]
+				STRDLT R5, R6, [R10]
                 
                 ADDLT R11, R11, #1
                 MOV R3, R4
@@ -242,34 +232,34 @@ Reset_Handler   PROC
 loop_days       CMP    Num_days, i
                 BLE     end_loop_days
                 
-                LDRB tmp7, [Days], #1
+                LDRB R7, [Days], #1
 				LDR Calories_food, =_Calories_food
 
-loop_calories_food LDR tmp8, [Calories_food], #8
-                CMP tmp7, tmp8
+loop_calories_food LDR R8, [Calories_food], #8
+                CMP R7, R8
                 BNE loop_calories_food
 
-                LDR tmp12, [Calories_food, #-4] ; sotres the calories value of food in tmp12 without updating it
+                LDR R12, [Calories_food, #-4] ; sotres the calories value of food in R12 without updating it
 				LDR Calories_sport, =_Calories_sport
 				MOV     j, #0 ; initialize loop index
 				
 loop_calories_sport CMP j, Num_days_sport
                 BPL end_loop_calories_sport
 
-                LDR tmp9, [Calories_sport], #8
+                LDR R9, [Calories_sport], #8
                 ADD j, j, #1
-                CMP tmp9, tmp8
+                CMP R9, R8
                 BNE loop_calories_sport
                 
-                LDR tmp9, [Calories_sport, #-4] ;stores the calories value of sport in tmp9 without updating it
-                SUB tmp12, tmp12, tmp9
+                LDR R9, [Calories_sport, #-4] ;stores the calories value of sport in R9 without updating it
+                SUB R12, R12, R9
 
 end_loop_calories_sport
 
 end_loop_calories_food
 				
-				CMP tmp12, Result
-                MOVLT Result, tmp12
+				CMP R12, Result
+                MOVLT Result, R12
 				
 				ADD i, i, #1
                 B       loop_days
