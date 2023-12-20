@@ -32,15 +32,15 @@ int main (void) {
 	SystemInit();  												/* System Initialization (i.e., PLL)  */
   LED_init();                           /* LED Initialization                 */
   BUTTON_init();												/* BUTTON Initialization              */
-	init_RIT(0x004C4B40);									/* RIT Initialization 50 msec       */
 	
-	LED_On(0);
+	init_timer(0,0x47868C0);
+	init_timer(1,0xBEBC20); /* 2Hz (0.5s) */
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						
 		
   while (1) {                           /* Loop forever                       */	
-//		__ASM("wfi");
+		__ASM("wfi");
   }
 
 }
