@@ -399,11 +399,6 @@
               <FileType>1</FileType>
               <FilePath>.\sample.c</FilePath>
             </File>
-            <File>
-              <FileName>morse.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\morse.s</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -462,26 +457,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>RIT</GroupName>
-          <Files>
-            <File>
-              <FileName>IRQ_RIT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\RIT\IRQ_RIT.c</FilePath>
-            </File>
-            <File>
-              <FileName>lib_RIT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\RIT\lib_RIT.c</FilePath>
-            </File>
-            <File>
-              <FileName>RIT.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\RIT\RIT.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>timer</GroupName>
           <Files>
             <File>
@@ -520,14 +495,5 @@
     </components>
     <files/>
   </RTE>
-
-  <LayerInfo>
-    <Layers>
-      <Layer>
-        <LayName>sample</LayName>
-        <LayPrjMark>1</LayPrjMark>
-      </Layer>
-    </Layers>
-  </LayerInfo>
 
 </Project>
