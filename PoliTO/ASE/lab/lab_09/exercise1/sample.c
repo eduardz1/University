@@ -48,7 +48,8 @@ int main(void) {
   LED_init();    /* LED Initialization                 */
   BUTTON_init(); /* BUTTON Initialization              */
 
-  init_timer(0, 0x47868C0);
+  //init_timer(0, 0x47868C0);
+	init_timer(0, 0x1); // debug
   init_timer(1, 0xBEBC20); // 0.5sec (2Hz)
 
   LPC_SC->PCON |= 0x1; /* power-down	mode

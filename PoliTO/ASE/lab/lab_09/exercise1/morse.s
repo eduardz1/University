@@ -23,9 +23,9 @@ start
         MOV R9, #0   ; tmp
         MOV R10, #24 ; tmp variable for shifting
 main_loop 
-        BMI exit
         LDRB R8, [R0], #1
         SUBS R1, R1, #1
+        BMI exit
 
         ; Case character == space
         CMP R8, R5
@@ -45,8 +45,9 @@ main_loop
         LSL R8, R10 ; saves the bytes read in a 32 bit register
         ORR R9, R9, R8
 
-        SUBS R10, R10, #8
-        LDRBMI R11, [R0] ; fifth byte to read implies the symbol is a number
+        SUB R10, R10, #8
+        CMP R10, #-8
+        LDRBMI R11, [R0, #-1] ; fifth byte to read implies the symbol is a number
         BMI decode_number
 
         B main_loop
@@ -61,16 +62,17 @@ decode
         B decode_number
 
 decode_letter
-        PUSH {R2, R4, R5, R6, R9}
+        PUSH {R2, R9}
+        PUSH {R4, R5, R6}
         LDR R5, [SP, #12] ; output
         LDR R4, [SP, #16] ; letter to decode
 
         LDR R6, =letters
 loop_alphabet
-        LDR R7, [R6], #4
+        LDR R7, [R6], #8
 
         CMP R4, R7
-        LDREQ R4, [R6, #4]
+        LDREQ R4, [R6, #-4]
         STRBEQ R4, [R5], #1
         
         BNE loop_alphabet
@@ -82,7 +84,8 @@ loop_alphabet
 
 
 decode_number
-        PUSH {R2, R4, R5, R6, R7, R9}
+        PUSH {R2, R9}
+        PUSH {R4, R5, R6, R7}
         LDR R5, [SP, #16] ; output
         LDR R4, [SP, #20] ; number to decode
         LDR R6, [SP, #24] ; 5th byte
