@@ -44,14 +44,13 @@ static int dyn_array_resize(struct DynArray *array)
 }
 
 int dyn_array_insert(struct DynArray *array,
-                         const unsigned int index,
-                         const DYN_ARRAY_TYPE value)
+                     const unsigned int index,
+                     const DYN_ARRAY_TYPE value)
 {
     if (array == NULL || index > array->size) return 0;
 
     /* increase size if necessary */
-    if (array->size == array->_allocated && !dyn_array_resize(array))
-        return 0;
+    if (array->size == array->_allocated && !dyn_array_resize(array)) return 0;
 
     memmove(array->data + index + 1,
             array->data + index,

@@ -46,6 +46,12 @@ static uint8_t LCD_Code;
 #define LGDP4535 13 /* 0x4535 */
 #define SSD2119 14  /* 3.5 LCD 0x9919 */
 
+#define DISABLE_DELAY                                                          \
+    true /* FIXME: I don't understand why the delay needs to be present when   \
+            running on the simulator, macro to disable the delay for testing   \
+            purposes */
+#define DISABLE_DELAY_MS true /* same as above */
+
 /*******************************************************************************
  * Function Name  : Lcd_Configuration
  * Description    : Configures LCD Control lines
@@ -96,8 +102,12 @@ static __attribute__((always_inline)) void LCD_Send(uint16_t byte)
  ******************************************************************************/
 static void wait_delay(int count)
 {
+#if DISABLE_DELAY == false
     while (count--)
         ;
+#else
+    return;
+#endif
 }
 
 /*******************************************************************************
@@ -286,12 +296,16 @@ static void LCD_SetCursor(uint16_t Xpos, uint16_t Ypos)
  *******************************************************************************/
 static void delay_ms(uint16_t ms)
 {
+#if DISABLE_DELAY_MS == false
     uint16_t i, j;
     for (i = 0; i < ms; i++)
     {
         for (j = 0; j < 1141; j++)
             ;
     }
+#else
+    return;
+#endif
 }
 
 /*******************************************************************************

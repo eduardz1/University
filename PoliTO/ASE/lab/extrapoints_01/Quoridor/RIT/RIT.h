@@ -22,6 +22,8 @@ extern void reset_RIT(void);
 /* IRQ_RIT.c */
 extern void RIT_IRQHandler(void);
 
+void do_update(const uint8_t x, const uint8_t y, const int up, const int right);
+
 #endif /* end __RIT_H */
 /*****************************************************************************
 **                            End Of File

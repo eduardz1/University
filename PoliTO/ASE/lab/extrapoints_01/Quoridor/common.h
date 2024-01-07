@@ -13,11 +13,21 @@
 #define BOARD_TIMER 20 // timer in seconds
 #define WALL_COUNT 8
 
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
 enum Player
 {
     RED = 0,
     WHITE = 1,
     NONE = UINT8_MAX
+};
+
+struct PlayerInfo
+{
+    enum Player player_id;
+    uint8_t x;
+    uint8_t y;
+    uint8_t wall_count;
 };
 
 struct Coordinate // TODO: remove if only used in struct Cell
@@ -61,19 +71,6 @@ struct Board
 };
 
 union Move { // 32 bit integer representing a move
-    struct
-    {
-        uint32_t X                           : 8;
-        uint32_t Y                           : 8;
-        uint32_t Vertical_or_Horizontal      : 4;
-        uint32_t PlayerMove_or_WallPlacement : 4;
-        uint32_t PlayerID                    : 8; // 0: RED, 1: WHITE
-    };
-
-    uint32_t as_uint32_t;
-};
-
-union Move2 { // 32 bit integer representing a move
     struct
     {
         uint8_t x                : 8;
