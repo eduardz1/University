@@ -19,7 +19,7 @@ void EINT0_IRQHandler(void) /* INT0 */
     CLEAR_PENDING_INTERRUPT(0)
 }
 
-void EINT1_IRQHandler(void) /* KEY1 */
+void EINT1_IRQHandler(void) /* KEY1 */ // TODO: use LEDs for counting the walls
 {
     if (mode == PLAYER_MOVE)
     {
@@ -31,7 +31,6 @@ void EINT1_IRQHandler(void) /* KEY1 */
             }
             else
             {
-                red.wall_count--;
                 mode = WALL_PLACEMENT;
             }
         }
@@ -43,7 +42,6 @@ void EINT1_IRQHandler(void) /* KEY1 */
             }
             else
             {
-                white.wall_count--;
                 mode = WALL_PLACEMENT;
             }
         }

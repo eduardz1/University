@@ -30,12 +30,6 @@ struct PlayerInfo
     uint8_t wall_count;
 };
 
-struct Coordinate // TODO: remove if only used in struct Cell
-{
-    uint8_t x;
-    uint8_t y;
-};
-
 enum Mode
 {
     PLAYER_MOVE = 0,
@@ -60,7 +54,8 @@ struct Cell
         bool bottom;
     } walls;
 
-    struct Coordinate position; // starting pixel of the cell
+    uint8_t x; // absolute position in pixel
+    uint8_t y; // absolute position in pixel
 };
 
 struct Board

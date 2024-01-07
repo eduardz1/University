@@ -1,5 +1,6 @@
 #include "game.h"
 #include "../GLCD/GLCD.h"
+#include "../RIT/RIT.h"
 #include "../imgs/sprites.h"
 #include "../utils/dynarray.h"
 #include <cstdint>
@@ -28,6 +29,11 @@ void game_init(struct Board *const init_board)
     union Move move = {0};
     board = init_board;
     draw_board();
+
+    enable_RIT(); /* start accepting inputs */
+
+    while (true)
+        __ASM("wfi");
 
     while (true) // TODO: make game end
     {
@@ -68,8 +74,8 @@ void clear_highlighted_moves(const union Move *moves)
         x = moves[i].x;
         y = moves[i].y;
 
-        start_x = board->board[x][y].position.x;
-        start_y = board->board[x][y].position.y;
+        start_x = board->board[x][y].x;
+        start_y = board->board[x][y].y;
         end_x = start_x + empty_square.width;
         end_y = start_y + empty_square.height;
 
@@ -127,8 +133,8 @@ void draw_board(void)
             board->board[x][y].player_id = NONE;
             // board->board[x][y].walls.bottom = {0}; TODO: check if it zero by
             // default
-            board->board[x][y].position.x = start_x;
-            board->board[x][y].position.y = start_y;
+            board->board[x][y].x = start_x;
+            board->board[x][y].y = start_y;
 
             start_y += empty_square.height + BLOCK_PADDING;
             end_y += empty_square.height + BLOCK_PADDING;
@@ -140,17 +146,16 @@ void draw_board(void)
         end_x += empty_square.width + BLOCK_PADDING;
     }
 
-    /* Draws the players */ // TODO: refactor hard coded values
-    start_x = board->board[3][0].position.x + PLAYER_PADDING;
-    start_y = board->board[3][0].position.y + PLAYER_PADDING;
+    start_x = board->board[BOARD_SIZE >> 1][0].x + PLAYER_PADDING;
+    start_y = board->board[BOARD_SIZE >> 1][0].y + PLAYER_PADDING;
     end_x = start_x + player_red.width;
     end_y = start_y + player_red.height;
     LCD_draw_image(start_x, start_y, end_x, end_y, player_red.data);
     LCD_draw_image(
         start_x, MAX_Y - end_y, end_x, MAX_Y - start_y, player_white.data);
 
-    board->board[3][0].player_id = RED;
-    board->board[3][6].player_id = WHITE;
+    board->board[BOARD_SIZE >> 1][0].player_id = RED;
+    board->board[BOARD_SIZE >> 1][BOARD_SIZE - 1].player_id = WHITE;
 }
 
 bool find_player(const enum Player player, uint8_t *const x, uint8_t *const y)
@@ -327,10 +332,8 @@ void highlight_possible_moves(const union Move *moves)
     {
         if (moves[i].as_uint32_t == UINT32_MAX) continue;
 
-        start_x =
-            board->board[moves[i].x][moves[i].y].position.x + HIGHLIGHT_PADDING;
-        start_y =
-            board->board[moves[i].x][moves[i].y].position.y + HIGHLIGHT_PADDING;
+        start_x = board->board[moves[i].x][moves[i].y].x + HIGHLIGHT_PADDING;
+        start_y = board->board[moves[i].x][moves[i].y].y + HIGHLIGHT_PADDING;
 
         end_x = start_x + highlighted_square.width;
         end_y = start_y + highlighted_square.height;
@@ -373,10 +376,10 @@ union Move move_player(const enum Player player,
 
         clear_highlighted_moves(current_possible_moves);
         update_player_sprite(player,
-                             board->board[player_x][player_y].position.x,
-                             board->board[player_x][player_y].position.y,
-                             board->board[move.x][move.y].position.x,
-                             board->board[move.x][move.y].position.y);
+                             board->board[player_x][player_y].x,
+                             board->board[player_x][player_y].y,
+                             board->board[move.x][move.y].x,
+                             board->board[move.x][move.y].y);
         return move;
     }
 
@@ -425,7 +428,7 @@ bool check_trapped(const enum Player player)
 
 bool is_wall_valid(const uint8_t x, const uint8_t y, const enum Direction dir)
 {
-    if (x < 0 || y < 0 || x > BOARD_SIZE - 1 || y > BOARD_SIZE - 1 ||
+    if (x > BOARD_SIZE - 1 || y > BOARD_SIZE - 1 ||
         (x == BOARD_SIZE - 1 && dir == VERTICAL) || // outside right boundary
         (y == BOARD_SIZE - 1 && dir == HORIZONTAL)  // outside bottom boundary
     )
@@ -492,15 +495,35 @@ union Move place_wall(const enum Player player,
     return move;
 }
 
-void update_player_selector(const uint16_t old_x,
-                            const uint16_t old_y,
-                            const uint16_t new_x,
-                            const uint16_t new_y)
+void update_player_selector(const int8_t up, const int8_t right)
 {
-    uint16_t start_x = old_x, start_y = old_y, end_x = start_x, end_y = start_y;
-    const struct Sprite *sprite;
+    static uint8_t x = 0, y = 0;
+    static bool flag_change_turn = true;
+    static enum Player last_player = RED;
 
-    switch (board->board[old_x][old_y].player_id)
+    const struct Sprite *sprite;
+    uint16_t start_x, start_y, end_x, end_y;
+
+    if (last_player != current_player) flag_change_turn = true;
+
+    if (flag_change_turn)
+    {
+        last_player = current_player;
+
+        x = current_player == RED ? red.x : white.x;
+        y = current_player == RED ? red.y : white.y;
+
+        flag_change_turn = false;
+    }
+
+    start_x = board->board[x][y].x;
+    start_y = board->board[x][y].y;
+    end_x = start_x;
+    end_y = start_y;
+
+    switch (board->board[x][y].player_id) // TODO: not needed if I save the
+                                          // pixels with read, should also be
+                                          // faster
     {
     case NONE:
         end_x += empty_square.width;
@@ -527,45 +550,73 @@ void update_player_selector(const uint16_t old_x,
 
     LCD_draw_image(start_x, start_y, end_x, end_y, sprite->data);
 
-    start_x = new_x + PLAYER_SELECTOR_PADDING;
-    start_y = new_y + PLAYER_SELECTOR_PADDING;
+    x += right;
+    y += up;
+
+    start_x = board->board[x][y].x + PLAYER_SELECTOR_PADDING;
+    start_y = board->board[x][y].y + PLAYER_SELECTOR_PADDING;
     end_x = start_x + player_selector.width;
     end_y = start_y + player_selector.height;
 
     LCD_draw_image(start_x, start_y, end_x, end_y, player_selector.data);
 }
 
-void update_wall_selector(const uint16_t old_x,
-                          const uint16_t old_y,
-                          const uint16_t new_x,
-                          const uint16_t new_y)
+void update_wall_selector(const int8_t up, const int8_t right)
 {
-    uint16_t start_x = old_x, start_y = old_y, end_x = start_x, end_y = start_y;
+    static uint8_t x = 0, y = 0;
+    static bool flag_change_mode = true;
+    static enum Mode last_mode = PLAYER_MOVE;
 
-    if (board->board[old_x][old_y].walls.bottom)
+    const struct Sprite *sprite;
+    uint16_t start_x, start_y, end_x, end_y;
+
+    if (last_mode != mode) flag_change_mode = true;
+
+    if (flag_change_mode)
     {
-        end_x += wall.height;
-        end_y += wall.width;
+        last_mode = mode;
+
+        /* place wall in the middle of the board */
+        x = BOARD_SIZE >> 1;
+        y = BOARD_SIZE >> 1;
+
+        flag_change_mode = false;
+    }
+
+    start_x = board->board[x][y].x;
+    start_y = board->board[x][y].y;
+
+    if (board->board[x][y].walls.bottom)
+    {
+        start_y += empty_square.width; // add cell offset
+        end_x = start_x + wall.height;
+        end_y = start_y + wall.width;
         LCD_draw_image(start_x, start_y, end_x, end_y, wall.data);
     }
 
-    if (board->board[old_x][old_y].walls.right)
+    if (board->board[x][y].walls.right)
     {
-        end_x += wall.width;
-        end_y += wall.height;
+        start_x += empty_square.width; // add cell offset
+        end_x = start_x + wall.width;
+        end_y = start_y + wall.height;
         LCD_draw_image(start_x, start_y, end_x, end_y, wall.data);
     }
 
-    start_x = new_x;
-    start_y = new_y;
+    x += up;
+    y += up;
+
+    start_x = board->board[x][y].x;
+    start_y = board->board[x][y].y;
 
     if (direction == HORIZONTAL)
     {
+        start_y += empty_square.width;
         end_x = start_x + wall.height;
         end_y = start_y + wall.width;
     }
     else
     {
+        start_x += empty_square.width;
         end_x = start_x + wall.width;
         end_y = start_y + wall.height;
     }

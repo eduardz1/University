@@ -31,6 +31,8 @@
 
 #define SIMULATOR 1
 
+#define RIT_TIME 0x004C4B40 // 50ms polling
+
 #ifdef SIMULATOR
 extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the
                           // emulator to find the symbol (can be placed also
@@ -48,7 +50,7 @@ int main(void)
     BUTTON_init();
     joystick_init();
 
-    init_RIT(0x004C4B40); /* Poll joystick every 50ms */
+    init_RIT(RIT_TIME); /* Poll joystick every 50ms */
 
     game_init(&board);
 

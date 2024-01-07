@@ -10,13 +10,13 @@
       <TargetName>Quoridor</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6160000::V6.16::ARMCLANG</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>LPC1768</Device>
           <Vendor>NXP</Vendor>
-          <PackID>Keil.LPC1700_DFP.2.7.0</PackID>
+          <PackID>Keil.LPC1700_DFP.2.7.1</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x10000000,0x8000) IRAM2(0x2007C000,0x8000) IROM(0x00000000,0x80000) CPUTYPE("Cortex-M3") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -186,6 +186,7 @@
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -537,6 +538,16 @@
               <FileName>wall.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\imgs\wall.c</FilePath>
+            </File>
+            <File>
+              <FileName>player_selector.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\imgs\player_selector.c</FilePath>
+            </File>
+            <File>
+              <FileName>wall_selector.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\imgs\wall_selector.c</FilePath>
             </File>
           </Files>
         </Group>

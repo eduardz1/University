@@ -3,10 +3,7 @@
 #include "../common.h"
 #include <stdint.h>
 
-typedef void (*update_selector)(const uint16_t old_x,
-                                const uint16_t old_y,
-                                const uint16_t new_x,
-                                const uint16_t new_y);
+typedef void (*update_selector)(const int8_t up, const int8_t right);
 
 void draw_board(void);
 void game_init(struct Board *const board);
@@ -17,15 +14,23 @@ void update_player_sprite(const enum Player player,
                           const uint16_t new_x,
                           const uint16_t new_y);
 
-void update_player_selector(const uint16_t old_x,
-                            const uint16_t old_y,
-                            const uint16_t new_x,
-                            const uint16_t new_y);
+/**
+ * @brief updates the sprite of the player move selector
+ * @pre be in PLAYER_MOVE mode
+ *
+ * @param up offset up (negative for down)
+ * @param right offset right (negative for left)
+ */
+void update_player_selector(const int8_t up, const int8_t right);
 
-void update_wall_selector(const uint16_t old_x,
-                          const uint16_t old_y,
-                          const uint16_t new_x,
-                          const uint16_t new_y);
+/**
+ * @brief updates the sprite of the wall selector
+ * @pre be in WALL_PLACEMENT mode
+ *
+ * @param up offset up (negative for down)
+ * @param right offset right (negative for left)
+ */
+void update_wall_selector(const int8_t up, const int8_t right);
 
 void calculate_possible_moves(union Move *moves,
                               const enum Player player,
