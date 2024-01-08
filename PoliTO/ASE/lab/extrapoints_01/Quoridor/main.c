@@ -42,9 +42,6 @@ extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the
 
 int main(void)
 {
-    struct Board board = {0};
-    board.moves = dyn_array_new(0);
-
     SystemInit(); /* System Initialization (i.e., PLL)  */
     LCD_Initialization();
     BUTTON_init();
@@ -52,7 +49,7 @@ int main(void)
 
     init_RIT(RIT_TIME); /* Poll joystick every 50ms */
 
-    game_init(&board);
+    game_init();
 
     // snprintf(string, sizeof(string), "%#08x", board.moves->data[0]);
     // GUI_Text(0, 280, (uint8_t *)string, Blue, White);

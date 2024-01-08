@@ -29,15 +29,17 @@ extern char led_value;
 extern enum Player current_player;
 extern enum Mode mode;
 extern enum Direction direction;
+extern struct PlayerInfo red;
+extern struct PlayerInfo white;
 
 __attribute__((always_inline)) void do_update(const int up, const int right)
 {
     update_selector update = mode == WALL_PLACEMENT ? update_wall_selector :
                                                       update_player_selector;
 
-    update(up, right); // FIXME: logic here does not make sense, x and y
-                       // need to be updated to reflect the last position
-                       // of the selector
+    update(up, right, true); // FIXME: logic here does not make sense, x and y
+                             // need to be updated to reflect the last position
+                             // of the selector
 }
 
 /**
@@ -52,20 +54,51 @@ void RIT_IRQHandler(void)
     static int j_right = 0;
     static int j_up = 0;
 
-    if ((LPC_GPIO1->FIOPIN & (1 << 25)) == 0 && ++j_select == 1) /* SELECT */
+    if ((LPC_GPIO1->FIOPIN & (1 << 25)) ==
+        0 /* TODO: what is this for? && ++j_select == 1*/) /* SELECT */
     {
-        // TODO: manage invalid move
+        uint8_t x = j_right - j_left;
+        uint8_t y = j_down - j_up;
+        union Move res;
+
         if (mode == PLAYER_MOVE)
-            move_player(current_player, j_up, j_down, j_left, j_right);
+        {
+            update_player_selector(0, 0, false);
+
+            x += current_player == RED ? red.x : white.x;
+            y += current_player == RED ? red.y : white.y;
+
+            CLAMP(x, 0, BOARD_SIZE - 1)
+            CLAMP(y, 0, BOARD_SIZE - 1)
+
+            res = move_player(x, y);
+        }
         else
-            place_wall(current_player, j_up, j_down, j_left, j_right);
+        {
+            update_wall_selector(0, 0, false);
 
-        mode = !mode;
+            x += (BOARD_SIZE >> 1);
+            y += (BOARD_SIZE >> 1);
 
-        j_up = 0;
-        j_down = 0;
-        j_left = 0;
-        j_right = 0;
+            CLAMP(x, 0, BOARD_SIZE - 2)
+            CLAMP(y, 0, BOARD_SIZE - 2)
+
+            res = place_wall(x, y);
+        }
+
+        if (res.as_uint32_t == UINT32_MAX) // TODO: invalid move
+        {}
+        else
+        {
+            current_player = !current_player;
+            mode = PLAYER_MOVE;
+            manage_turn();
+
+            j_up = 0;
+            j_down = 0;
+            j_left = 0;
+            j_right = 0;
+        }
     }
     else
     {

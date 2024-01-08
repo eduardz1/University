@@ -26,9 +26,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-/* Private variables ---------------------------------------------------------*/
-static uint8_t LCD_Code;
-
 /* Private define ------------------------------------------------------------*/
 #define ILI9320 0   /* 0x9320 */
 #define ILI9325 1   /* 0x9325 */
@@ -46,11 +43,13 @@ static uint8_t LCD_Code;
 #define LGDP4535 13 /* 0x4535 */
 #define SSD2119 14  /* 3.5 LCD 0x9919 */
 
+static const uint8_t LCD_Code = ILI9325;
+
 #define DISABLE_DELAY                                                          \
-    true /* FIXME: I don't understand why the delay needs to be present when   \
-            running on the simulator, macro to disable the delay for testing   \
-            purposes */
-#define DISABLE_DELAY_MS true /* same as above */
+    /* FIXME: I don't understand why the delay needs to be present when        \
+           running on the simulator, macro to disable the delay for testing    \
+           purposes */
+#define DISABLE_DELAY_MS /* same as above */
 
 /*******************************************************************************
  * Function Name  : Lcd_Configuration
@@ -102,7 +101,7 @@ static __attribute__((always_inline)) void LCD_Send(uint16_t byte)
  ******************************************************************************/
 static void wait_delay(int count)
 {
-#if DISABLE_DELAY == false
+#ifndef DISABLE_DELAY
     while (count--)
         ;
 #else
@@ -244,7 +243,7 @@ static __attribute__((always_inline)) uint16_t LCD_ReadReg(uint16_t LCD_Reg)
  * Return         : None
  * Attention		 : None
  *******************************************************************************/
-static void LCD_SetCursor(uint16_t Xpos, uint16_t Ypos)
+static void LCD_SetCursor(uint16_t const Xpos, uint16_t const Ypos)
 {
 #if (DISP_ORIENTATION == 90) || (DISP_ORIENTATION == 270)
 
@@ -296,7 +295,7 @@ static void LCD_SetCursor(uint16_t Xpos, uint16_t Ypos)
  *******************************************************************************/
 static void delay_ms(uint16_t ms)
 {
-#if DISABLE_DELAY_MS == false
+#ifndef DISABLE_DELAY_MS
     uint16_t i, j;
     for (i = 0; i < ms; i++)
     {
@@ -326,7 +325,6 @@ void LCD_Initialization(void)
 
     if (DeviceCode == 0x9325 || DeviceCode == 0x9328)
     {
-        LCD_Code = ILI9325;
         LCD_WriteReg(0x00e7, 0x0010);
         LCD_WriteReg(0x0000, 0x0001); /* start internal osc */
         LCD_WriteReg(0x0001, 0x0100);
@@ -514,14 +512,15 @@ uint16_t LCD_GetPoint(uint16_t Xpos, uint16_t Ypos)
  * Return         : None
  * Attention		 : None
  *******************************************************************************/
-void LCD_SetPoint(uint16_t Xpos, uint16_t Ypos, uint16_t point)
+__attribute__((always_inline)) void
+LCD_SetPoint(uint16_t const Xpos, uint16_t const Ypos, uint16_t const color)
 {
-    if (Xpos >= MAX_X || Ypos >= MAX_Y || point == TRANSPARENT)
+    if (Xpos >= MAX_X || Ypos >= MAX_Y || color == TRANSPARENT)
     {
         return;
     }
     LCD_SetCursor(Xpos, Ypos);
-    LCD_WriteReg(0x0022, point);
+    LCD_WriteReg(0x0022, color);
 }
 
 /******************************************************************************
@@ -712,6 +711,29 @@ __attribute__((flatten)) void LCD_draw_image(const uint16_t startX,
     }
 }
 
+__attribute__((flatten)) void
+LCD_draw_image_conditional(const uint16_t startX,
+                           const uint16_t startY,
+                           const uint16_t endX,
+                           const uint16_t endY,
+                           const uint16_t color_to_substitute,
+                           const uint16_t substitute_color,
+                           const uint16_t *image)
+{
+    uint16_t x, y, color;
+
+    for (y = startY; y < endY; y++)
+    {
+        for (x = startX; x < endX; x++)
+        {
+            color = *image++;
+            color == color_to_substitute ?
+                LCD_SetPoint(x, y, substitute_color) :
+                LCD_SetPoint(x, y, color);
+        }
+    }
+}
+
 __attribute__((flatten)) void LCD_draw_rectangle(const uint16_t startX,
                                                  const uint16_t startY,
                                                  const uint16_t endX,
@@ -736,24 +758,7 @@ LCD_draw_full_width_rectangle(const uint16_t startY,
 {
     uint32_t index;
 
-    if (LCD_Code == HX8347D || LCD_Code == HX8347A)
-    {
-        LCD_WriteReg(0x02, 0x00);
-        LCD_WriteReg(0x03, 0x00);
-
-        LCD_WriteReg(0x04, 0x00);
-        LCD_WriteReg(0x05, 0xEF);
-
-        LCD_WriteReg(0x06, 0x00);
-        LCD_WriteReg(0x07, 0x00);
-
-        LCD_WriteReg(0x08, 0x01);
-        LCD_WriteReg(0x09, 0x3F);
-    }
-    else
-    {
-        LCD_SetCursor(0, startY);
-    }
+    LCD_SetCursor(0, startY);
 
     LCD_WriteIndex(0x0022);
     for (index = startY * MAX_X; index < MAX_X * endY; index++)

@@ -107,7 +107,9 @@ struct Image
 void LCD_Initialization(void);
 void LCD_Clear(uint16_t Color);
 uint16_t LCD_GetPoint(uint16_t Xpos, uint16_t Ypos);
-void LCD_SetPoint(uint16_t Xpos, uint16_t Ypos, uint16_t point);
+void LCD_SetPoint(uint16_t const Xpos,
+                  uint16_t const Ypos,
+                  uint16_t const color);
 void LCD_draw_image(const uint16_t startX,
                     const uint16_t startY,
                     const uint16_t endX,
@@ -121,11 +123,30 @@ void LCD_draw_rectangle(const uint16_t startX,
 void LCD_draw_full_width_rectangle(const uint16_t startY,
                                    const uint16_t endY,
                                    const uint16_t color);
-void LCD_draw_image_from_file(const uint16_t startX,
-                              const uint16_t startY,
-                              const uint16_t endX,
-                              const uint16_t endY,
-                              FILE *image);
+
+/**
+ * @brief draws an image but substitutes a color in the image with another one
+ *
+ * @param startX image start x pixel coordinate
+ * @param startY image start y pixel coordinate
+ * @param endX image end x pixel coordinate
+ * @param endY image end y pixel coordinate
+ * @param color_to_substitute color that will be substituted when found
+ * @param substitute_color color that will substitute the previous one
+ * @param image array of 16bit colors
+ */
+void LCD_draw_image_conditional(const uint16_t startX,
+                                const uint16_t startY,
+                                const uint16_t endX,
+                                const uint16_t endY,
+                                const uint16_t color_to_substitute,
+                                const uint16_t substitute_color,
+                                const uint16_t *image);
+// void LCD_draw_image_from_file(const uint16_t startX,
+//                               const uint16_t startY,
+//                               const uint16_t endX,
+//                               const uint16_t endY,
+//                               FILE *image);
 void LCD_DrawLine(
     uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
 void PutChar(uint16_t Xpos,

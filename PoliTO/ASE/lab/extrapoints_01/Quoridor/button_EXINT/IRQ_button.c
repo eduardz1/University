@@ -31,6 +31,9 @@ void EINT1_IRQHandler(void) /* KEY1 */ // TODO: use LEDs for counting the walls
             }
             else
             {
+                clear_highlighted_moves();
+                update_player_selector(0, 0, false);
+                update_wall_selector(0, 0, true);
                 mode = WALL_PLACEMENT;
             }
         }
@@ -42,12 +45,19 @@ void EINT1_IRQHandler(void) /* KEY1 */ // TODO: use LEDs for counting the walls
             }
             else
             {
+                clear_highlighted_moves();
+                update_player_selector(0, 0, false);
+                update_wall_selector(0, 0, true);
                 mode = WALL_PLACEMENT;
             }
         }
     }
     else
     {
+        // clear wall selector
+        update_wall_selector(0, 0, false);
+        update_player_selector(0, 0, true);
+        highlight_possible_moves();
         mode = PLAYER_MOVE;
     }
     CLEAR_PENDING_INTERRUPT(1)
@@ -56,5 +66,6 @@ void EINT1_IRQHandler(void) /* KEY1 */ // TODO: use LEDs for counting the walls
 void EINT2_IRQHandler(void) /* KEY2 */
 {
     direction = !direction;
+    update_wall_selector(0, 0, true);
     CLEAR_PENDING_INTERRUPT(2)
 }

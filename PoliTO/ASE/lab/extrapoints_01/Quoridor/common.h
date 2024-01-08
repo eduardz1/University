@@ -15,6 +15,13 @@
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
+#define CLAMP(n, min, max)                                                     \
+    do                                                                         \
+    {                                                                          \
+        n = n < min ? min : n;                                                 \
+        n = n > max ? max : n;                                                 \
+    } while (0);
+
 enum Player
 {
     RED = 0,
@@ -46,12 +53,16 @@ struct Cell
 {
     enum Player player_id;
 
-    struct
-    {
-        bool left;
-        bool right;
-        bool top;
-        bool bottom;
+    union {
+        struct
+        {
+            bool left   : 2;
+            bool right  : 2;
+            bool top    : 2;
+            bool bottom : 2;
+        };
+
+        uint8_t as_uint8_t;
     } walls;
 
     uint8_t x; // absolute position in pixel
