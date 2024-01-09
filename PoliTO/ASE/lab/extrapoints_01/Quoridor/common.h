@@ -37,6 +37,12 @@ struct PlayerInfo
     uint8_t wall_count;
 };
 
+struct Coordinate
+{
+    uint8_t x;
+    uint8_t y;
+};
+
 enum Mode
 {
     PLAYER_MOVE = 0,

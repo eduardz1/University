@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
@@ -418,26 +418,6 @@
               <FileName>system_LPC17xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\system_LPC17xx.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>timer</GroupName>
-          <Files>
-            <File>
-              <FileName>IRQ_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\timer\IRQ_timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>lib_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\timer\lib_timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>timer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\timer\timer.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -633,6 +613,16 @@
               <FileName>game.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\game\game.h</FilePath>
+            </File>
+            <File>
+              <FileName>graphics.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\game\graphics.c</FilePath>
+            </File>
+            <File>
+              <FileName>graphics.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\game\graphics.h</FilePath>
             </File>
           </Files>
         </Group>

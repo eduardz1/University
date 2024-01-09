@@ -551,8 +551,7 @@ void TouchPanel_Calibrate(void)
     Coordinate *Ptr;
 
     LCD_Clear(Black);
-    GUI_Text(
-        10, 10, (unsigned char *)"Touch crosshair to calibrate", 0xffff, Black);
+    LCD_write_text(10, 10, "Touch crosshair to calibrate", 0xffff, Black, 1);
 
     for (i = 0; i < 3; i++)
     {

@@ -2,14 +2,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-
-
-struct Coordinate
-{
-    uint8_t x;
-    uint8_t y;
-};
-
+#include "../common.h"
 /**
  * @brief stack of Coordinate type elements
  *

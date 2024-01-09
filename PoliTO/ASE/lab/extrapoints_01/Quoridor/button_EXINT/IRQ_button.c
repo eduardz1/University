@@ -1,6 +1,9 @@
+#include "../GLCD/GLCD.h"
 #include "../game/game.h"
+#include "../game/graphics.h"
 #include "button.h"
 #include "lpc17xx.h"
+#include <stdio.h>
 
 extern int down;
 extern enum Direction direction;
@@ -27,7 +30,14 @@ void EINT1_IRQHandler(void) /* KEY1 */ // TODO: use LEDs for counting the walls
         {
             if (red.wall_count == 0)
             {
-                // TODO: error message
+                LCD_write_text(
+                    2, 9, " No walls available, ", Black, TRANSPARENT, 1);
+                LCD_write_text(2,
+                               9 + 8 + 4,
+                               "   move the token    ",
+                               Black,
+                               TRANSPARENT,
+                               1);
             }
             else
             {
@@ -41,7 +51,14 @@ void EINT1_IRQHandler(void) /* KEY1 */ // TODO: use LEDs for counting the walls
         {
             if (white.wall_count == 0)
             {
-                // TODO: error message
+                LCD_write_text(
+                    2, 9, " No walls available, ", Black, TRANSPARENT, 1);
+                LCD_write_text(2,
+                               9 + 8 + 4,
+                               "   move the token    ",
+                               Black,
+                               TRANSPARENT,
+                               1);
             }
             else
             {

@@ -96,13 +96,6 @@
 #define RGB565CONVERT(red, green, blue)                                        \
     (uint16_t)(((red >> 3) << 11) | ((green >> 2) << 5) | (blue >> 3))
 
-struct Image
-{
-    uint16_t width;
-    uint16_t height;
-    uint16_t *data;
-};
-
 /* Private function prototypes -----------------------------------------------*/
 void LCD_Initialization(void);
 void LCD_Clear(uint16_t Color);
@@ -149,16 +142,18 @@ void LCD_draw_image_conditional(const uint16_t startX,
 //                               FILE *image);
 void LCD_DrawLine(
     uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
-void PutChar(uint16_t Xpos,
-             uint16_t Ypos,
-             uint8_t ASCI,
-             uint16_t charColor,
-             uint16_t bkColor);
-void GUI_Text(uint16_t Xpos,
-              uint16_t Ypos,
-              uint8_t *str,
-              uint16_t Color,
-              uint16_t bkColor);
+void put_char(const uint16_t x,
+              const uint16_t y,
+              char ASCII,
+              const uint16_t color,
+              const uint16_t background_color,
+              const uint8_t scale);
+void LCD_write_text(uint16_t x,
+                    uint16_t y,
+                    char *str,
+                    const uint16_t color,
+                    const uint16_t background_color,
+                    const uint8_t scale);
 
 #endif
 

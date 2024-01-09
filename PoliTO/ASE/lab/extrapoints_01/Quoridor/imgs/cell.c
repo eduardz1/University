@@ -213,6 +213,12 @@ void draw_empty_square(uint16_t x, uint16_t y)
     LCD_draw_image(x, y, x + 32, y + 32, empty_square_data);
 }
 
+void draw_empty_square_transparent(uint16_t x, uint16_t y)
+{
+    LCD_draw_image_conditional(
+        x, y, x + 32, y + 32, CELL_COLOR, TRANSPARENT, empty_square_data);
+}
+
 void draw_highlighted_square(uint16_t x, uint16_t y)
 {
     LCD_draw_image(x, y, x + 28, y + 28, highlighted_square_data);
@@ -229,8 +235,36 @@ void draw_highlighted_square_cell_color(uint16_t x, uint16_t y)
                                highlighted_square_data);
 }
 
+void draw_highlighted_square_red_color(uint16_t x, uint16_t y)
+{
+    LCD_draw_image_conditional(x,
+                               y,
+                               x + 28,
+                               y + 28,
+                               HIGHLIGHT_COLOR,
+                               RED_PLAYER_COLOR,
+                               highlighted_square_data);
+}
+
+void draw_highlighted_square_white_color(uint16_t x, uint16_t y)
+{
+    LCD_draw_image_conditional(x,
+                               y,
+                               x + 28,
+                               y + 28,
+                               HIGHLIGHT_COLOR,
+                               WHITE_PLAYER_COLOR,
+                               highlighted_square_data);
+}
+
 const struct Sprite empty_square = {
     .draw = draw_empty_square,
+    .width = 32,
+    .height = 32,
+};
+
+const struct Sprite empty_square_transparent = {
+    .draw = draw_empty_square_transparent,
     .width = 32,
     .height = 32,
 };
@@ -243,6 +277,18 @@ const struct Sprite highlighted_square = {
 
 const struct Sprite highlighted_square_cell_color = {
     .draw = draw_highlighted_square_cell_color,
+    .width = 28,
+    .height = 28,
+};
+
+const struct Sprite highlighted_square_red_color = {
+    .draw = draw_highlighted_square_red_color,
+    .width = 28,
+    .height = 28,
+};
+
+const struct Sprite highlighted_square_white_color = {
+    .draw = draw_highlighted_square_white_color,
     .width = 28,
     .height = 28,
 };

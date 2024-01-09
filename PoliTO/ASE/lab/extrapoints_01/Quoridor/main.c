@@ -27,7 +27,6 @@
 #include "button_EXINT/button.h"
 #include "game/game.h"
 #include "joystick/joystick.h"
-#include "timer/timer.h"
 
 #define SIMULATOR 1
 

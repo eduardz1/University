@@ -616,80 +616,56 @@ void LCD_DrawLine(
     }
 }
 
-/******************************************************************************
- * Function Name  : PutChar
- * Description    : ��Lcd��������λ����ʾһ���ַ�
- * Input          : - Xpos: ˮƽ����
- *                  - Ypos: ��ֱ����
- *				   - ASCI: ��ʾ���ַ�
- *				   - charColor: �ַ���ɫ
- *				   - bkColor: ������ɫ
- * Output         : None
- * Return         : None
- * Attention		 : None
- *******************************************************************************/
-void PutChar(uint16_t Xpos,
-             uint16_t Ypos,
-             uint8_t ASCI,
-             uint16_t charColor,
-             uint16_t bkColor)
+void put_char(const uint16_t x,
+              const uint16_t y,
+              char ASCII,
+              const uint16_t color,
+              const uint16_t background_color,
+              const uint8_t scale)
 {
-    uint16_t i, j;
-    uint8_t buffer[16], tmp_char;
-    GetASCIICode(buffer, ASCI); /* ȡ��ģ���� */
-    for (i = 0; i < 16; i++)
+    uint16_t i, j, set;
+    char buffer[FONT_HEIGHT], tmp;
+    get_ASCII_code(buffer, ASCII);
+    for (i = 0; i < FONT_HEIGHT * scale; i++)
     {
-        tmp_char = buffer[i];
-        for (j = 0; j < 8; j++)
+        tmp = buffer[i / scale];
+        for (j = 0; j < FONT_WIDTH * scale; j++)
         {
-            if (((tmp_char >> (7 - j)) & 0x01) == 0x01)
-            {
-                LCD_SetPoint(Xpos + j, Ypos + i, charColor); /* �ַ���ɫ */
-            }
-            else
-            {
-                LCD_SetPoint(Xpos + j, Ypos + i, bkColor); /* ������ɫ */
-            }
+#ifdef FLIP
+            set = (tmp >> (j / scale)) & 1;
+#else
+            set = (tmp >> (FONT_WIDTH - 1 - j / scale)) & 1;
+#endif
+            LCD_SetPoint(x + j, y + i, set ? color : background_color);
         }
     }
 }
 
-/******************************************************************************
- * Function Name  : GUI_Text
- * Description    : ��ָ��������ʾ�ַ���
- * Input          : - Xpos: ������
- *                  - Ypos: ������
- *				   - str: �ַ���
- *				   - charColor: �ַ���ɫ
- *				   - bkColor: ������ɫ
- * Output         : None
- * Return         : None
- * Attention		 : None
- *******************************************************************************/
-void GUI_Text(uint16_t Xpos,
-              uint16_t Ypos,
-              uint8_t *str,
-              uint16_t Color,
-              uint16_t bkColor)
+void LCD_write_text(uint16_t x,
+                    uint16_t y,
+                    char *str,
+                    const uint16_t color,
+                    const uint16_t background_color,
+                    const uint8_t scale)
 {
-    uint8_t TempChar;
+    char tmp;
     do
     {
-        TempChar = *str++;
-        PutChar(Xpos, Ypos, TempChar, Color, bkColor);
-        if (Xpos < MAX_X - 8)
+        tmp = *str++;
+        put_char(x, y, tmp, color, background_color, scale);
+        if (x < MAX_X - FONT_WIDTH * scale)
         {
-            Xpos += 8;
+            x += FONT_WIDTH * scale;
         }
-        else if (Ypos < MAX_Y - 16)
+        else if (y < MAX_Y - FONT_HEIGHT * scale)
         {
-            Xpos = 0;
-            Ypos += 16;
+            x = 0;
+            y += FONT_HEIGHT * scale;
         }
         else
         {
-            Xpos = 0;
-            Ypos = 0;
+            x = 0;
+            y = 0;
         }
     } while (*str != 0);
 }

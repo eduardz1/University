@@ -26,9 +26,12 @@ struct Sprite
     const uint16_t height;
 };
 
+extern const struct Sprite empty_square;
+extern const struct Sprite empty_square_transparent;
 extern const struct Sprite highlighted_square;
 extern const struct Sprite highlighted_square_cell_color;
-extern const struct Sprite empty_square;
+extern const struct Sprite highlighted_square_red_color;
+extern const struct Sprite highlighted_square_white_color;
 
 extern const struct Sprite wall_vertical;
 extern const struct Sprite wall_horizontal;

@@ -14,14 +14,23 @@
 
 #include <stdint.h>
 
-/* init_RIT.c */
 extern uint32_t init_RIT(uint32_t RITInterval);
 extern void enable_RIT(void);
 extern void disable_RIT(void);
 extern void reset_RIT(void);
-/* IRQ_RIT.c */
+
+/**
+ * @brief Tracks joystick movements and updates the player position and walls
+ * accordingly
+ */
 extern void RIT_IRQHandler(void);
 
+/**
+ * @brief updates either the wall or player selector, based on current mode
+ *
+ * @param up offset up (or down if negative)
+ * @param right osset right (or left if negative)
+ */
 void do_update(const int up, const int right);
 
 #endif /* end __RIT_H */
