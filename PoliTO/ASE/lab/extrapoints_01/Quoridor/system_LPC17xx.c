@@ -22,7 +22,6 @@
 
 #include "LPC17xx.h"
 #include <stdint.h>
-#include "common.h"
 
 /*
 //-------- <<< Use Configuration Wizard in Context Menu >>> ------------------
