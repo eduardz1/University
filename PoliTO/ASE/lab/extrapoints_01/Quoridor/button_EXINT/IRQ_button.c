@@ -1,6 +1,7 @@
 #include "../GLCD/GLCD.h"
 #include "../game/game.h"
 #include "../game/graphics.h"
+#include "../common.h"
 #include "button.h"
 #include "lpc17xx.h"
 #include <stdio.h>
@@ -24,6 +25,7 @@ void EINT0_IRQHandler(void) /* INT0 */
 
 void EINT1_IRQHandler(void) /* KEY1 */ // TODO: use LEDs for counting the walls
 {
+#ifdef SIMULATOR
     if (mode == PLAYER_MOVE)
     {
         if (current_player == RED)
@@ -77,12 +79,21 @@ void EINT1_IRQHandler(void) /* KEY1 */ // TODO: use LEDs for counting the walls
         highlight_possible_moves();
         mode = PLAYER_MOVE;
     }
+#else
+    NVIC_DisableIRQ(EINT1_IRQn);       /* disable Button interrupts			 */
+    LPC_PINCON->PINSEL4 &= ~(1 << 22); /* GPIO pin selection */
+#endif
     CLEAR_PENDING_INTERRUPT(1)
 }
 
 void EINT2_IRQHandler(void) /* KEY2 */
 {
+#ifdef SIMULATOR
     direction = !direction;
     update_wall_selector(0, 0, true);
+#else
+    NVIC_DisableIRQ(EINT2_IRQn);       /* disable Button interrupts			 */
+    LPC_PINCON->PINSEL4 &= ~(1 << 21); /* GPIO pin selection */
+#endif
     CLEAR_PENDING_INTERRUPT(2)
 }

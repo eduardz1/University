@@ -9,6 +9,8 @@
 #define NULL 0
 #endif
 
+#define SIMULATOR
+
 #define BOARD_SIZE 7
 #define BOARD_TIMER 20 // timer in seconds
 #define WALL_COUNT 8

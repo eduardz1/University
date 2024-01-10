@@ -25,10 +25,9 @@
 #include "LPC17xx.h"
 #include "RIT/RIT.h"
 #include "button_EXINT/button.h"
+#include "common.h"
 #include "game/game.h"
 #include "joystick/joystick.h"
-
-#define SIMULATOR 1
 
 #define RIT_TIME 0x004C4B40 // 50ms polling
 

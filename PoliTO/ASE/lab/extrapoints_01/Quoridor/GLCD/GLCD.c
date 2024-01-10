@@ -24,6 +24,7 @@
 #include "GLCD.h"
 #include "AsciiLib.h"
 #include <stdint.h>
+#include "../common.h"
 #include <stdio.h>
 
 /* Private define ------------------------------------------------------------*/
@@ -45,11 +46,10 @@
 
 static const uint8_t LCD_Code = ILI9325;
 
-#define DISABLE_DELAY                                                          \
-    /* FIXME: I don't understand why the delay needs to be present when        \
-           running on the simulator, macro to disable the delay for testing    \
-           purposes */
+#ifdef SIMULATOR
+#define DISABLE_DELAY /* not needed when running on simulator */
 #define DISABLE_DELAY_MS /* same as above */
+#endif
 
 /*******************************************************************************
  * Function Name  : Lcd_Configuration
@@ -293,7 +293,7 @@ static void LCD_SetCursor(uint16_t const Xpos, uint16_t const Ypos)
  * Return         : None
  * Attention		 : None
  *******************************************************************************/
-static void delay_ms(uint16_t ms)
+void delay_ms(uint16_t ms)
 {
 #ifndef DISABLE_DELAY_MS
     uint16_t i, j;

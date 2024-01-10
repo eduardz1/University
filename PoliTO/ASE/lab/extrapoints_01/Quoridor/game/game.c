@@ -245,7 +245,10 @@ union Move move_player(const uint8_t x, const uint8_t y)
         return move;
     }
 
-    return (union Move){UINT32_MAX};
+    move.as_uint32_t = UINT32_MAX;
+    return move; // NOTE: returning the cast from UINT32_MAX to union Move gives
+                 // out a warning, it gets converted to UIN8_MAX when running on
+                 // real board, seems to be a bug in the compiler 5
 }
 
 bool is_wall_between(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
@@ -320,6 +323,9 @@ bool is_wall_valid(const uint8_t x, const uint8_t y, const enum Direction dir)
 void write_invalid_move(void)
 {
     LCD_write_text(24, MAX_Y - 27, "Invalid Move", Black, TRANSPARENT, 2);
+#ifndef SIMULATOR
+    delay_ms(1500); // FIXME: busy waiting
+#endif
     LCD_draw_rectangle(24, MAX_Y - 27, 12 * 16 + 24, MAX_Y - 11, TABLE_COLOR);
 }
 
