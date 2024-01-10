@@ -6,7 +6,7 @@
 # ARE DISCLAIMED.
 #/
 
-PROJECT = Target_1
+PROJECT = Quoridor
 
 CC	= arm-none-eabi-gcc
 CPP	= arm-none-eabi-g++
@@ -25,16 +25,16 @@ LDFLAGS  = -mcpu=cortex-m3 -mthumb -mfloat-abi=soft -T$(LDSCRIPT) -lnosys -Wl,--
 SRC = $(VECTOR) \
       ./GLCD/AsciiLib.c\
       ./GLCD/GLCD.c\
+      ./GLCD/HzLib.c\
       ./RIT/IRQ_RIT.c\
       ./RIT/lib_RIT.c\
       ./TouchPanel/TouchPanel.c\
       ./button_EXINT/IRQ_button.c\
       ./button_EXINT/lib_button.c\
-      ./core_cm3.c\
-      ./imgs/empty_square.c\
-      ./imgs/highlighted_square.c\
-      ./imgs/player_red.c\
-      ./imgs/player_white.c\
+      ./game/game.c\
+      ./game/graphics.c\
+      ./imgs/cell.c\
+      ./imgs/player.c\
       ./imgs/wall.c\
       ./joystick/funct_joystick.c\
       ./joystick/lib_joystick.c\
@@ -42,9 +42,8 @@ SRC = $(VECTOR) \
       ./led/lib_led.c\
       ./main.c\
       ./system_LPC17xx.c\
-      ./timer/IRQ_timer.c\
-      ./timer/lib_timer.c\
       ./utils/dynarray.c\
+      ./utils/stack.c\
 
 #  C++ source files
 CPPFILES = $(filter %.cpp, $(SRC))

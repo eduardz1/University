@@ -1,25 +1,22 @@
 /*********************************************************************************************************
 **--------------File
 *Info---------------------------------------------------------------------------------
-** File name:           joystick.h
+** File name:           funct_joystick.h
 ** Last modified Date:  2018-12-30
 ** Last Version:        V1.00
-** Descriptions:        Atomic joystick init functions
+** Descriptions:        High level joystick management functions
 ** Correlated files:    lib_joystick.c, funct_joystick.c
 **--------------------------------------------------------------------------------------------------------
 *********************************************************************************************************/
 
+#include "../led/led.h"
 #include "joystick.h"
-#include "lpc17xx.h"
+#include "LPC17xx.h"
 
 /*----------------------------------------------------------------------------
-  Function that initializes joysticks and switch them off
+  Function that turns on requested led
  *----------------------------------------------------------------------------*/
-
-void joystick_init(void)
+void joystick_On(unsigned int num)
 {
-    /* joystick Select functionality */
-    LPC_PINCON->PINSEL3 &= ~(3 << 18); // PIN mode GPIO (00b value per P1.25)
-    LPC_GPIO1->FIODIR &= ~(1 << 25); // P1.25 Input (joysticks on PORT1 defined
-                                     // as Input)
+    // LED_Out(num);
 }

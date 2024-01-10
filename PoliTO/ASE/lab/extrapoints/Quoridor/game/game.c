@@ -6,7 +6,6 @@
 #include "../utils/dynarray.h"
 #include "../utils/stack.h"
 #include "graphics.h"
-#include <cstdint>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -45,7 +44,7 @@ void change_turn(void)
     calculate_possible_moves();
     highlight_possible_moves(); // TODO: maybe inline
 
-    refresh_info_panel(0);
+    refresh_info_panel(20);
 
     // FIXME: uses same pins as LCD so it's only useful before the player does
     // any action that refreshes the screen

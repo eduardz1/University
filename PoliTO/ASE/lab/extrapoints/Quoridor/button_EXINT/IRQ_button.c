@@ -3,7 +3,7 @@
 #include "../game/graphics.h"
 #include "../common.h"
 #include "button.h"
-#include "lpc17xx.h"
+#include "LPC17xx.h"
 #include <stdio.h>
 
 extern int down;
@@ -89,7 +89,7 @@ void EINT1_IRQHandler(void) /* KEY1 */ // TODO: use LEDs for counting the walls
 void EINT2_IRQHandler(void) /* KEY2 */
 {
 #ifdef SIMULATOR
-    direction = !direction;
+    direction = direction == HORIZONTAL ? VERTICAL : HORIZONTAL;
     update_wall_selector(0, 0, true);
 #else
     NVIC_DisableIRQ(EINT2_IRQn);       /* disable Button interrupts			 */

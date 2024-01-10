@@ -1,11 +1,11 @@
 #include "../GLCD/GLCD.h"
+#include "../common.h"
 #include "../game/game.h"
 #include "../game/graphics.h"
 #include "../imgs/sprites.h"
 #include "../led/led.h"
-#include "../common.h"
 #include "RIT.h"
-#include "lpc17xx.h"
+#include "LPC17xx.h"
 #include <stdint.h>
 
 extern enum Player current_player;
@@ -25,8 +25,11 @@ __attribute__((always_inline)) void do_update(const int up, const int right)
 void RIT_IRQHandler(void)
 {
 #ifdef SIMULATOR
-    static union Move error_move = {
-        .direction = 1, .player_id = 0, .type = 0, .x = 0, .y = 0};
+    static union Move error_move = {.direction = HORIZONTAL,
+                                    .player_id = RED,
+                                    .type = PLAYER_MOVE,
+                                    .x = 0,
+                                    .y = 0};
     static uint32_t counter = (20 * 1000) / 50; // 20 ms/50ms --> 400 iterations
 
     if (counter-- % 20) // 20 iterations --> 1 second

@@ -22,10 +22,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "GLCD.h"
+#include "../common.h"
 #include "AsciiLib.h"
 #include <stdint.h>
-#include "../common.h"
 #include <stdio.h>
+
 
 /* Private define ------------------------------------------------------------*/
 #define ILI9320 0   /* 0x9320 */
@@ -47,7 +48,7 @@
 static const uint8_t LCD_Code = ILI9325;
 
 #ifdef SIMULATOR
-#define DISABLE_DELAY /* not needed when running on simulator */
+#define DISABLE_DELAY    /* not needed when running on simulator */
 #define DISABLE_DELAY_MS /* same as above */
 #endif
 

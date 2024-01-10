@@ -1,0 +1,7 @@
+si 1
+speed 2000
+r
+h
+loadbin Quoridor.bin,0x00000000
+r
+exit

@@ -1,5 +1,8 @@
 #pragma once
-#pragma anon_unions
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 6000000)
+#pragma anon_unions // needed for compiler v5
+#endif
 
 #include "utils/dynarray.h"
 #include <stdbool.h>
@@ -64,10 +67,10 @@ struct Cell
     union {
         struct
         {
-            bool left   : 2;
-            bool right  : 2;
-            bool top    : 2;
-            bool bottom : 2;
+            bool left   ;
+            bool right  ;
+            bool top    ;
+            bool bottom ;
         };
 
         uint8_t as_uint8_t;
