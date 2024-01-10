@@ -1,0 +1,13 @@
+# CMSIS Build Audit File generated on 2024-01-10T19:05:48
+
+# Project Description File: c:/Users/occhi/Github/eduardz1/University/PoliTO/ASE/lab/extrapoints/Quoridor/quoridor+Quoridor.cprj
+
+# Toolchain Configuration File: C:/Users/occhi/.vcpkg/artifacts/fd3d78d7/tools.open.cmsis.pack.cmsis.toolbox/2.2.1/etc/AC6.6.18.0.cmake
+
+# Package: ARM::CMSIS@5.9.0
+  Location: C:\Users\occhi\AppData\Local\arm\packs/ARM/CMSIS/5.9.0/
+
+  * Component: ARM::CMSIS:CORE@5.6.0
+
+# Package: Keil::LPC1700_DFP@2.7.1
+  Location: C:\Users\occhi\AppData\Local\arm\packs/Keil/LPC1700_DFP/2.7.1/

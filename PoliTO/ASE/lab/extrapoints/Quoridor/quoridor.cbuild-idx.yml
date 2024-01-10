@@ -1,0 +1,9 @@
+build-idx:
+  generated-by: csolution version 2.2.1
+  csolution: quoridor.csolution.yml
+  cprojects:
+    - cproject: quoridor.cproject.yml
+  cbuilds:
+    - cbuild: quoridor+Quoridor.cbuild.yml
+      project: quoridor
+      configuration: +Quoridor

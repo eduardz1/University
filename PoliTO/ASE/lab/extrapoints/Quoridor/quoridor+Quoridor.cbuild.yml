@@ -1,0 +1,181 @@
+build:
+  generated-by: csolution version 2.2.1
+  solution: quoridor.csolution.yml
+  project: quoridor.cproject.yml
+  context: quoridor+Quoridor
+  compiler: AC6@6.19.0
+  device: LPC1768
+  device-pack: Keil::LPC1700_DFP@2.7.1
+  processor:
+    endian: little
+    fpu: off
+    trustzone: non-secure
+    core: Cortex-M3
+  packs:
+    - pack: ARM::CMSIS@5.9.0
+      path: ${CMSIS_PACK_ROOT}/ARM/CMSIS/5.9.0
+    - pack: Keil::LPC1700_DFP@2.7.1
+      path: ${CMSIS_PACK_ROOT}/Keil/LPC1700_DFP/2.7.1
+  optimize: speed
+  debug: on
+  misc:
+    ASM:
+      - -masm=auto
+    C:
+      - -std=c99
+      - -fno-rtti
+      - -funsigned-char
+      - -fshort-enums
+      - -fshort-wchar
+      - -fno-function-sections
+    CPP:
+      - -xc++
+      - -std=c++03
+      - -fno-rtti
+      - -funsigned-char
+      - -fshort-enums
+      - -fshort-wchar
+      - -fno-function-sections
+    Link:
+      - --map
+      - --load_addr_map_info
+      - --xref
+      - --callgraph
+      - --symbols
+      - --info sizes
+      - --info totals
+      - --info unused
+      - --info veneers
+      - --strict
+      - --summary_stderr
+      - --info summarysizes
+  define:
+    - LPC175x_6x
+    - _RTE_
+  add-path:
+    - RTE/_Quoridor
+    - ${CMSIS_PACK_ROOT}/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+    - ${CMSIS_PACK_ROOT}/Keil/LPC1700_DFP/2.7.1/Device/Include
+  output-dirs:
+    intdir: tmp/quoridor/Quoridor
+    outdir: out/quoridor/Quoridor
+    rtedir: RTE
+  output:
+    - type: elf
+      file: quoridor.axf
+  components:
+    - component: ARM::CMSIS:CORE@5.6.0
+      condition: ARMv6_7_8-M Device
+      from-pack: ARM::CMSIS@5.9.0
+      selected-by: ARM::CMSIS:CORE
+  linker:
+    script: quoridor_Quoridor.sct
+  groups:
+    - group: startup_file
+      files:
+        - file: startup_LPC17xx.s
+          category: sourceAsm
+    - group: main
+      files:
+        - file: main.c
+          category: sourceC
+        - file: common.h
+          category: header
+    - group: lib_SoC_board
+      files:
+        - file: system_LPC17xx.c
+          category: sourceC
+    - group: GLCD
+      files:
+        - file: GLCD/AsciiLib.c
+          category: sourceC
+        - file: GLCD/AsciiLib.h
+          category: header
+        - file: GLCD/GLCD.c
+          category: sourceC
+        - file: GLCD/GLCD.h
+          category: header
+        - file: GLCD/HzLib.c
+          category: sourceC
+        - file: GLCD/HzLib.h
+          category: header
+    - group: TP
+      files:
+        - file: TouchPanel/TouchPanel.c
+          category: sourceC
+        - file: TouchPanel/TouchPanel.h
+          category: header
+    - group: utils
+      files:
+        - file: utils/dynarray.c
+          category: sourceC
+        - file: utils/dynarray.h
+          category: header
+        - file: utils/stack.c
+          category: sourceC
+        - file: utils/stack.h
+          category: header
+    - group: imgs
+      files:
+        - file: imgs/sprites.h
+          category: header
+        - file: imgs/wall.c
+          category: sourceC
+        - file: imgs/cell.c
+          category: sourceC
+        - file: imgs/player.c
+          category: sourceC
+    - group: button_EXINT
+      files:
+        - file: button_EXINT/button.h
+          category: header
+        - file: button_EXINT/IRQ_button.c
+          category: sourceC
+        - file: button_EXINT/lib_button.c
+          category: sourceC
+    - group: joystick
+      files:
+        - file: joystick/funct_joystick.c
+          category: sourceC
+        - file: joystick/joystick.h
+          category: header
+        - file: joystick/lib_joystick.c
+          category: sourceC
+    - group: led
+      files:
+        - file: led/funct_led.c
+          category: sourceC
+        - file: led/led.h
+          category: header
+        - file: led/lib_led.c
+          category: sourceC
+    - group: RIT
+      files:
+        - file: RIT/IRQ_RIT.c
+          category: sourceC
+        - file: RIT/lib_RIT.c
+          category: sourceC
+        - file: RIT/RIT.h
+          category: header
+    - group: game
+      files:
+        - file: game/game.c
+          category: sourceC
+        - file: game/game.h
+          category: header
+        - file: game/graphics.c
+          category: sourceC
+        - file: game/graphics.h
+          category: header
+  constructed-files:
+    - file: RTE/_Quoridor/RTE_Components.h
+      category: header
+  licenses:
+    - license: <unknown>
+      packs:
+        - pack: ARM::CMSIS@5.9.0
+      components:
+        - component: ARM::CMSIS:CORE@5.6.0
+    - license: <unknown>
+      packs:
+        - pack: Keil::LPC1700_DFP@2.7.1

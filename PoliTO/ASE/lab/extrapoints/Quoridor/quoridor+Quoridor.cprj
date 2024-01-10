@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<cprj schemaVersion="2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="CPRJ.xsd">
+  <created timestamp="2024-01-10T19:05:48" tool="csolution 2.2.1"/>
+
+  <info isLayer="false">
+    <description>Automatically generated project</description>
+  </info>
+
+  <packages>
+    <package name="CMSIS" vendor="ARM" version="5.9.0:5.9.0"/>
+    <package name="LPC1700_DFP" vendor="Keil" version="2.7.1:2.7.1"/>
+  </packages>
+
+  <compilers>
+    <compiler name="AC6" version="6.19.0:6.19.0"/>
+  </compilers>
+
+  <target Dendian="Little-endian" Dfpu="NO_FPU" Dname="LPC1768" Dsecure="Non-secure" Dvendor="NXP:11">
+    <output elf="quoridor.axf" intdir="tmp/quoridor/Quoridor" name="quoridor" outdir="out/quoridor/Quoridor" rtedir="RTE" type="exe"/>
+    <options debug="on" optimize="speed"/>
+    <asflags add="-masm=auto" compiler="AC6"/>
+    <cflags add="-std=c99 -fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-function-sections" compiler="AC6"/>
+    <cxxflags add="-xc++ -std=c++03 -fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-function-sections" compiler="AC6"/>
+    <ldflags add="--map --load_addr_map_info --xref --callgraph --symbols --info sizes --info totals --info unused --info veneers --strict --summary_stderr --info summarysizes" compiler="AC6" file="quoridor_Quoridor.sct"/>
+  </target>
+
+  <components>
+    <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.6.0"/>
+  </components>
+
+  <files>
+    <group name="startup_file">
+      <file category="sourceAsm" name="startup_LPC17xx.s"/>
+    </group>
+    <group name="main">
+      <file category="sourceC" name="main.c"/>
+      <file category="header" name="common.h"/>
+    </group>
+    <group name="lib_SoC_board">
+      <file category="sourceC" name="system_LPC17xx.c"/>
+    </group>
+    <group name="GLCD">
+      <file category="sourceC" name="GLCD/AsciiLib.c"/>
+      <file category="header" name="GLCD/AsciiLib.h"/>
+      <file category="sourceC" name="GLCD/GLCD.c"/>
+      <file category="header" name="GLCD/GLCD.h"/>
+      <file category="sourceC" name="GLCD/HzLib.c"/>
+      <file category="header" name="GLCD/HzLib.h"/>
+    </group>
+    <group name="TP">
+      <file category="sourceC" name="TouchPanel/TouchPanel.c"/>
+      <file category="header" name="TouchPanel/TouchPanel.h"/>
+    </group>
+    <group name="utils">
+      <file category="sourceC" name="utils/dynarray.c"/>
+      <file category="header" name="utils/dynarray.h"/>
+      <file category="sourceC" name="utils/stack.c"/>
+      <file category="header" name="utils/stack.h"/>
+    </group>
+    <group name="imgs">
+      <file category="header" name="imgs/sprites.h"/>
+      <file category="sourceC" name="imgs/wall.c"/>
+      <file category="sourceC" name="imgs/cell.c"/>
+      <file category="sourceC" name="imgs/player.c"/>
+    </group>
+    <group name="button_EXINT">
+      <file category="header" name="button_EXINT/button.h"/>
+      <file category="sourceC" name="button_EXINT/IRQ_button.c"/>
+      <file category="sourceC" name="button_EXINT/lib_button.c"/>
+    </group>
+    <group name="joystick">
+      <file category="sourceC" name="joystick/funct_joystick.c"/>
+      <file category="header" name="joystick/joystick.h"/>
+      <file category="sourceC" name="joystick/lib_joystick.c"/>
+    </group>
+    <group name="led">
+      <file category="sourceC" name="led/funct_led.c"/>
+      <file category="header" name="led/led.h"/>
+      <file category="sourceC" name="led/lib_led.c"/>
+    </group>
+    <group name="RIT">
+      <file category="sourceC" name="RIT/IRQ_RIT.c"/>
+      <file category="sourceC" name="RIT/lib_RIT.c"/>
+      <file category="header" name="RIT/RIT.h"/>
+    </group>
+    <group name="game">
+      <file category="sourceC" name="game/game.c"/>
+      <file category="header" name="game/game.h"/>
+      <file category="sourceC" name="game/graphics.c"/>
+      <file category="header" name="game/graphics.h"/>
+    </group>
+  </files>
+</cprj>
+

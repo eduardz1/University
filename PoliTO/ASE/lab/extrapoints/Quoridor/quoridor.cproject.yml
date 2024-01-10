@@ -1,0 +1,103 @@
+project:
+  packs:
+    - pack: Keil::LPC1700_DFP
+    - pack: ARM::CMSIS
+    - pack: ARM::CMSIS-NN
+    - pack: ARM::CMSIS-DSP
+  setups:
+    - setup: Options for Quoridor
+      processor:
+        trustzone: non-secure
+      debug: "on"
+      misc:
+        - C:
+            - -std=c99
+          C-CPP:
+            - -fno-rtti
+            - -funsigned-char
+            - -fshort-enums
+            - -fshort-wchar
+            - -fno-function-sections
+          CPP:
+            - -xc++
+            - -std=c++03
+          ASM:
+            - -masm=auto
+          Link:
+            - --map
+            - --load_addr_map_info
+            - --xref
+            - --callgraph
+            - --symbols
+            - --info sizes
+            - --info totals
+            - --info unused
+            - --info veneers
+            - --strict
+            - --summary_stderr
+            - --info summarysizes
+  linker:
+    - script: quoridor_Quoridor.sct
+  groups:
+    - group: startup_file
+      files:
+        - file: startup_LPC17xx.s
+    - group: main
+      files:
+        - file: main.c
+        - file: common.h
+    - group: lib_SoC_board
+      files:
+        - file: system_LPC17xx.c
+    - group: GLCD
+      files:
+        - file: GLCD/AsciiLib.c
+        - file: GLCD/AsciiLib.h
+        - file: GLCD/GLCD.c
+        - file: GLCD/GLCD.h
+        - file: GLCD/HzLib.c
+        - file: GLCD/HzLib.h
+    - group: TP
+      files:
+        - file: TouchPanel/TouchPanel.c
+        - file: TouchPanel/TouchPanel.h
+    - group: utils
+      files:
+        - file: utils/dynarray.c
+        - file: utils/dynarray.h
+        - file: utils/stack.c
+        - file: utils/stack.h
+    - group: imgs
+      files:
+        - file: imgs/sprites.h
+        - file: imgs/wall.c
+        - file: imgs/cell.c
+        - file: imgs/player.c
+    - group: button_EXINT
+      files:
+        - file: button_EXINT/button.h
+        - file: button_EXINT/IRQ_button.c
+        - file: button_EXINT/lib_button.c
+    - group: joystick
+      files:
+        - file: joystick/funct_joystick.c
+        - file: joystick/joystick.h
+        - file: joystick/lib_joystick.c
+    - group: led
+      files:
+        - file: led/funct_led.c
+        - file: led/led.h
+        - file: led/lib_led.c
+    - group: RIT
+      files:
+        - file: RIT/IRQ_RIT.c
+        - file: RIT/lib_RIT.c
+        - file: RIT/RIT.h
+    - group: game
+      files:
+        - file: game/game.c
+        - file: game/game.h
+        - file: game/graphics.c
+        - file: game/graphics.h
+  components:
+    - component: ARM::CMSIS:CORE
