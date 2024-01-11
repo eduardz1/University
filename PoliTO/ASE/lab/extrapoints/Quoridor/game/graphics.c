@@ -27,6 +27,21 @@ void draw_board(void)
     LCD_DrawLine(start_x, MAX_Y - start_y, MAX_X, MAX_Y - start_y, Black);
     LCD_draw_full_width_rectangle(MAX_Y - start_y + 1, MAX_Y, TABLE_COLOR);
 
+    // FIXME: remove and use leds to represent walls
+    // end_y = start_y - 1 - BLOCK_PADDING; // subtracts width of line and
+    // padding start_y = end_y - wall_vertical.height; end_x = start_x +
+    // wall_vertical.width;
+
+    // /* Draw the usable walls */
+    // for (w = 0; w < WALL_COUNT; w++)
+    // {
+    //     wall_vertical.draw(start_x, start_y);
+    //     wall_vertical.draw(start_x, MAX_Y - end_y);
+
+    //     start_x += wall_vertical.width + empty_square.width;
+    //     end_x += wall_vertical.width + empty_square.width;
+    // }
+
     start_x = BLOCK_PADDING;
     start_y = BLOCK_PADDING + TOP_PADDING;
 
@@ -63,7 +78,7 @@ void draw_board(void)
 void refresh_info_panel(const uint8_t timer)
 {
     static bool drawn = false;
-    static enum Player last_player = WHITE;
+    static enum Player last_player = RED;
     char time_str[3];
     char wall_str[3];
 
@@ -149,7 +164,7 @@ void highlight_possible_moves(void)
 
     for (i = 0; i < 5; i++)
     {
-        if (current_possible_moves[i].as_uint32_t == -1) continue;
+        if (current_possible_moves[i].as_uint32_t == UINT32_MAX) continue;
 
         start_x =
             board
@@ -175,7 +190,7 @@ void clear_highlighted_moves(void)
 
     for (i = 0; i < 5; i++)
     {
-        if (current_possible_moves[i].as_uint32_t == -1) break;
+        if (current_possible_moves[i].as_uint32_t == UINT32_MAX) break;
 
         x = current_possible_moves[i].x;
         y = current_possible_moves[i].y;
@@ -250,8 +265,7 @@ update_player_selector(const int8_t up, const int8_t right, bool show)
 
     color->draw(start_x, start_y);
 
-    if (show == false)
-        return (struct Coordinate){x, y}; // return after clearing last selector
+    if (show == false) return (struct Coordinate) {x, y}; // return after clearing last selector
 
     x += right;
     y += up;
@@ -263,7 +277,7 @@ update_player_selector(const int8_t up, const int8_t right, bool show)
     start_y = board.board[x][y].y + PLAYER_SELECTOR_PADDING;
 
     player_selector.draw(start_x, start_y);
-
+    
     return (struct Coordinate){x, y};
 }
 

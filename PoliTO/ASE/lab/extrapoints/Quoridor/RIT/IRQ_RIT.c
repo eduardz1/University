@@ -24,6 +24,7 @@ __attribute__((always_inline)) void do_update(const int up, const int right)
 
 void RIT_IRQHandler(void)
 {
+#ifdef SIMULATOR
     static union Move error_move = {.direction = HORIZONTAL,
                                     .player_id = RED,
                                     .type = PLAYER_MOVE,
@@ -58,6 +59,41 @@ void RIT_IRQHandler(void)
     }
 #endif
 
+    if ((LPC_GPIO1->FIOPIN & (1 << 25)) == 0) /* SELECT */
+    {
+        struct Coordinate offset;
+        union Move res;
+
+        if (mode == PLAYER_MOVE)
+        {
+            offset = update_player_selector(0, 0, false);
+            res = move_player(offset.x, offset.y);
+        }
+        else
+        {
+            offset = update_wall_selector(0, 0, false);
+            res = place_wall(offset.x, offset.y);
+        }
+
+        if (res.as_uint32_t == -1)
+        {
+            write_invalid_move();
+
+            // mode = PLAYER_MOVE;    FIXME: why?
+            update_player_selector(0, 0, true);
+        }
+        else
+        {
+            change_turn();
+            counter = 20;
+        }
+    }
+
+    if ((LPC_GPIO1->FIOPIN & (1 << 26)) == 0) do_update(1, 0);  /* DOWN */
+    if ((LPC_GPIO1->FIOPIN & (1 << 27)) == 0) do_update(0, -1); /* LEFT */
+    if ((LPC_GPIO1->FIOPIN & (1 << 28)) == 0) do_update(0, 1);  /* RIGHT */
+    if ((LPC_GPIO1->FIOPIN & (1 << 29)) == 0) do_update(-1, 0); /* UP */
+#else
     static int j_select = 0;
     static int j_down = 0;
     static int j_up = 0;
@@ -284,6 +320,7 @@ void RIT_IRQHandler(void)
         LPC_PINCON->PINSEL4 |= (1 << 21); /* External interrupt 0 pin selection
                                            */
     }
+#endif
 
     LPC_RIT->RICTRL |= 0x1; /* clear interrupt flag */
 }
