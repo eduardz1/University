@@ -27,7 +27,6 @@ void game_init(void)
 
     enable_RIT(); /* start accepting inputs */
 
-    // while (true) // TODO: make game end
     change_turn();
 
     while (true)
@@ -43,24 +42,19 @@ void change_turn(void)
     LCD_draw_rectangle(2, 9, 2 + 8 * 21, 9 + 8 + 4, TABLE_COLOR);
     calculate_possible_moves();
     highlight_possible_moves(); // TODO: maybe inline
-
     refresh_info_panel(20);
-
-    // FIXME: uses same pins as LCD so it's only useful before the player does
-    // any action that refreshes the screen
-    LED_Out((1 << walls) - 1);
 }
 
-void calculate_possible_moves(void) // FIXME: bug, RED in player id for WHITE
-                                    // move
+void calculate_possible_moves(void)
 {
     uint8_t i, x = current_player == RED ? red.x : white.x,
                y = current_player == RED ? red.y : white.y;
     union Move possible_moves[5] = {0}; // MAX number of possible moves
 
-    for (i = 0; i < ARRAY_SIZE(possible_moves);
-         possible_moves[++i].player_id = current_player)
-        ;
+    for (i = 0; i < ARRAY_SIZE(possible_moves); i++)
+    {
+        possible_moves[i].player_id = current_player;
+    }
     i = 0;
 
     // check left
@@ -187,11 +181,9 @@ void calculate_possible_moves(void) // FIXME: bug, RED in player id for WHITE
         }
     }
 
-    for (; i < ARRAY_SIZE(possible_moves);
-         possible_moves[i++].as_uint32_t = UINT32_MAX)
+    for (; i < ARRAY_SIZE(possible_moves); possible_moves[i++].as_uint32_t = -1)
         ;
 
-    // TODO: not needed, just update directly current moves
     memcpy(current_possible_moves, possible_moves, sizeof(possible_moves));
 }
 
@@ -228,7 +220,6 @@ union Move move_player(const uint8_t x, const uint8_t y)
 
         dyn_array_push(board.moves, move.as_uint32_t);
 
-        // check winning condition // TODO: end game
         if (red.y == BOARD_SIZE - 1)
         {
             LCD_write_text(48, MAX_Y - 27, "RED wins!", Black, TRANSPARENT, 2);
@@ -244,18 +235,16 @@ union Move move_player(const uint8_t x, const uint8_t y)
         return move;
     }
 
-    move.as_uint32_t = UINT32_MAX;
-    return move; // NOTE: returning the cast from UINT32_MAX to union Move gives
-                 // out a warning, it gets converted to UIN8_MAX when running on
-                 // real board, seems to be a bug in the compiler 5
+    move.as_uint32_t = -1;
+    return move; // DO NOT MERGE THE PRECEDING LINE WITH THIS ONE
 }
 
 bool is_wall_between(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
 {
-    return (x1 == x2 && y1 < y2 && board.board[x1][y1].walls.right) ||
-           (x1 == x2 && y1 > y2 && board.board[x1][y2].walls.right) ||
-           (y1 == y2 && x1 < x2 && board.board[x1][y1].walls.bottom) ||
-           (y1 == y2 && x1 > x2 && board.board[x2][y1].walls.bottom);
+    return (x1 == x2 && y1 < y2 && board.board[x1][y1].walls.bottom) ||
+           (x1 == x2 && y1 > y2 && board.board[x1][y1].walls.top) ||
+           (y1 == y2 && x1 < x2 && board.board[x1][y1].walls.right) ||
+           (y1 == y2 && x1 > x2 && board.board[x1][y1].walls.left);
 }
 
 bool is_not_trapped(const enum Player player)
@@ -308,6 +297,39 @@ bool is_not_trapped(const enum Player player)
     return false;
 }
 
+bool is_wall_clipping(const uint8_t x,
+                      const uint8_t y,
+                      const enum Direction dir)
+{
+    switch (dir)
+    {
+    case HORIZONTAL:
+        // check overlap
+        if (board.board[x][y].walls.bottom ||
+            board.board[x + 1][y].walls.bottom)
+            return true;
+
+        // check intersection
+        if (y < BOARD_SIZE - 1 && board.board[x][y + 1].walls.right &&
+            board.board[x][y].walls.right)
+            return true;
+        break;
+
+    case VERTICAL:
+        // check overlap
+        if (board.board[x][y].walls.right || board.board[x][y + 1].walls.right)
+            return true;
+
+        // check intersection
+        if (x < BOARD_SIZE - 1 && board.board[x][y].walls.bottom &&
+            board.board[x + 1][y].walls.bottom)
+            return true;
+        break;
+    }
+
+    return false;
+}
+
 bool is_wall_valid(const uint8_t x, const uint8_t y, const enum Direction dir)
 {
     if (x > BOARD_SIZE - 1 || y > BOARD_SIZE - 1 ||
@@ -349,7 +371,12 @@ union Move place_wall(const uint8_t x, const uint8_t y)
     };
     uint8_t walls_backup[ARRAY_SIZE(neighbors)];
 
-    if (player->wall_count == 0) return (union Move){UINT8_MAX};
+    if (player->wall_count == 0 || is_wall_clipping(x, y, dir))
+    {
+        write_invalid_move();
+        move.as_uint32_t = -1;
+        return move; // DO NOT MERGE THE PRECEDING LINE WITH THIS ONE
+    }
 
     if (current_player == RED)
         red.wall_count--;
@@ -389,14 +416,14 @@ union Move place_wall(const uint8_t x, const uint8_t y)
     { // rollback
         write_invalid_move();
 
-        for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++) // FIXME: seems
-                                                            // broken
+        for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
         {
             board.board[move.x + neighbors[i].x][move.y + neighbors[i].y]
                 .walls.as_uint8_t = walls_backup[i];
         }
 
-        return (union Move){UINT8_MAX};
+        move.as_uint32_t = -1;
+        return move; // DO NOT MERGE THE PRECEDING LINE WITH THIS ONE
     }
 
     wall_sprite->draw(board.board[move.x][move.y].x + // add cell height offset

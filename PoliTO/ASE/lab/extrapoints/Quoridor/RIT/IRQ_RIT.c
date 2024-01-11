@@ -4,8 +4,8 @@
 #include "../game/graphics.h"
 #include "../imgs/sprites.h"
 #include "../led/led.h"
-#include "RIT.h"
 #include "LPC17xx.h"
+#include "RIT.h"
 #include <stdint.h>
 
 extern enum Player current_player;
@@ -30,6 +30,20 @@ void RIT_IRQHandler(void)
                                     .type = PLAYER_MOVE,
                                     .x = 0,
                                     .y = 0};
+#ifdef SIMULATOR
+    static uint32_t counter = 20; // simulator ~ 20 times slower
+
+    refresh_info_panel(counter--); // ~ 1 refresh per second
+
+    if (counter == 0)
+    {
+        error_move.player_id = current_player;
+
+        dyn_array_push(board.moves, error_move.as_uint32_t);
+        change_turn();
+        counter = 20;
+    }
+#else
     static uint32_t counter = (20 * 1000) / 50; // 20 ms/50ms --> 400 iterations
 
     if (counter-- % 20) // 20 iterations --> 1 second
@@ -43,6 +57,7 @@ void RIT_IRQHandler(void)
         change_turn();
         counter = (20 * 1000) / 50;
     }
+#endif
 
     if ((LPC_GPIO1->FIOPIN & (1 << 25)) == 0) /* SELECT */
     {
@@ -60,17 +75,17 @@ void RIT_IRQHandler(void)
             res = place_wall(offset.x, offset.y);
         }
 
-        if (res.as_uint32_t == UINT32_MAX)
+        if (res.as_uint32_t == -1)
         {
             write_invalid_move();
 
-            mode = PLAYER_MOVE;
+            // mode = PLAYER_MOVE;    FIXME: why?
             update_player_selector(0, 0, true);
         }
         else
         {
             change_turn();
-            counter = (20 * 1000) / 50;
+            counter = 20;
         }
     }
 
@@ -124,7 +139,7 @@ void RIT_IRQHandler(void)
                 res = place_wall(offset.x, offset.y);
             }
 
-            if (res.as_uint32_t == UINT32_MAX)
+            if (res.as_uint32_t == -1)
             {
                 write_invalid_move();
 

@@ -67,10 +67,11 @@ struct Cell
     union {
         struct
         {
-            bool left   ;
-            bool right  ;
-            bool top    ;
-            bool bottom ;
+            bool left       : 1;
+            bool right      : 1;
+            bool top        : 1;
+            bool bottom     : 1;
+            uint8_t padding : 4; // otherwise the behaviour is not defined
         };
 
         uint8_t as_uint8_t;

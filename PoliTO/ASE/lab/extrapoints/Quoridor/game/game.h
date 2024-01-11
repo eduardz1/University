@@ -35,6 +35,21 @@ void calculate_possible_moves(void);
  */
 union Move move_player(const uint8_t x, const uint8_t y);
 
+/**
+ * @brief checks if the wall passed as input is not overlapping with another
+ * wall or intersecting one
+ * @pre the wall position is valid
+ *
+ * @param x x board coordinate of wall start
+ * @param y y board coordinate of wall start
+ * @param dir direction of the wall
+ * @return true if it is clipping another wall
+ * @return false otherwise
+ */
+bool is_wall_clipping(const uint8_t x,
+                      const uint8_t y,
+                      const enum Direction dir);
+
 bool is_wall_valid(const uint8_t x, const uint8_t y, const enum Direction dir);
 
 /**
