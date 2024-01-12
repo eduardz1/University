@@ -1,3 +1,5 @@
+#pragma diag_suppress 68 // integer conversion resulted in a change of sign
+
 #include "game.h"
 #include "../GLCD/GLCD.h"
 #include "../RIT/RIT.h"
@@ -37,7 +39,6 @@ void change_turn(void)
 {
     current_player = current_player == RED ? WHITE : RED;
     mode = PLAYER_MOVE; // reset to default
-    uint8_t walls = current_player == RED ? red.wall_count : white.wall_count;
     clear_highlighted_moves();
     LCD_draw_rectangle(2, 9, 2 + 8 * 21, 9 + 8 + 4, TABLE_COLOR);
     calculate_possible_moves();
@@ -373,7 +374,6 @@ union Move place_wall(const uint8_t x, const uint8_t y)
 
     if (player->wall_count == 0 || is_wall_clipping(x, y, dir))
     {
-        write_invalid_move();
         move.as_uint32_t = -1;
         return move; // DO NOT MERGE THE PRECEDING LINE WITH THIS ONE
     }
@@ -390,12 +390,6 @@ union Move place_wall(const uint8_t x, const uint8_t y)
                 .walls.as_uint8_t;
     }
 
-    // TODO: check if we can place walls on the outer borders, if so manage
-    // the cases where we don't update the adjacent cells
-    // TODO: cannot check if walls intersect given how they are represented
-    // right now, to improve I can make a struct Wall {x, y, direction} and save
-    // the list (which can be initialized with fixed length of 16) of all walls
-    // and perform the check on that
     switch (dir)
     {
     case HORIZONTAL:
@@ -414,8 +408,6 @@ union Move place_wall(const uint8_t x, const uint8_t y)
 
     if (!is_wall_valid(move.x, move.y, dir))
     { // rollback
-        write_invalid_move();
-
         for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
         {
             board.board[move.x + neighbors[i].x][move.y + neighbors[i].y]

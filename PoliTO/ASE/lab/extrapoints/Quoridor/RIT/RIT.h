@@ -13,6 +13,7 @@
 #define __RIT_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 extern uint32_t init_RIT(uint32_t RITInterval);
 extern void enable_RIT(void);
@@ -30,8 +31,18 @@ extern void RIT_IRQHandler(void);
  *
  * @param up offset up (or down if negative)
  * @param right osset right (or left if negative)
+ * @param show if set to false the selector clears itself
+ * @return struct Coordinate with {x, y} the current offset
  */
-void do_update(const int up, const int right);
+struct Coordinate
+handle_update_selector(const int up, const int right, bool show);
+
+/**
+ * @brief refreshes the info panel in the top right corner
+ *
+ * @param counter counter used to keep track of the time
+ */
+void handle_info_panel(uint32_t *counter);
 
 #endif /* end __RIT_H */
 /*****************************************************************************

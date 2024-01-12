@@ -1,3 +1,5 @@
+#pragma diag_suppress 68 // integer conversion resulted in a change of sign
+
 #include "graphics.h"
 #include "../GLCD/GLCD.h"
 #include "../imgs/sprites.h"

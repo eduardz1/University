@@ -9,10 +9,6 @@
 #define PLAYER_SELECTOR_PADDING                                                \
     (((empty_square.width - player_selector.width) >> 1))
 
-typedef struct Coordinate (*update_selector)(const int8_t up,
-                                             const int8_t right,
-                                             bool show);
-
 void game_init(void);
 
 /**
