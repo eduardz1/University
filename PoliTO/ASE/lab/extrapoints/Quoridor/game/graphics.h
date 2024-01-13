@@ -5,6 +5,12 @@
 
 void draw_board(void);
 
+void draw_main_menu(void);
+
+void draw_single_board_menu(void);
+
+void draw_two_board_menu(void);
+
 void refresh_walls(void);
 
 void write_invalid_move(void);
@@ -45,3 +51,15 @@ update_player_selector(const int8_t up, const int8_t right, bool show);
  */
 struct Coordinate
 update_wall_selector(const int8_t up, const int8_t right, bool show);
+
+/**
+ * @brief updates the sprite of the menu selector
+ *
+ * @param up offset up (negative for down)
+ * @param right offset right (negative for left)
+ * @param show if set to false the selector clears itself
+ * @return struct Coordinate with x always 0 and y either 0 (top button) or 1
+ * (bottom button)
+ */
+struct Coordinate
+update_menu_selector(const int8_t up, const int8_t right, bool show);

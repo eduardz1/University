@@ -5,6 +5,8 @@
 #include "common.h"
 #include "game/game.h"
 #include "joystick/joystick.h"
+#include <stdlib.h>
+#include <time.h>
 
 #ifdef SIMULATOR
 extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the
@@ -15,6 +17,7 @@ extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the
 
 int main(void)
 {
+    srand(time(NULL));
     SystemInit(); /* System Initialization (i.e., PLL)  */
     LCD_Initialization();
     BUTTON_init();
@@ -26,4 +29,7 @@ int main(void)
 
     LPC_SC->PCON |= 0x1; /* power-down	mode */
     LPC_SC->PCON &= ~(0x2);
+
+    while (true)
+        __ASM("wfi");
 }

@@ -54,7 +54,10 @@ struct Coordinate
 enum Mode
 {
     PLAYER_MOVE = 0,
-    WALL_PLACEMENT = 1
+    WALL_PLACEMENT = 1,
+    GAME_MODE_SELECTION = 2,
+    SINGLE_BOARD_MENU = 3,
+    TWO_BOARDS_MENU = 4,
 };
 
 enum Direction

@@ -8,15 +8,18 @@
 #include "../utils/dynarray.h"
 #include "../utils/stack.h"
 #include "graphics.h"
+#include "npc.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
+bool AI_enabled;
+
 union Move current_possible_moves[5] = {0};
 enum Player current_player = WHITE;
 struct Board board = {0};
-enum Mode mode = PLAYER_MOVE;
+enum Mode mode = GAME_MODE_SELECTION;
 enum Direction direction = VERTICAL;
 
 struct PlayerInfo red = {RED, 3, 0, 8};
@@ -25,14 +28,37 @@ struct PlayerInfo white = {WHITE, 3, 6, 8};
 void game_init(void)
 {
     board.moves = dyn_array_new(0);
-    draw_board();
 
+    draw_main_menu();
     enable_RIT(); /* start accepting inputs */
+}
 
+void select_menu_option(bool up_or_down)
+{
+    if (mode == GAME_MODE_SELECTION)
+    {
+        if (up_or_down)
+        {
+            mode = SINGLE_BOARD_MENU;
+            draw_single_board_menu();
+        }
+        else
+        {
+            mode = TWO_BOARDS_MENU;
+            draw_two_board_menu();
+        }
+
+        return;
+    }
+
+    if (mode == TWO_BOARDS_MENU)
+    {
+        // TODO: configure CAS connection
+    }
+
+    AI_enabled = up_or_down ? true : false;
+    draw_board();
     change_turn();
-
-    while (true)
-        __ASM("wfi");
 }
 
 void change_turn(void)
@@ -42,8 +68,20 @@ void change_turn(void)
     clear_highlighted_moves();
     LCD_draw_rectangle(2, 9, 2 + 8 * 21, 9 + 8 + 4, TABLE_COLOR);
     calculate_possible_moves();
-    highlight_possible_moves(); // TODO: maybe inline
+    highlight_possible_moves();
     refresh_info_panel(20);
+
+    if (current_player == WHITE && AI_enabled)
+    {
+        disable_RIT();
+        AI_move();
+        enable_RIT();
+        change_turn();
+    }
+    else
+    {
+        enable_RIT();
+    }
 }
 
 void calculate_possible_moves(void)

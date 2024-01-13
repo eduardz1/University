@@ -29,11 +29,15 @@ __attribute__((always_inline)) struct Coordinate
 handle_update_selector(const int up, const int right, bool show)
 {
     return (mode == WALL_PLACEMENT ? update_wall_selector :
-                                     update_player_selector)(up, right, show);
+            mode == PLAYER_MOVE    ? update_player_selector :
+                                     update_menu_selector)(up, right, show);
 }
 
 void handle_info_panel(uint32_t *counter)
 {
+    if (mode != PLAYER_MOVE && mode != WALL_PLACEMENT)
+        return; // game not started yet
+
     // refresh every second
     if ((*counter)-- % (TURN_INTERVAL / RIT_SCALING_FACTOR) == 0)
         refresh_info_panel(*counter / (TURN_INTERVAL / RIT_SCALING_FACTOR));
@@ -67,18 +71,26 @@ void RIT_IRQHandler(void)
 
     if ((LPC_GPIO1->FIOPIN & (1 << 25)) == 0 && ++j_select == 1)
     {
-        union Move res = (mode == PLAYER_MOVE ? move_player :
-                                                place_wall)(offset.x, offset.y);
-
-        if (res.as_uint32_t == -1)
+        if (mode != PLAYER_MOVE && mode != WALL_PLACEMENT)
         {
-            write_invalid_move();
+            select_menu_option(offset.y);
         }
         else
         {
-            (void)handle_update_selector(0, 0, false);
-            change_turn();
-            counter = ((TURN_INTERVAL * 1000) / RIT_MS) / RIT_SCALING_FACTOR;
+            union Move res = (mode == PLAYER_MOVE ? move_player : place_wall)(
+                offset.x, offset.y);
+
+            if (res.as_uint32_t == -1)
+            {
+                write_invalid_move();
+            }
+            else
+            {
+                (void)handle_update_selector(0, 0, false);
+                change_turn();
+                counter =
+                    ((TURN_INTERVAL * 1000) / RIT_MS) / RIT_SCALING_FACTOR;
+            }
         }
     }
     else
