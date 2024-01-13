@@ -103,27 +103,15 @@ const uint16_t player_selector_data[18 * 18] = {
 
 void draw_player_white(uint16_t x, uint16_t y)
 {
-    LCD_draw_image_conditional(x + 2,
-                               y + 2,
-                               x + 18,
-                               y + 18,
-                               HIGHLIGHT_COLOR,
-                               WHITE_PLAYER_COLOR_INNER,
-                               player_selector_data);
     LCD_draw_image_conditional(
         x, y, x + 22, y + 22, RED_PLAYER_COLOR, WHITE_PLAYER_COLOR, player_data);
+    player_selector_white_inner_color.draw(x + 2, y + 2);
 }
 
 void draw_player_red(uint16_t x, uint16_t y)
 {
-    LCD_draw_image_conditional(x + 2,
-                               y + 2,
-                               x + 18,
-                               y + 18,
-                               HIGHLIGHT_COLOR,
-                               RED_PLAYER_COLOR_INNER,
-                               player_selector_data);
     LCD_draw_image(x, y, x + 22, y + 22, player_data);
+    player_selector_red_inner_color.draw(x + 2, y + 2);
 }
 
 void draw_player_selector(uint16_t x, uint16_t y)
@@ -171,7 +159,6 @@ const struct Sprite player_white = {
     .height = 22,
 };
 
-// TODO: maybe the selector colors can be implemented better
 const struct Sprite player_selector = {
     .draw = draw_player_selector, .width = 18, .height = 18};
 

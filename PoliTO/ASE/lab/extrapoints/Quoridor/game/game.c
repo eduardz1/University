@@ -4,7 +4,6 @@
 #include "../GLCD/GLCD.h"
 #include "../RIT/RIT.h"
 #include "../imgs/sprites.h"
-#include "../led/led.h"
 #include "../utils/dynarray.h"
 #include "../utils/stack.h"
 #include "graphics.h"
@@ -15,6 +14,7 @@
 #include <string.h>
 
 bool AI_enabled;
+enum Player other_player_color = WHITE;
 
 union Move current_possible_moves[5] = {0};
 enum Player current_player = WHITE;
@@ -24,6 +24,8 @@ enum Direction direction = VERTICAL;
 
 struct PlayerInfo red = {RED, 3, 0, 8};
 struct PlayerInfo white = {WHITE, 3, 6, 8};
+
+uint32_t turn_id = 0; // number that is incremented each turn
 
 void game_init(void)
 {
@@ -35,9 +37,10 @@ void game_init(void)
 
 void select_menu_option(bool up_or_down)
 {
-    if (mode == GAME_MODE_SELECTION)
+    switch (mode)
     {
-        if (up_or_down)
+    case GAME_MODE_SELECTION:
+        if (!up_or_down)
         {
             mode = SINGLE_BOARD_MENU;
             draw_single_board_menu();
@@ -47,31 +50,51 @@ void select_menu_option(bool up_or_down)
             mode = TWO_BOARDS_MENU;
             draw_two_board_menu();
         }
+        break;
 
-        return;
+    case SINGLE_BOARD_MENU:
+        if (up_or_down) // vs AI
+        {
+            mode = COLOR_SELECTION_MENU;
+            AI_enabled = true;
+            draw_color_selection_menu();
+        }
+        else
+        {
+            AI_enabled = false;
+            draw_board();
+            change_turn();
+        }
+        break;
+
+    case TWO_BOARDS_MENU:
+        AI_enabled = up_or_down ? true : false;
+        mode = COLOR_SELECTION_MENU;
+        draw_color_selection_menu();
+        break;
+
+    case COLOR_SELECTION_MENU:
+        other_player_color = up_or_down ? RED : WHITE;
+        draw_board();
+        change_turn();
+        break;
+
+    default: break;
     }
-
-    if (mode == TWO_BOARDS_MENU)
-    {
-        // TODO: configure CAS connection
-    }
-
-    AI_enabled = up_or_down ? true : false;
-    draw_board();
-    change_turn();
 }
 
 void change_turn(void)
 {
+    turn_id++;
     current_player = current_player == RED ? WHITE : RED;
     mode = PLAYER_MOVE; // reset to default
     clear_highlighted_moves();
-    LCD_draw_rectangle(2, 9, 2 + 8 * 21, 9 + 8 + 4, TABLE_COLOR);
+    LCD_draw_rectangle(2, 9, 2 + 8 * 21, 9 + 8 + 4 + 8, TABLE_COLOR);
     calculate_possible_moves();
     highlight_possible_moves();
     refresh_info_panel(20);
 
-    if (current_player == WHITE && AI_enabled)
+    if (current_player == other_player_color && AI_enabled) // TODO: add CAN
     {
         disable_RIT();
         AI_move();

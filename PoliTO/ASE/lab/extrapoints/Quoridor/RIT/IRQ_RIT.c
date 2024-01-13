@@ -5,7 +5,6 @@
 #include "../game/game.h"
 #include "../game/graphics.h"
 #include "../imgs/sprites.h"
-#include "../led/led.h"
 #include "LPC17xx.h"
 #include "RIT.h"
 #include <stdint.h>
@@ -17,6 +16,20 @@ extern struct PlayerInfo red;
 extern struct PlayerInfo white;
 extern struct Board board;
 
+enum Joystick
+{
+    SELECT = 0,
+    DOWN = 1,
+    LEFT = 2,
+    RIGHT = 3,
+    UP = 4
+};
+
+#define GPIO_DOWN(n) ((LPC_GPIO1->FIOPIN & (1 << (25 + n))) == 0)
+#define BUTTON_DOWN(n)                                                         \
+    ((LPC_PINCON->PINSEL4 & (1 << (20 + n * 2))) == 0 &&                       \
+     (LPC_GPIO2->FIOPIN & (1 << (10 + n))) == 0)
+
 #define TURN_INTERVAL 20 // 20 seconds per turn
 #ifdef SIMULATOR
 #define RIT_SCALING_FACTOR                                                     \
@@ -24,6 +37,7 @@ extern struct Board board;
 #else
 #define RIT_SCALING_FACTOR 1
 #endif
+#define COUNTER_VAL (((TURN_INTERVAL * 1000) / RIT_MS) / RIT_SCALING_FACTOR)
 
 __attribute__((always_inline)) struct Coordinate
 handle_update_selector(const int up, const int right, bool show)
@@ -54,31 +68,23 @@ void handle_info_panel(uint32_t *counter)
 
     (void)handle_update_selector(0, 0, false);
     change_turn();
-    *counter = ((TURN_INTERVAL * 1000) / RIT_MS) / RIT_SCALING_FACTOR; // reset
+    *counter = COUNTER_VAL; // reset
 }
 
-void RIT_IRQHandler(void)
+static void handle_joystick_select(int *joystick,
+                                   uint32_t *counter,
+                                   struct Coordinate *offset)
 {
-    static struct Coordinate offset; // saves osset of current move
-    static int button_1 = 0, button_2 = 0, j_select = 0, j_down = 0, j_up = 0,
-               j_left = 0, j_right = 0;
-    static uint32_t counter =
-        ((TURN_INTERVAL * 1000) / RIT_MS) / RIT_SCALING_FACTOR;
-
-    handle_info_panel(&counter);
-
-    // HANDLE JOYSTICK MOVEMENT
-
-    if ((LPC_GPIO1->FIOPIN & (1 << 25)) == 0 && ++j_select == 1)
+    if (GPIO_DOWN(SELECT) && ++joystick[SELECT] == 1)
     {
         if (mode != PLAYER_MOVE && mode != WALL_PLACEMENT)
         {
-            select_menu_option(offset.y);
+            select_menu_option(offset->y);
         }
         else
         {
             union Move res = (mode == PLAYER_MOVE ? move_player : place_wall)(
-                offset.x, offset.y);
+                offset->x, offset->y);
 
             if (res.as_uint32_t == -1)
             {
@@ -88,40 +94,47 @@ void RIT_IRQHandler(void)
             {
                 (void)handle_update_selector(0, 0, false);
                 change_turn();
-                counter =
-                    ((TURN_INTERVAL * 1000) / RIT_MS) / RIT_SCALING_FACTOR;
+                *counter = COUNTER_VAL;
             }
         }
     }
-    else
+    else if (!GPIO_DOWN(SELECT))
     {
-        j_select = 0;
+        joystick[SELECT] = 0;
     }
+}
 
-    if ((LPC_GPIO1->FIOPIN & (1 << 26)) == 0 && ++j_down == 1)
-        offset = handle_update_selector(1, 0, true);
-    else
-        j_down = 0;
+static void handle_joystick_movement(int *joystick, struct Coordinate *offset)
+{
+    for (uint8_t i = DOWN; i <= UP; i++)
+    {
+        if (GPIO_DOWN(i) && ++joystick[i] == 1)
+        {
+            int x = i == DOWN ? 1 : i == UP ? -1 : 0;
+            int y = i == RIGHT ? 1 : i == LEFT ? -1 : 0;
+            *offset = handle_update_selector(x, y, true);
+        }
+        else if (!GPIO_DOWN(i))
+        {
+            joystick[i] = 0;
+        }
+    }
+}
 
-    if ((LPC_GPIO1->FIOPIN & (1 << 27)) == 0 && ++j_left == 1)
-        offset = handle_update_selector(0, -1, true);
-    else
-        j_left = 0;
+void handle_joystick(uint32_t *counter, struct Coordinate *offset)
+{
+    static int joystick[5] = {0};
 
-    if ((LPC_GPIO1->FIOPIN & (1 << 28)) == 0 && ++j_right == 1)
-        offset = handle_update_selector(0, 1, true);
-    else
-        j_right = 0;
+    handle_joystick_select(joystick, counter, offset);
 
-    if ((LPC_GPIO1->FIOPIN & (1 << 29)) == 0 && ++j_up == 1)
-        offset = handle_update_selector(-1, 0, true);
-    else
-        j_up = 0;
+    handle_joystick_movement(joystick, offset);
+}
 
-    // HANDLE BUTTON PRESSES
+void handle_buttons(struct Coordinate *offset)
+{
+    static int button_1 = 0, button_2 = 0;
 
-    if ((LPC_PINCON->PINSEL4 & (1 << 22)) == 0 &&
-        (LPC_GPIO2->FIOPIN & (1 << 11)) == 0 && ++button_1 == 1)
+    if (BUTTON_DOWN(1) && ++button_1 == 1)
     {
         if ((current_player == RED ? red.wall_count : white.wall_count) == 0)
         {
@@ -136,32 +149,42 @@ void RIT_IRQHandler(void)
 
             (void)handle_update_selector(0, 0, false);
             mode = mode == PLAYER_MOVE ? WALL_PLACEMENT : PLAYER_MOVE;
-            offset = handle_update_selector(0, 0, true);
+            *offset = handle_update_selector(0, 0, true);
 
             if (mode == PLAYER_MOVE) highlight_possible_moves();
         }
     }
-    else // button released
+    else if (!BUTTON_DOWN(1)) // button released
     {
         button_1 = 0;
         NVIC_EnableIRQ(EINT1_IRQn);       // disable Button interrupts
         LPC_PINCON->PINSEL4 |= (1 << 22); // External interrupt 0 pin selection
     }
 
-    if ((LPC_PINCON->PINSEL4 & (1 << 24)) == 0 &&
-        (LPC_GPIO2->FIOPIN & (1 << 12)) == 0 && ++button_2 == 1)
+    if (BUTTON_DOWN(2) && ++button_2 == 1)
     {
         direction = direction == VERTICAL ? HORIZONTAL : VERTICAL;
-        offset = update_wall_selector(0, 0, true);
+        *offset = update_wall_selector(0, 0, true);
     }
-    else // button released
+    else if (!BUTTON_DOWN(2)) // button released
     {
         button_2 = 0;
         NVIC_EnableIRQ(EINT2_IRQn);       // disable Button interrupts
         LPC_PINCON->PINSEL4 |= (1 << 24); // External interrupt 0 pin selection
     }
+}
 
-    reset_RIT(); // FIXME: check if it helps avoid overflow
+void RIT_IRQHandler(void)
+{
+    static struct Coordinate offset;       // saves offset of current move
+    static uint32_t counter = COUNTER_VAL; // used as timer
 
+    handle_info_panel(&counter);
+
+    handle_joystick(&counter, &offset);
+
+    handle_buttons(&offset);
+
+    reset_RIT();            // TODO: verify if it helps avoid overflow
     LPC_RIT->RICTRL |= 0x1; /* clear interrupt flag */
 }

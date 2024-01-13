@@ -17,6 +17,8 @@ extern enum Mode mode;
 extern struct PlayerInfo red;
 extern struct PlayerInfo white;
 
+extern uint32_t turn_id;
+
 void draw_main_menu(void)
 {
     LCD_Clear(TABLE_COLOR);
@@ -75,6 +77,27 @@ void draw_two_board_menu(void)
                    Black,
                    TABLE_COLOR,
                    1);
+}
+
+void draw_color_selection_menu(void)
+{
+    LCD_draw_full_width_rectangle(40, 40 + 2 + 16 + 16, TABLE_COLOR);
+
+    LCD_write_text(52, 40, "Choose your color", Black, TRANSPARENT, 1);
+
+    LCD_draw_rectangle(72,
+                       40 + 40 + 2 + 16 + 40 + 10,
+                       168,
+                       40 + 40 + 2 + 16 + 40 + 10 + 8,
+                       TABLE_COLOR);
+    LCD_draw_rectangle(72,
+                       40 + 40 + 2 + 16 + 40 + 10 + 32 + 2,
+                       168,
+                       40 + 40 + 2 + 16 + 40 + 10 + 8 + 32 + 2,
+                       TABLE_COLOR);
+
+    player_red.draw(109, 40 + 40 + 2 + 16 + 40 + 5);
+    player_white.draw(109, 40 + 40 + 2 + 16 + 40 + 32 + 2 + 5);
 }
 
 void draw_board(void)
@@ -270,16 +293,16 @@ update_player_selector(const int8_t up, const int8_t right, bool show)
 {
     static int16_t x = 0, y = 0;
     static bool flag_change_turn = true;
-    static enum Player last_player = RED;
+    static uint32_t last_turn = 0;
 
     uint16_t start_x, start_y;
     const struct Sprite *color;
 
-    if (last_player != current_player) flag_change_turn = true;
+    if (last_turn != turn_id) flag_change_turn = true;
 
     if (flag_change_turn)
     {
-        last_player = current_player;
+        last_turn = turn_id;
 
         x = current_player == RED ? red.x : white.x;
         y = current_player == RED ? red.y : white.y;
@@ -319,22 +342,24 @@ struct Coordinate
 update_wall_selector(const int8_t up, const int8_t right, bool show)
 {
     static int16_t x = 0, y = 0;
-    static bool flag_change_mode = true;
-    static enum Mode last_mode = PLAYER_MOVE;
+    static bool flag_change_turn = true;
+    static uint32_t last_turn = 0;
 
     uint16_t start_x, start_y;
 
-    if (last_mode != mode) flag_change_mode = true;
+    if (last_turn != turn_id) flag_change_turn = true;
 
-    if (flag_change_mode)
+    if (flag_change_turn)
     {
-        last_mode = mode;
+        last_turn = turn_id;
 
         /* place wall in the middle of the board */
         x = BOARD_SIZE >> 1;
         y = BOARD_SIZE >> 1;
 
-        flag_change_mode = false;
+        direction = VERTICAL;
+
+        flag_change_turn = false;
     }
 
     refresh_walls(); // TODO: can cache the last position like the player

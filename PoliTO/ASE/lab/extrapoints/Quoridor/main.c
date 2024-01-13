@@ -1,3 +1,4 @@
+#include "CAN/CAN.h"
 #include "GLCD/GLCD.h"
 #include "LPC17xx.h"
 #include "RIT/RIT.h"
@@ -20,6 +21,7 @@ int main(void)
     srand(time(NULL));
     SystemInit(); /* System Initialization (i.e., PLL)  */
     LCD_Initialization();
+    CAN_Init();
     BUTTON_init();
     joystick_init();
 

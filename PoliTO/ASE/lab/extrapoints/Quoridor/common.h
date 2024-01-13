@@ -58,6 +58,7 @@ enum Mode
     GAME_MODE_SELECTION = 2,
     SINGLE_BOARD_MENU = 3,
     TWO_BOARDS_MENU = 4,
+    COLOR_SELECTION_MENU = 5
 };
 
 enum Direction

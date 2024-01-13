@@ -5,15 +5,19 @@
 #include "npc.h"
 #include <stdlib.h>
 
-extern struct PlayerInfo white;
+extern struct PlayerInfo other_player_color;
 extern union Move current_possible_moves[5];
 
 void move_pawn(void)
 {
-    struct Coordinate best_y = {0, UINT8_MAX};
+    struct Coordinate best_y = {
+        0, other_player_color.player_id == WHITE ? UINT8_MAX : 0};
     for (int i = 0; i < 5 && current_possible_moves[i].as_uint32_t != -1; i++)
     {
-        if (current_possible_moves[i].y < best_y.y)
+        if (other_player_color.player_id == WHITE ?
+                current_possible_moves[i].y < best_y.y :
+                current_possible_moves[i].y > best_y.y)
+            ;
         {
             best_y.y = current_possible_moves[i].y;
             best_y.x = current_possible_moves[i].x;
@@ -25,7 +29,7 @@ void move_pawn(void)
 
 void AI_move(void)
 {
-    if (rand() & 1 && white.wall_count > 0) // place wall
+    if (rand() & 1 && other_player_color.wall_count > 0) // place wall
     {
         // TODO: implement a semi intelligent way of doing it
 
