@@ -6,4 +6,4 @@
 
 > NOTE: at the moment "Two Boards"functionality is not yet implemented and the NPC's AI is still very rudimentary
 
-The implementation of the game was written using the emulator first and foremost, but was also tested on the board and runs way more smoothly on it. If testing on the board please comment out the `SIMULATOR` define in [main.c](Quoridor/main.c).
+The implementation of the game was written using the emulator first and foremost, but was also tested on the board and runs way more smoothly on it. If testing on the board please comment out the `SIMULATOR` define in [common.h](Quoridor/common.h) and keep the optimizations value of the compiler to -O0 (probably the functions in GLCD with empty loops get optimized out otherwise).

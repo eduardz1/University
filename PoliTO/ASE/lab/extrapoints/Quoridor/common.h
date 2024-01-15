@@ -15,7 +15,7 @@
 #define RIT_MS 50
 #define RIT_TIME 0x004C4B40 // 50ms polling
 
-#define SIMULATOR 1
+// #define SIMULATOR 1
 
 #define BOARD_SIZE 7
 #define BOARD_TIMER 20 // timer in seconds
