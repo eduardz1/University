@@ -10,8 +10,8 @@
       <TargetName>Quoridor</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pArmCC>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
+      <pArmCC>5060960::V5.06 update 7 (build 960)::.\ARMCC</pArmCC>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -187,7 +187,6 @@
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
-            <nBranchProt>0</nBranchProt>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -324,7 +323,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>0</wLevel>
+            <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
@@ -453,21 +452,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>TP</GroupName>
-          <Files>
-            <File>
-              <FileName>TouchPanel.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\TouchPanel\TouchPanel.c</FilePath>
-            </File>
-            <File>
-              <FileName>TouchPanel.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\TouchPanel\TouchPanel.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>utils</GroupName>
           <Files>
             <File>
@@ -541,11 +525,6 @@
           <GroupName>joystick</GroupName>
           <Files>
             <File>
-              <FileName>funct_joystick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\joystick\funct_joystick.c</FilePath>
-            </File>
-            <File>
               <FileName>joystick.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\joystick\joystick.h</FilePath>
@@ -554,26 +533,6 @@
               <FileName>lib_joystick.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\joystick\lib_joystick.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>led</GroupName>
-          <Files>
-            <File>
-              <FileName>funct_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\led\funct_led.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\led\led.h</FilePath>
-            </File>
-            <File>
-              <FileName>lib_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\led\lib_led.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -619,6 +578,36 @@
               <FileName>graphics.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\game\graphics.h</FilePath>
+            </File>
+            <File>
+              <FileName>npc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\game\npc.c</FilePath>
+            </File>
+            <File>
+              <FileName>npc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\game\npc.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>CAN</GroupName>
+          <Files>
+            <File>
+              <FileName>CAN.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\CAN\CAN.h</FilePath>
+            </File>
+            <File>
+              <FileName>IRQ_CAN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CAN\IRQ_CAN.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_CAN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CAN\lib_CAN.c</FilePath>
             </File>
           </Files>
         </Group>

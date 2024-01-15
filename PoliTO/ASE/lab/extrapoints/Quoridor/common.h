@@ -15,7 +15,7 @@
 #define RIT_MS 50
 #define RIT_TIME 0x004C4B40 // 50ms polling
 
-#define SIMULATOR 1
+// #define SIMULATOR 1
 
 #define BOARD_SIZE 7
 #define BOARD_TIMER 20 // timer in seconds
@@ -54,7 +54,11 @@ struct Coordinate
 enum Mode
 {
     PLAYER_MOVE = 0,
-    WALL_PLACEMENT = 1
+    WALL_PLACEMENT = 1,
+    GAME_MODE_SELECTION = 2,
+    SINGLE_BOARD_MENU = 3,
+    TWO_BOARDS_MENU = 4,
+    COLOR_SELECTION_MENU = 5
 };
 
 enum Direction

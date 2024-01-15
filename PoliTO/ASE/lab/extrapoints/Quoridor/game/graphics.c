@@ -17,6 +17,89 @@ extern enum Mode mode;
 extern struct PlayerInfo red;
 extern struct PlayerInfo white;
 
+extern uint32_t turn_id;
+
+void draw_main_menu(void)
+{
+    LCD_Clear(TABLE_COLOR);
+    LCD_write_text(40, 40, "Select the", Black, TRANSPARENT, 2);
+    LCD_write_text(48, 40 + 2 + 16, "GAME MODE", Black, TRANSPARENT, 2);
+
+    empty_square_wide_wide_transparent.draw(
+        (MAX_X - empty_square_wide_wide_transparent.width) / 2,
+        40 + 40 + 2 + 16 + 40);
+    LCD_write_text(
+        72, 40 + 40 + 2 + 16 + 40 + 10, "SINGLE BOARD", Black, TRANSPARENT, 1);
+
+    empty_square_wide_wide_transparent.draw(
+        (MAX_X - empty_square_wide_wide_transparent.width) / 2,
+        40 + 40 + 2 + 16 + 40 + 32 + 2);
+    LCD_write_text(84,
+                   40 + 40 + 2 + 16 + 40 + 32 + 2 + 10,
+                   "TWO BOARD",
+                   Black,
+                   TRANSPARENT,
+                   1);
+}
+
+void draw_single_board_menu(void)
+{
+    LCD_draw_full_width_rectangle(40, 40 + 2 + 16 + 16, TABLE_COLOR);
+
+    LCD_write_text(40, 40, "Single Board: select", Black, TRANSPARENT, 1);
+    LCD_write_text(
+        36, 40 + 2 + 8, "the opposite opponent", Black, TRANSPARENT, 1);
+
+    LCD_write_text(
+        72, 40 + 40 + 2 + 16 + 40 + 10, "    HUMAN   ", Black, TABLE_COLOR, 1);
+
+    LCD_write_text(72,
+                   40 + 40 + 2 + 16 + 40 + 32 + 2 + 10,
+                   "     NPC    ",
+                   Black,
+                   TABLE_COLOR,
+                   1);
+}
+
+void draw_two_board_menu(void)
+{
+    LCD_draw_full_width_rectangle(40, 40 + 2 + 16 + 16, TABLE_COLOR);
+
+    LCD_write_text(48, 40, "Two Boards: select", Black, TRANSPARENT, 1);
+    LCD_write_text(76, 40 + 2 + 8, "your player", Black, TRANSPARENT, 1);
+
+    LCD_write_text(
+        72, 40 + 40 + 2 + 16 + 40 + 10, "    HUMAN   ", Black, TABLE_COLOR, 1);
+
+    LCD_write_text(72,
+                   40 + 40 + 2 + 16 + 40 + 32 + 2 + 10,
+                   "     NPC    ",
+                   Black,
+                   TABLE_COLOR,
+                   1);
+}
+
+void draw_color_selection_menu(void)
+{
+    LCD_draw_full_width_rectangle(40, 40 + 2 + 16 + 16, TABLE_COLOR);
+
+    LCD_write_text(52, 40, "Choose your color", Black, TRANSPARENT, 1);
+
+    LCD_draw_rectangle(72,
+                       40 + 40 + 2 + 16 + 40 + 10,
+                       168,
+                       40 + 40 + 2 + 16 + 40 + 10 + 8,
+                       TABLE_COLOR);
+    LCD_draw_rectangle(72,
+                       40 + 40 + 2 + 16 + 40 + 10 + 32 + 2,
+                       168,
+                       40 + 40 + 2 + 16 + 40 + 10 + 8 + 32 + 2,
+                       TABLE_COLOR);
+
+    player_red.draw(109, 40 + 40 + 2 + 16 + 40 + 5);
+    player_white.draw(109, 40 + 40 + 2 + 16 + 40 + 32 + 2 + 5);
+}
+
 void draw_board(void)
 {
 
@@ -71,29 +154,18 @@ void refresh_info_panel(const uint8_t timer)
 
     if (drawn == false)
     {
-        empty_square_transparent.draw(174, 3);
-        empty_square_transparent.draw(174 + 20, 3);
-        empty_square_transparent.draw(174 + 32, 3);
-        highlighted_square_red_color.draw(174 + 2, 3 + 2);
-        highlighted_square_red_color.draw(174 + 2 + 32, 3 + 2);
-        LCD_draw_rectangle(194, 4, 226, 4 + 30, TABLE_COLOR);
+        empty_square_wide_transparent.draw(174, 3);
+        highlighted_square_wide_red.draw(174 + 2, 3 + 2);
         drawn = true;
     }
 
     if (last_player != current_player)
     {
         last_player = current_player;
-        if (last_player == RED)
-        {
-            highlighted_square_red_color.draw(174 + 2, 3 + 2);
-            highlighted_square_red_color.draw(174 + 2 + 32, 3 + 2);
-        }
-        else
-        {
-            highlighted_square_white_color.draw(174 + 2, 3 + 2);
-            highlighted_square_white_color.draw(174 + 2 + 32, 3 + 2);
-        }
-        LCD_draw_rectangle(194, 4, 226, 4 + 30, TABLE_COLOR);
+        (last_player == RED ?
+             highlighted_square_wide_red.draw :
+             highlighted_square_wide_white.draw)(174 + 2, 3 + 2);
+
         LCD_write_text(178, 9, "time   ", Black, TRANSPARENT, 1);
         LCD_write_text(178, 9 + 8 + 4, "wall   ", Black, TRANSPARENT, 1);
     }
@@ -221,16 +293,16 @@ update_player_selector(const int8_t up, const int8_t right, bool show)
 {
     static int16_t x = 0, y = 0;
     static bool flag_change_turn = true;
-    static enum Player last_player = RED;
+    static uint32_t last_turn = 0;
 
     uint16_t start_x, start_y;
     const struct Sprite *color;
 
-    if (last_player != current_player) flag_change_turn = true;
+    if (last_turn != turn_id) flag_change_turn = true;
 
     if (flag_change_turn)
     {
-        last_player = current_player;
+        last_turn = turn_id;
 
         x = current_player == RED ? red.x : white.x;
         y = current_player == RED ? red.y : white.y;
@@ -241,9 +313,7 @@ update_player_selector(const int8_t up, const int8_t right, bool show)
     start_x = board.board[x][y].x + PLAYER_SELECTOR_PADDING;
     start_y = board.board[x][y].y + PLAYER_SELECTOR_PADDING;
 
-    switch (board.board[x][y].player_id) // TODO: not needed if I save the
-                                         // pixels with read, should also be
-                                         // faster, remove hard coded colors
+    switch (board.board[x][y].player_id)
     {
     case NONE: color = &player_selector_cell_color; break;
     case RED: color = &player_selector_red_inner_color; break;
@@ -252,8 +322,7 @@ update_player_selector(const int8_t up, const int8_t right, bool show)
 
     color->draw(start_x, start_y);
 
-    if (show == false)
-        return (struct Coordinate){x, y}; // return after clearing last selector
+    if (!show) return (struct Coordinate){x, y}; // clear selector only
 
     x += right;
     y += up;
@@ -273,68 +342,35 @@ struct Coordinate
 update_wall_selector(const int8_t up, const int8_t right, bool show)
 {
     static int16_t x = 0, y = 0;
-    static bool flag_change_mode = true;
-    static enum Mode last_mode = PLAYER_MOVE;
+    static bool flag_change_turn = true;
+    static uint32_t last_turn = 0;
 
     uint16_t start_x, start_y;
 
-    if (last_mode != mode) flag_change_mode = true;
+    if (last_turn != turn_id) flag_change_turn = true;
 
-    if (flag_change_mode)
+    if (flag_change_turn)
     {
-        last_mode = mode;
+        last_turn = turn_id;
 
         /* place wall in the middle of the board */
         x = BOARD_SIZE >> 1;
         y = BOARD_SIZE >> 1;
 
-        flag_change_mode = false;
+        direction = VERTICAL;
+
+        flag_change_turn = false;
     }
 
-    refresh_walls();
+    refresh_walls(); // TODO: can cache the last position like the player
+                     // selector but it's more complicated, on board it's speedy
+                     // enough, low priority
 
-    /* FIXME: this code is getting horrendous and breaks easily, refreshing the
-     whole board is not too slow
-    start_x = board.board[x][y].x;
-    start_y = board.board[x][y].y;
-    start_y += empty_square.width; // add vertical cell offset
-    if (board.board[x][y].walls.bottom)
-        wall_horizontal_half.draw(start_x, start_y);
-    else
-        wall_horizontal_board_color_half.draw(start_x, start_y);
-
-    start_x = board.board[x + 1][y].x;
-    start_y = board.board[x + 1][y].y;
-    start_y += empty_square.width; // add vertical cell offset
-    if (board.board[x + 1][y].walls.bottom)
-        wall_horizontal_half.draw(start_x, start_y);
-    else
-        wall_horizontal_board_color_half.draw(start_x, start_y);
-    start_y -= empty_square.width; // remove vertical cell offset
-
-    start_x += empty_square.width; // add horizontal cell offset
-    if (board.board[x][y].walls.right)
-        wall_vertical.draw(start_x, start_y);
-    else
-        wall_vertical_board_color_half.draw(start_x, start_y);
-
-    start_x = board.board[x][y + 1].x;
-    start_y = board.board[x][y + 1].y;
-    start_x += empty_square.width; // add horizontal cell offset
-    if (board.board[x][y + 1].walls.right)
-        wall_vertical.draw(start_x, start_y);
-    else
-        wall_vertical_board_color_half.draw(start_x, start_y);
-    */
-
-    if (show == false)
-        return (struct Coordinate){x, y}; // return after clearing last selector
+    if (!show) return (struct Coordinate){x, y}; // clear selector only
 
     x += right;
     y += up;
 
-    // FIXME: bug when going all the way to the left, wall appears to the right
-    // when placed
     CLAMP(x, 0, BOARD_SIZE - 2) // wall is 2 cells wide
     CLAMP(y, 0, BOARD_SIZE - 2)
 
@@ -353,4 +389,28 @@ update_wall_selector(const int8_t up, const int8_t right, bool show)
     }
 
     return (struct Coordinate){x, y};
+}
+
+struct Coordinate
+update_menu_selector(const int8_t up, const int8_t right, bool show)
+{
+    static int8_t last_y = 0;
+
+    highlighted_square_wide_wide_table_color.draw(
+        (MAX_X - highlighted_square_wide_wide.width) / 2,
+        last_y == 0 ? 40 + 40 + 2 + 16 + 40 + 2 :
+                      40 + 40 + 2 + 16 + 40 + 32 + 2 + 2);
+
+    if (!show) return (struct Coordinate){0, last_y};
+
+    last_y += up;
+
+    CLAMP(last_y, 0, 1)
+
+    highlighted_square_wide_wide.draw(
+        (MAX_X - highlighted_square_wide_wide.width) / 2,
+        last_y == 0 ? 40 + 40 + 2 + 16 + 40 + 2 :
+                      40 + 40 + 2 + 16 + 40 + 32 + 2 + 2);
+
+    return (struct Coordinate){0, last_y};
 }

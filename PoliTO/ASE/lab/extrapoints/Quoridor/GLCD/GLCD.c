@@ -27,7 +27,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-
 /* Private define ------------------------------------------------------------*/
 #define ILI9320 0   /* 0x9320 */
 #define ILI9325 1   /* 0x9325 */
@@ -743,34 +742,6 @@ LCD_draw_full_width_rectangle(const uint16_t startY,
         LCD_WriteData(color);
     }
 }
-// FIXME: not working
-// void LCD_draw_image_from_file(const uint16_t startX,
-//                               const uint16_t startY,
-//                               const uint16_t endX,
-//                               const uint16_t endY,
-//                               FILE *image)
-// {
-//     uint16_t x, y;
-//     uint16_t pixel;
-//     char c = fgetc(image);
-//     char line[MAX_X];
-
-//     for (y = startY; y < endY; y++)
-//     {
-//         // print the first char of the line
-//         c = fgetc(image);
-//         if (fgets(line, sizeof(line), image) != NULL)
-//         {
-//             char *token = strtok(line, ",");
-//             for (x = startX; x < endX && token != NULL; x++)
-//             {
-//                 sscanf(token, "%hx", &pixel);
-//                 LCD_SetPoint(x, y, pixel);
-//                 token = strtok(NULL, ",");
-//             }
-//         }
-//     }
-// }
 
 /*******************************************************************************
       END FILE

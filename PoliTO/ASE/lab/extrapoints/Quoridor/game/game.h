@@ -74,6 +74,13 @@ bool is_not_trapped(const enum Player player);
  */
 union Move place_wall(const uint8_t x, const uint8_t y);
 
+/**
+ * @brief used to select one of the button from the menu
+ *
+ * @param up_or_down 0 for top button, 1 for bottom button
+ */
+void select_menu_option(bool up_or_down);
+
 bool can_wall_be_placed(const enum Player player,
                         const uint8_t x,
                         const uint8_t y);

@@ -137,11 +137,7 @@ void LCD_draw_image_conditional(const uint16_t startX,
                                 const uint16_t color_to_substitute,
                                 const uint16_t substitute_color,
                                 const uint16_t *image);
-// void LCD_draw_image_from_file(const uint16_t startX,
-//                               const uint16_t startY,
-//                               const uint16_t endX,
-//                               const uint16_t endY,
-//                               FILE *image);
+
 void LCD_DrawLine(
     uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
 void put_char(const uint16_t x,
