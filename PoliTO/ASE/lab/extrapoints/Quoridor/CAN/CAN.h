@@ -1,3 +1,8 @@
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+// padding size of 'CAN_msg' with 1 byte to alignment boundary
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 /*----------------------------------------------------------------------------
  * Name:    CAN.h
  * Purpose: CAN interface for LPC17xx

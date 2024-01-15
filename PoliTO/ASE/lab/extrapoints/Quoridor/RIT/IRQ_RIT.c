@@ -1,4 +1,6 @@
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 6000000)
 #pragma diag_suppress 68 // integer conversion resulted in a change of sign
+#endif
 
 #include "../GLCD/GLCD.h"
 #include "../common.h"
@@ -8,13 +10,6 @@
 #include "LPC17xx.h"
 #include "RIT.h"
 #include <stdint.h>
-
-extern enum Player current_player;
-extern enum Mode mode;
-extern enum Direction direction;
-extern struct PlayerInfo red;
-extern struct PlayerInfo white;
-extern struct Board board;
 
 enum Joystick
 {
@@ -40,7 +35,7 @@ enum Joystick
 #define COUNTER_VAL (((TURN_INTERVAL * 1000) / RIT_MS) / RIT_SCALING_FACTOR)
 
 __attribute__((always_inline)) struct Coordinate
-handle_update_selector(const int up, const int right, bool show)
+handle_update_selector(const int8_t up, const int8_t right, bool show)
 {
     return (mode == WALL_PLACEMENT ? update_wall_selector :
             mode == PLAYER_MOVE    ? update_player_selector :
@@ -54,7 +49,8 @@ void handle_info_panel(uint32_t *counter)
 
     // refresh every second
     if ((*counter)-- % (TURN_INTERVAL / RIT_SCALING_FACTOR) == 0)
-        refresh_info_panel(*counter / (TURN_INTERVAL / RIT_SCALING_FACTOR));
+        refresh_info_panel((uint8_t)*counter /
+                           (TURN_INTERVAL / RIT_SCALING_FACTOR));
 
     if (*counter != 0) return;
 
@@ -71,9 +67,18 @@ void handle_info_panel(uint32_t *counter)
     *counter = COUNTER_VAL; // reset
 }
 
-static void handle_joystick_select(int *joystick,
-                                   uint32_t *counter,
-                                   struct Coordinate *offset)
+/**
+ * @brief handles the SELECT operation on the joystick by either selecting a
+ * menu option or finalizing a move
+ *
+ * @param joystick array of numbers keeping track of the joystick buttons
+ * @param counter counter for the move's timer
+ * @param offset offset of the current move from the player or the center (in
+ * case of a wall placement type move)
+ */
+static void _handle_joystick_select(int8_t *joystick,
+                                    uint32_t *counter,
+                                    struct Coordinate *offset)
 {
     if (GPIO_DOWN(SELECT) && ++joystick[SELECT] == 1)
     {
@@ -84,9 +89,9 @@ static void handle_joystick_select(int *joystick,
         else
         {
             union Move res = (mode == PLAYER_MOVE ? move_player : place_wall)(
-                offset->x, offset->y);
+                (uint8_t)offset->x, (uint8_t)offset->y);
 
-            if (res.as_uint32_t == -1)
+            if (res.as_uint32_t == (uint32_t)-1)
             {
                 write_invalid_move();
             }
@@ -104,14 +109,23 @@ static void handle_joystick_select(int *joystick,
     }
 }
 
-static void handle_joystick_movement(int *joystick, struct Coordinate *offset)
+/**
+ * @brief handles the UP, DOWN, RIGHT, LEFT operations on the joystick by
+ * calling the @handle_update_selector
+ *
+ * @param joystick array of numbers keeping track of the joystick buttons
+ * @param offset offset of the current move from the player or the center (in
+ * case of a wall placement type move)
+ */
+static void
+_handle_joystick_movement(int8_t *joystick, struct Coordinate *offset)
 {
     for (uint8_t i = DOWN; i <= UP; i++)
     {
         if (GPIO_DOWN(i) && ++joystick[i] == 1)
         {
-            int x = i == DOWN ? 1 : i == UP ? -1 : 0;
-            int y = i == RIGHT ? 1 : i == LEFT ? -1 : 0;
+            int8_t x = i == DOWN ? 1 : i == UP ? -1 : 0;
+            int8_t y = i == RIGHT ? 1 : i == LEFT ? -1 : 0;
             *offset = handle_update_selector(x, y, true);
         }
         else if (!GPIO_DOWN(i))
@@ -123,11 +137,11 @@ static void handle_joystick_movement(int *joystick, struct Coordinate *offset)
 
 void handle_joystick(uint32_t *counter, struct Coordinate *offset)
 {
-    static int joystick[5] = {0};
+    static int8_t joystick[5] = {0};
 
-    handle_joystick_select(joystick, counter, offset);
+    _handle_joystick_select(joystick, counter, offset);
 
-    handle_joystick_movement(joystick, offset);
+    _handle_joystick_movement(joystick, offset);
 }
 
 void handle_buttons(struct Coordinate *offset)

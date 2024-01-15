@@ -1,3 +1,21 @@
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+// no previous extern declaration for non-static variable 'CAN_BIT_TIME'
+#pragma clang diagnostic ignored "-Wmissing-variable-declarations"
+// cast from 'unsigned char *' to 'uint32_t *' (aka 'unsigned int *') increases
+// required alignment from 1 to 4
+//        *(uint32_t *)&msg->data[0] = pCAN->RDA;
+//        ^~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//        *(uint32_t *)&msg->data[4] = pCAN->RDB;
+//        ^~~~~~~~~~~~~~~~~~~~~~~~~
+#pragma clang diagnostic ignored "-Wcast-align"
+// implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned
+// int')
+//     buf1 = buf0 + (CAN_ext_cnt << 2);
+//                 ~  ~~~~~~~~~~~~^~~~
+#pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+
 /*----------------------------------------------------------------------------
  * Name:    Can.c
  * Purpose: CAN interface for for LPC17xx with MCB1700
@@ -16,7 +34,6 @@
 #include "../GLCD/GLCD.h"
 #include "CAN.h"     /* LPC17xx CAN adaption layer */
 #include <LPC17xx.h> /* LPC17xx definitions */
-
 
 uint8_t icr = 0x0; // icr and result must be global in order to work with both
                    // real and simulated landtiger.
@@ -64,7 +81,7 @@ static void CAN_cfgBaudrate(uint32_t ctrl, uint32_t baudrate)
     uint32_t nominal_time;
     result = 0;
     /* Determine which nominal time to use for PCLK */
-    if (((PCLK / 1000000) % 6) == 0)
+    if (((PCLK / 1000000) % 6) == (0))
     {
         nominal_time = 12; /* PCLK based on  72MHz CCLK */
     }

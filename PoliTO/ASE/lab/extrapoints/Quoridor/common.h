@@ -4,6 +4,11 @@
 #pragma anon_unions // needed for compiler v5
 #endif
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+// padding size of 'struct Board' with 2 bytes to alignment boundary
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 #include "utils/dynarray.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -15,7 +20,7 @@
 #define RIT_MS 50
 #define RIT_TIME 0x004C4B40 // 50ms polling
 
-// #define SIMULATOR 1
+#define SIMULATOR 1
 
 #define BOARD_SIZE 7
 #define BOARD_TIMER 20 // timer in seconds
@@ -47,8 +52,8 @@ struct PlayerInfo
 
 struct Coordinate
 {
-    uint8_t x;
-    uint8_t y;
+    uint16_t x;
+    uint16_t y;
 };
 
 enum Mode
@@ -84,8 +89,8 @@ struct Cell
         uint8_t as_uint8_t;
     } walls;
 
-    uint8_t x; // absolute position in pixel
-    uint8_t y; // absolute position in pixel
+    uint16_t x; // absolute position in pixel
+    uint16_t y; // absolute position in pixel
 };
 
 struct Board

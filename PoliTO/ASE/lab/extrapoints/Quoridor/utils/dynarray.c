@@ -30,7 +30,7 @@ void dyn_array_free(struct DynArray *array)
     free(array);
 }
 
-static int dyn_array_resize(struct DynArray *array)
+static int _dyn_array_resize(struct DynArray *array)
 {
     unsigned int new_size = array->_allocated * 2;
 
@@ -50,7 +50,7 @@ int dyn_array_insert(struct DynArray *array,
     if (array == NULL || index > array->size) return 0;
 
     /* increase size if necessary */
-    if (array->size == array->_allocated && !dyn_array_resize(array)) return 0;
+    if (array->size == array->_allocated && !_dyn_array_resize(array)) return 0;
 
     memmove(array->data + index + 1,
             array->data + index,

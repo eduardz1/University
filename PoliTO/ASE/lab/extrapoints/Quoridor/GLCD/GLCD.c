@@ -1,3 +1,32 @@
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+// unused parameter 'count'
+#pragma clang diagnostic ignored "-Wunused-parameter"
+//   implicit conversion changes signedness: 'int' to 'unsigned int'
+#pragma clang diagnostic ignored "-Wsign-conversion"
+// result of comparison of 1-bit unsigned value == 12 is always false
+//    if (LCD_Code == HX8347D || LCD_Code == HX8347A)
+//                               ~~~~~~~~ ^  ~~~~~~~
+//
+//    if (LCD_Code == HX8347D || LCD_Code == HX8347A)
+//        ~~~~~~~~ ^  ~~~~~~~
+#pragma clang diagnostic ignored "-Wtautological-value-range-compare"
+// implicit conversion loses integer precision: 'int' to 'uint16_t' (aka
+// 'unsigned short')
+//     rgb = (b << 11) + (g << 5) + (r << 0);
+//         ~ ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+// implicit conversion loses integer precision: 'int' to 'uint8_t' (aka
+// 'unsigned char')
+//         red = LCD_ReadData() >> 3;
+//             ~ ~~~~~~~~~~~~~~~^~~~
+//
+//         green = LCD_ReadData() >> 2;
+//               ~ ~~~~~~~~~~~~~~~^~~~
+//
+//         blue = LCD_ReadData() >> 3;
+//              ~ ~~~~~~~~~~~~~~~^~~~
+#pragma clang diagnostic ignored "-Wimplicit-int-conversion"
+#endif
+
 /****************************Copyright (c)**************************************
 **
 **                                 http://www.powermcu.com
@@ -121,15 +150,15 @@ static __attribute__((always_inline)) uint16_t LCD_Read(void)
 {
     uint16_t value;
 
-    LPC_GPIO2->FIODIR &= ~(0xFF);              /* P2.0...P2.7 Input */
-    LCD_DIR(0);                                /* Interface B->A */
-    LCD_EN(0);                                 /* Enable 2B->2A */
-    wait_delay(30);                            /* delay some times */
-    value = LPC_GPIO2->FIOPIN0;                /* Read D8..D15 */
-    LCD_EN(1);                                 /* Enable 1B->1A */
-    wait_delay(30);                            /* delay some times */
-    value = (value << 8) | LPC_GPIO2->FIOPIN0; /* Read D0..D7 */
-    LCD_DIR(1);
+    LPC_GPIO2->FIODIR &= ~(0xFF);                        /* P2.0...P2.7 Input */
+    LCD_DIR(0)                                           /* Interface B->A */
+    LCD_EN(0)                                            /* Enable 2B->2A */
+    wait_delay(30);                                      /* delay some times */
+    value = LPC_GPIO2->FIOPIN0;                          /* Read D8..D15 */
+    LCD_EN(1)                                            /* Enable 1B->1A */
+    wait_delay(30);                                      /* delay some times */
+    value = (uint16_t)(value << 8) | LPC_GPIO2->FIOPIN0; /* Read D0..D7 */
+    LCD_DIR(1)
     return value;
 }
 
@@ -143,15 +172,15 @@ static __attribute__((always_inline)) uint16_t LCD_Read(void)
  ******************************************************************************/
 static __attribute__((always_inline)) void LCD_WriteIndex(uint16_t index)
 {
-    LCD_CS(0);
-    LCD_RS(0);
-    LCD_RD(1);
+    LCD_CS(0)
+    LCD_RS(0)
+    LCD_RD(1)
     LCD_Send(index);
     wait_delay(22);
-    LCD_WR(0);
+    LCD_WR(0)
     wait_delay(1);
-    LCD_WR(1);
-    LCD_CS(1);
+    LCD_WR(1)
+    LCD_CS(1)
 }
 
 /*******************************************************************************
@@ -164,13 +193,13 @@ static __attribute__((always_inline)) void LCD_WriteIndex(uint16_t index)
  ******************************************************************************/
 static __attribute__((always_inline)) void LCD_WriteData(uint16_t data)
 {
-    LCD_CS(0);
-    LCD_RS(1);
+    LCD_CS(0)
+    LCD_RS(1)
     LCD_Send(data);
-    LCD_WR(0);
+    LCD_WR(0)
     wait_delay(1);
-    LCD_WR(1);
-    LCD_CS(1);
+    LCD_WR(1)
+    LCD_CS(1)
 }
 
 /*******************************************************************************
@@ -185,14 +214,14 @@ static __attribute__((always_inline)) uint16_t LCD_ReadData(void)
 {
     uint16_t value;
 
-    LCD_CS(0);
-    LCD_RS(1);
-    LCD_WR(1);
-    LCD_RD(0);
+    LCD_CS(0)
+    LCD_RS(1)
+    LCD_WR(1)
+    LCD_RD(0)
     value = LCD_Read();
 
-    LCD_RD(1);
-    LCD_CS(1);
+    LCD_RD(1)
+    LCD_CS(1)
 
     return value;
 }
@@ -410,7 +439,7 @@ void LCD_Clear(uint16_t Color)
 {
     uint32_t index;
 
-    if (LCD_Code == HX8347D || LCD_Code == HX8347A)
+    if ((LCD_Code == HX8347D) || (LCD_Code == HX8347A))
     {
         LCD_WriteReg(0x02, 0x00);
         LCD_WriteReg(0x03, 0x00);
@@ -624,7 +653,7 @@ void put_char(const uint16_t x,
               const uint8_t scale)
 {
     uint16_t i, j, set;
-    char buffer[FONT_HEIGHT], tmp;
+    unsigned char buffer[FONT_HEIGHT], tmp;
     get_ASCII_code(buffer, ASCII);
     for (i = 0; i < FONT_HEIGHT * scale; i++)
     {

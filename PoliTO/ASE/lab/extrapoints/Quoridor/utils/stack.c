@@ -9,7 +9,7 @@ void stack_init(struct Stack *stack, uint32_t size)
     stack->top = -1;
 }
 
-void push(struct Stack *stack, uint32_t x, uint32_t y)
+void push(struct Stack *stack, uint16_t x, uint16_t y)
 {
     if (stack->top >= (int32_t)stack->size - 1) return; // stack full
 

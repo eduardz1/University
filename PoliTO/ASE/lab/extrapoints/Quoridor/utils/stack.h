@@ -15,7 +15,7 @@ struct Stack
 };
 
 void stack_init(struct Stack *stack, uint32_t size);
-void push(struct Stack *stack, uint32_t x, uint32_t y);
+void push(struct Stack *stack, uint16_t x, uint16_t y);
 struct Coordinate pop(struct Stack *stack);
 bool is_empty(struct Stack *stack);
 void free_stack(struct Stack *stack);

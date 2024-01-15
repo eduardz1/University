@@ -5,7 +5,7 @@
  * @brief base sprite color is red
  *
  */
-const uint16_t player_data[22 * 22] = {
+static const uint16_t player_data[22 * 22] = {
     0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xd105, 0xd105,
     0xd105, 0xd105, 0xd105, 0xd105, 0xd105, 0xd105, 0xfb7f, 0xfb7f, 0xfb7f,
     0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f,
@@ -62,7 +62,7 @@ const uint16_t player_data[22 * 22] = {
     0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f,
 };
 
-const uint16_t player_selector_data[18 * 18] = {
+static const uint16_t player_selector_data[18 * 18] = {
     0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfee0, 0xfee0,
     0xfee0, 0xfee0, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f,
     0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfee0, 0xfee0, 0xfee0, 0xfb7f,
@@ -101,31 +101,31 @@ const uint16_t player_selector_data[18 * 18] = {
     0xfee0, 0xfee0, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f,
 };
 
-void draw_player_white(uint16_t x, uint16_t y)
+static void draw_player_white(uint16_t x, uint16_t y)
 {
     LCD_draw_image_conditional(
         x, y, x + 22, y + 22, RED_PLAYER_COLOR, WHITE_PLAYER_COLOR, player_data);
     player_selector_white_inner_color.draw(x + 2, y + 2);
 }
 
-void draw_player_red(uint16_t x, uint16_t y)
+static void draw_player_red(uint16_t x, uint16_t y)
 {
     LCD_draw_image(x, y, x + 22, y + 22, player_data);
     player_selector_red_inner_color.draw(x + 2, y + 2);
 }
 
-void draw_player_selector(uint16_t x, uint16_t y)
+static void draw_player_selector(uint16_t x, uint16_t y)
 {
     LCD_draw_image(x, y, x + 18, y + 18, player_selector_data);
 }
 
-void draw_player_selector_cell_color(uint16_t x, uint16_t y)
+static void draw_player_selector_cell_color(uint16_t x, uint16_t y)
 {
     LCD_draw_image_conditional(
         x, y, x + 18, y + 18, HIGHLIGHT_COLOR, CELL_COLOR, player_selector_data);
 }
 
-void draw_player_selector_red_inner_color(uint16_t x, uint16_t y)
+static void draw_player_selector_red_inner_color(uint16_t x, uint16_t y)
 {
     LCD_draw_image_conditional(x,
                                y,
@@ -136,7 +136,7 @@ void draw_player_selector_red_inner_color(uint16_t x, uint16_t y)
                                player_selector_data);
 }
 
-void draw_player_selector_white_inner_color(uint16_t x, uint16_t y)
+static void draw_player_selector_white_inner_color(uint16_t x, uint16_t y)
 {
     LCD_draw_image_conditional(x,
                                y,

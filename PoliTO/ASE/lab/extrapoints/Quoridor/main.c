@@ -1,3 +1,8 @@
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+//   implicit conversion changes signedness: 'int' to 'unsigned int'
+#pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+
 #include "CAN/CAN.h"
 #include "GLCD/GLCD.h"
 #include "LPC17xx.h"

@@ -2141,7 +2141,7 @@ static unsigned char const ASCII_lib[128][8] = {
 
 #endif
 
-void get_ASCII_code(char *buffer, const char ASCII)
+void get_ASCII_code(unsigned char *buffer, const unsigned char ASCII)
 {
     memcpy(buffer, ASCII_lib[ASCII], FONT_HEIGHT);
 }
