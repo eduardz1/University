@@ -10,6 +10,16 @@
 #define PLAYER_SELECTOR_PADDING                                                \
     (((empty_square.width - player_selector.width) >> 1))
 
+extern enum Player other_player_color;
+extern union Move current_possible_moves[5];
+extern struct Board board;
+extern enum Player current_player;
+extern enum Direction direction;
+extern enum Mode mode;
+extern struct PlayerInfo red;
+extern struct PlayerInfo white;
+extern uint32_t turn_id;
+
 void game_init(void);
 
 /**

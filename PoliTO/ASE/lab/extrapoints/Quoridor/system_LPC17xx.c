@@ -1,3 +1,10 @@
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+// no previous extern declaration for non-static variable 'SystemFrequency'
+#pragma clang diagnostic ignored "-Wmissing-variable-declarations"
+//   implicit conversion changes signedness: 'int' to 'unsigned int'
+#pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+
 /******************************************************************************
  * @file:    system_LPC17xx.c
  * @purpose: CMSIS Cortex-M3 Device Peripheral Access Layer Source File

@@ -7,7 +7,7 @@
 // LCD_draw_rectangle to a single function that accepts varargs, could be
 // interesting and would reduce significantly the memory usage
 
-const uint16_t empty_square_data[1024] = {
+static const uint16_t empty_square_data[1024] = {
     0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
@@ -124,7 +124,7 @@ const uint16_t empty_square_data[1024] = {
     0x0000, 0x0000, 0x0000, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f,
 };
 
-const uint16_t highlighted_square_data[28 * 28] = {
+static const uint16_t highlighted_square_data[28 * 28] = {
     0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfee0, 0xfee0, 0xfee0, 0xfee0, 0xfb7f,
     0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f, 0xfb7f,
     0xfb7f, 0xfb7f, 0xfee0, 0xfee0, 0xfee0, 0xfee0, 0xfb7f, 0xfb7f, 0xfb7f,
@@ -214,19 +214,19 @@ const uint16_t highlighted_square_data[28 * 28] = {
     0xfb7f, 0xfb7f, 0xfee0, 0xfee0, 0xfee0, 0xfee0, 0xfb7f, 0xfb7f, 0xfb7f,
     0xfb7f};
 
-void draw_empty_square(uint16_t x, uint16_t y)
+static void draw_empty_square(uint16_t x, uint16_t y)
 {
     LCD_draw_image(x, y, x + 32, y + 32, empty_square_data);
 }
 
-void draw_highlighted_square(uint16_t x, uint16_t y)
+static void draw_highlighted_square(uint16_t x, uint16_t y)
 {
     LCD_draw_image(x, y, x + 28, y + 28, highlighted_square_data);
 }
 
-void draw_highlighted_square_wide_wide(uint16_t x, uint16_t y)
+static void draw_highlighted_square_wide_wide(uint16_t x, uint16_t y)
 {
-    uint32_t i, j, k = 0;
+    uint16_t i, j, k = 0;
     for (j = y; j < y + 28; j++)
     {
         for (i = x; i < x + 124; i++)
@@ -240,9 +240,9 @@ void draw_highlighted_square_wide_wide(uint16_t x, uint16_t y)
     }
 }
 
-void draw_highlighted_square_wide_wide_table_color(uint16_t x, uint16_t y)
+static void draw_highlighted_square_wide_wide_table_color(uint16_t x, uint16_t y)
 {
-    uint32_t i, j, k = 0;
+    uint16_t i, j, k = 0;
     uint16_t color;
     for (j = y; j < y + 28; j++)
     {
@@ -263,9 +263,9 @@ void draw_highlighted_square_wide_wide_table_color(uint16_t x, uint16_t y)
     }
 }
 
-void draw_highlighted_square_wide_red(uint16_t x, uint16_t y)
+static void draw_highlighted_square_wide_red(uint16_t x, uint16_t y)
 {
-    uint32_t i, j, k = 0;
+    uint16_t i, j, k = 0;
     uint16_t color;
     for (j = y; j < y + 28; j++)
     {
@@ -286,9 +286,9 @@ void draw_highlighted_square_wide_red(uint16_t x, uint16_t y)
     }
 }
 
-void draw_highlighted_square_wide_white(uint16_t x, uint16_t y)
+static void draw_highlighted_square_wide_white(uint16_t x, uint16_t y)
 {
-    uint32_t i, j, k = 0;
+    uint16_t i, j, k = 0;
     uint16_t color;
     for (j = y; j < y + 28; j++)
     {
@@ -311,9 +311,9 @@ void draw_highlighted_square_wide_white(uint16_t x, uint16_t y)
     }
 }
 
-void draw_empty_square_wide_transparent(uint16_t x, uint16_t y)
+static void draw_empty_square_wide_transparent(uint16_t x, uint16_t y)
 {
-    uint32_t i, j, k = 0;
+    uint16_t i, j, k = 0;
     uint16_t color;
     for (j = y; j < y + 32; j++)
     {
@@ -334,9 +334,9 @@ void draw_empty_square_wide_transparent(uint16_t x, uint16_t y)
     }
 }
 
-void draw_empty_square_wide_wide_transparent(uint16_t x, uint16_t y)
+static void draw_empty_square_wide_wide_transparent(uint16_t x, uint16_t y)
 {
-    uint32_t i, j, k = 0;
+    uint16_t i, j, k = 0;
     uint16_t color;
     for (j = y; j < y + 32; j++)
     {
@@ -357,7 +357,7 @@ void draw_empty_square_wide_wide_transparent(uint16_t x, uint16_t y)
     }
 }
 
-void draw_highlighted_square_cell_color(uint16_t x, uint16_t y)
+static void draw_highlighted_square_cell_color(uint16_t x, uint16_t y)
 {
     LCD_draw_image_conditional(x,
                                y,

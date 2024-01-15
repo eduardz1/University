@@ -4,6 +4,11 @@
 #pragma anon_unions // needed for compiler v5
 #endif
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+// padding size of 'struct Board' with 2 bytes to alignment boundary
+#pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 #include "utils/dynarray.h"
 #include <stdbool.h>
 #include <stdint.h>
@@ -48,8 +53,8 @@ struct PlayerInfo
 
 struct Coordinate
 {
-    uint8_t x;
-    uint8_t y;
+    uint16_t x;
+    uint16_t y;
 };
 
 enum Mode
@@ -85,8 +90,8 @@ struct Cell
         uint8_t as_uint8_t;
     } walls;
 
-    uint8_t x; // absolute position in pixel
-    uint8_t y; // absolute position in pixel
+    uint16_t x; // absolute position in pixel
+    uint16_t y; // absolute position in pixel
 };
 
 struct Board

@@ -36,7 +36,7 @@
 #define FLIP
 
 /* Private function prototypes -----------------------------------------------*/
-void get_ASCII_code(char *buffer, const char ASCII);
+void get_ASCII_code(unsigned char *buffer, const unsigned char ASCII);
 
 #endif
 

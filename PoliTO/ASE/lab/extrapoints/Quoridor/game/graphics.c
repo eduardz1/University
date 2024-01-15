@@ -1,4 +1,6 @@
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 6000000)
 #pragma diag_suppress 68 // integer conversion resulted in a change of sign
+#endif
 
 #include "graphics.h"
 #include "../GLCD/GLCD.h"
@@ -6,18 +8,6 @@
 #include "game.h"
 #include <stdint.h>
 #include <stdio.h>
-
-extern struct Board board;
-extern union Move current_possible_moves[5];
-extern enum Player current_player;
-
-extern enum Direction direction;
-extern enum Mode mode;
-
-extern struct PlayerInfo red;
-extern struct PlayerInfo white;
-
-extern uint32_t turn_id;
 
 void draw_main_menu(void)
 {
@@ -219,11 +209,11 @@ void highlight_possible_moves(void)
     uint8_t i = 0;
     uint16_t start_x, start_y;
     const uint8_t HIGHLIGHT_PADDING =
-        (empty_square.width - highlighted_square.width) >> 1;
+        (uint8_t)(empty_square.width - highlighted_square.width) >> 1;
 
     for (i = 0; i < 5; i++)
     {
-        if (current_possible_moves[i].as_uint32_t == -1) continue;
+        if (current_possible_moves[i].as_uint32_t == (uint32_t)-1) continue;
 
         start_x =
             board
@@ -245,11 +235,11 @@ void clear_highlighted_moves(void)
     uint8_t i = 0;
     uint16_t x, y, start_x, start_y;
     const uint8_t HIGHLIGHT_PADDING =
-        (empty_square.width - highlighted_square.width) >> 1;
+        (uint8_t)(empty_square.width - highlighted_square.width) >> 1;
 
     for (i = 0; i < 5; i++)
     {
-        if (current_possible_moves[i].as_uint32_t == -1) break;
+        if (current_possible_moves[i].as_uint32_t == (uint32_t)-1) break;
 
         x = current_possible_moves[i].x;
         y = current_possible_moves[i].y;
@@ -322,7 +312,7 @@ update_player_selector(const int8_t up, const int8_t right, bool show)
 
     color->draw(start_x, start_y);
 
-    if (!show) return (struct Coordinate){x, y}; // clear selector only
+    if (!show) return (struct Coordinate){(uint16_t)x, (uint16_t)y}; // clear selector only
 
     x += right;
     y += up;
@@ -335,7 +325,7 @@ update_player_selector(const int8_t up, const int8_t right, bool show)
 
     player_selector.draw(start_x, start_y);
 
-    return (struct Coordinate){x, y};
+    return (struct Coordinate){(uint16_t)x, (uint16_t)y};
 }
 
 struct Coordinate
@@ -366,7 +356,7 @@ update_wall_selector(const int8_t up, const int8_t right, bool show)
                      // selector but it's more complicated, on board it's speedy
                      // enough, low priority
 
-    if (!show) return (struct Coordinate){x, y}; // clear selector only
+    if (!show) return (struct Coordinate){(uint16_t)x, (uint16_t)y}; // clear selector only
 
     x += right;
     y += up;
@@ -388,20 +378,21 @@ update_wall_selector(const int8_t up, const int8_t right, bool show)
         wall_vertical_selector.draw(start_x, start_y);
     }
 
-    return (struct Coordinate){x, y};
+    return (struct Coordinate){(uint16_t)x, (uint16_t)y};
 }
 
 struct Coordinate
 update_menu_selector(const int8_t up, const int8_t right, bool show)
 {
-    static int8_t last_y = 0;
+    static int8_t last_y = 0;     
+    (void)right;
 
     highlighted_square_wide_wide_table_color.draw(
         (MAX_X - highlighted_square_wide_wide.width) / 2,
         last_y == 0 ? 40 + 40 + 2 + 16 + 40 + 2 :
                       40 + 40 + 2 + 16 + 40 + 32 + 2 + 2);
 
-    if (!show) return (struct Coordinate){0, last_y};
+    if (!show) return (struct Coordinate){0, (uint16_t)last_y};
 
     last_y += up;
 
@@ -412,5 +403,5 @@ update_menu_selector(const int8_t up, const int8_t right, bool show)
         last_y == 0 ? 40 + 40 + 2 + 16 + 40 + 2 :
                       40 + 40 + 2 + 16 + 40 + 32 + 2 + 2);
 
-    return (struct Coordinate){0, last_y};
+    return (struct Coordinate){0, (uint16_t)last_y};
 }

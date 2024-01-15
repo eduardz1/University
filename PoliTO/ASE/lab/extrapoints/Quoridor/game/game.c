@@ -1,5 +1,16 @@
-#include <stddef.h>
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 6000000)
 #pragma diag_suppress 68 // integer conversion resulted in a change of sign
+#endif
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+// enumeration values 'PLAYER_MOVE' and 'WALL_PLACEMENT' not explicitly handled
+// in switch
+#pragma clang diagnostic ignored "-Wswitch-enum"
+// implicit conversion changes signedness: 'int' to 'uint32_t' (aka 'unsigned
+// int')
+#pragma clang diagnostic ignored "-Wsign-conversion"
+// mixing declarations and code is incompatible with standards before C99
+#pragma clang diagnostic ignored "-Wdeclaration-after-statement"
+#endif
 
 #include "../GLCD/GLCD.h"
 #include "../RIT/RIT.h"
@@ -10,12 +21,14 @@
 #include "graphics.h"
 #include "npc.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
-bool AI_enabled;
-enum Player opponent = WHITE;
+static bool AI_enabled;
+enum Player other_player_color = WHITE;
+
 
 union Move current_possible_moves[5] = {0};
 enum Player current_player = WHITE;
@@ -325,8 +338,8 @@ bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
         (*it)++;
 
         coordinate = pop(&stack);
-        x = coordinate.x;
-        y = coordinate.y;
+        x = (uint8_t)coordinate.x;
+        y = (uint8_t)coordinate.y;
 
         if (y == winning_y)
         {
@@ -344,8 +357,8 @@ bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
 
         for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
         {
-            uint8_t new_x = neighbors[i].x;
-            uint8_t new_y = neighbors[i].y;
+            uint8_t new_x = (uint8_t)neighbors[i].x;
+            uint8_t new_y = (uint8_t)neighbors[i].y;
 
             if (new_x < BOARD_SIZE && new_y < BOARD_SIZE &&
                 !visited[new_x][new_y] && !is_wall_between(x, y, new_x, new_y))

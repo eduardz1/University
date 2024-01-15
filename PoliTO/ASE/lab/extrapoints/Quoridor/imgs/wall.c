@@ -1,42 +1,42 @@
 #include "../GLCD/GLCD.h"
 #include "sprites.h"
 
-void draw_wall_vertical(uint16_t x, uint16_t y)
+static void draw_wall_vertical(uint16_t x, uint16_t y)
 {
     LCD_draw_rectangle(x, y, x + 2, y + 66, WALL_COLOR);
 }
 
-void draw_wall_horizontal(uint16_t x, uint16_t y)
+static void draw_wall_horizontal(uint16_t x, uint16_t y)
 {
     LCD_draw_rectangle(x, y, x + 66, y + 2, WALL_COLOR);
 }
 
-void draw_wall_vertical_half(uint16_t x, uint16_t y)
+static void draw_wall_vertical_half(uint16_t x, uint16_t y)
 {
     LCD_draw_rectangle(x, y, x + 2, y + 34, WALL_COLOR);
 }
 
-void draw_wall_horizontal_half(uint16_t x, uint16_t y)
+static void draw_wall_horizontal_half(uint16_t x, uint16_t y)
 {
     LCD_draw_rectangle(x, y, x + 34, y + 2, WALL_COLOR);
 }
 
-void draw_wall_vertical_selector(uint16_t x, uint16_t y)
+static void draw_wall_vertical_selector(uint16_t x, uint16_t y)
 {
     LCD_draw_rectangle(x, y, x + 2, y + 64, WALL_SELECTOR_COLOR);
 }
 
-void draw_wall_horizontal_selector(uint16_t x, uint16_t y)
+static void draw_wall_horizontal_selector(uint16_t x, uint16_t y)
 {
     LCD_draw_rectangle(x, y, x + 64, y + 2, WALL_SELECTOR_COLOR);
 }
 
-void draw_wall_vertical_board_color_half(uint16_t x, uint16_t y)
+static void draw_wall_vertical_board_color_half(uint16_t x, uint16_t y)
 {
     LCD_draw_rectangle(x, y, x + 2, y + 34, BOARD_COLOR);
 }
 
-void draw_wall_horizontal_board_color_half(uint16_t x, uint16_t y)
+static void draw_wall_horizontal_board_color_half(uint16_t x, uint16_t y)
 {
     LCD_draw_rectangle(x, y, x + 34, y + 2, BOARD_COLOR);
 }

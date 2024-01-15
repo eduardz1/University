@@ -1,3 +1,8 @@
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6000000)
+// no previous prototype for function 'CAN_IRQHandler'
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#endif
+
 /*----------------------------------------------------------------------------
  * Name:    Can.c
  * Purpose: CAN interface for for LPC17xx with MCB1700
