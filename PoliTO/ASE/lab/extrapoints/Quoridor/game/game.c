@@ -14,7 +14,7 @@
 #include <string.h>
 
 bool AI_enabled;
-enum Player other_player_color = WHITE;
+enum Player opponent = WHITE;
 
 union Move current_possible_moves[5] = {0};
 enum Player current_player = WHITE;
@@ -74,7 +74,7 @@ void select_menu_option(bool up_or_down)
         break;
 
     case COLOR_SELECTION_MENU:
-        other_player_color = up_or_down ? RED : WHITE;
+        opponent = up_or_down ? RED : WHITE;
         draw_board();
         change_turn();
         break;
@@ -94,7 +94,7 @@ void change_turn(void)
     highlight_possible_moves();
     refresh_info_panel(20);
 
-    if (current_player == other_player_color && AI_enabled) // TODO: add CAN
+    if (current_player == opponent && AI_enabled) // TODO: add CAN
     {
         disable_RIT();
         AI_move();

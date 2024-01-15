@@ -22,6 +22,7 @@
 #define WALL_COUNT 8
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+#define RAND(min, max) ((rand() % (max - min + 1)) + min)
 
 #define CLAMP(n, min, max)                                                     \
     do                                                                         \
