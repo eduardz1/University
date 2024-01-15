@@ -1,11 +1,12 @@
+#include <stddef.h>
 #pragma diag_suppress 68 // integer conversion resulted in a change of sign
 
-#include "game.h"
 #include "../GLCD/GLCD.h"
 #include "../RIT/RIT.h"
 #include "../imgs/sprites.h"
 #include "../utils/dynarray.h"
 #include "../utils/stack.h"
+#include "game.h"
 #include "graphics.h"
 #include "npc.h"
 #include <stdbool.h>
@@ -309,12 +310,10 @@ bool is_wall_between(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
            (y1 == y2 && x1 > x2 && board.board[x1][y1].walls.left);
 }
 
-bool is_not_trapped(const enum Player player)
+bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
 {
     struct Stack stack;
     struct Coordinate coordinate;
-    uint8_t x = player == RED ? red.x : white.x;
-    uint8_t y = player == RED ? red.y : white.y;
     bool visited[BOARD_SIZE][BOARD_SIZE] = {false};
 
     stack_init(&stack, BOARD_SIZE * BOARD_SIZE);
@@ -323,11 +322,13 @@ bool is_not_trapped(const enum Player player)
 
     while (!is_empty(&stack))
     {
+        (*it)++;
+
         coordinate = pop(&stack);
         x = coordinate.x;
         y = coordinate.y;
 
-        if (y == (player == RED ? BOARD_SIZE - 1 : 0))
+        if (y == winning_y)
         {
             free_stack(&stack);
             return true;
@@ -357,6 +358,15 @@ bool is_not_trapped(const enum Player player)
 
     free_stack(&stack);
     return false;
+}
+
+bool is_not_trapped(const enum Player player)
+{
+    uint32_t it = 0; // UNUSED
+    uint8_t x = player == RED ? red.x : white.x;
+    uint8_t y = player == RED ? red.y : white.y;
+
+    return find_path(x, y, &it, player == RED ? BOARD_SIZE - 1 : 0);
 }
 
 bool is_wall_clipping(const uint8_t x,
@@ -412,6 +422,32 @@ void write_invalid_move(void)
     LCD_draw_rectangle(24, MAX_Y - 27, 12 * 16 + 24, MAX_Y - 11, TABLE_COLOR);
 }
 
+void backup_walls(const uint8_t x,
+                  const uint8_t y,
+                  uint8_t *backup,
+                  const struct Coordinate *neighbors,
+                  size_t size_of_neighbors)
+{
+    for (uint8_t i = 0; i < size_of_neighbors; i++)
+    {
+        backup[i] =
+            board.board[x + neighbors[i].x][y + neighbors[i].y].walls.as_uint8_t;
+    }
+}
+
+void rollback_walls(uint8_t x,
+                    uint8_t y,
+                    uint8_t *backup,
+                    const struct Coordinate *neighbors,
+                    size_t size_of_neighbors)
+{
+    for (uint8_t i = 0; i < size_of_neighbors; i++)
+    {
+        board.board[x + neighbors[i].x][y + neighbors[i].y].walls.as_uint8_t =
+            backup[i];
+    }
+}
+
 union Move place_wall(const uint8_t x, const uint8_t y)
 {
     const enum Direction dir = direction; // cache const for performance
@@ -444,12 +480,8 @@ union Move place_wall(const uint8_t x, const uint8_t y)
     else
         white.wall_count--;
 
-    for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
-    {
-        walls_backup[i] =
-            board.board[move.x + neighbors[i].x][move.y + neighbors[i].y]
-                .walls.as_uint8_t;
-    }
+    backup_walls(
+        move.x, move.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
 
     switch (dir)
     {
@@ -461,19 +493,16 @@ union Move place_wall(const uint8_t x, const uint8_t y)
         break;
     case VERTICAL:
         board.board[move.x][move.y].walls.right = true;
-        board.board[move.x][move.y + 1].walls.right = true;
         board.board[move.x + 1][move.y].walls.left = true;
+        board.board[move.x][move.y + 1].walls.right = true;
         board.board[move.x + 1][move.y + 1].walls.left = true;
         break;
     }
 
     if (!is_wall_valid(move.x, move.y, dir))
-    { // rollback
-        for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
-        {
-            board.board[move.x + neighbors[i].x][move.y + neighbors[i].y]
-                .walls.as_uint8_t = walls_backup[i];
-        }
+    {
+        rollback_walls(
+            move.x, move.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
 
         move.as_uint32_t = -1;
         return move; // DO NOT MERGE THE PRECEDING LINE WITH THIS ONE

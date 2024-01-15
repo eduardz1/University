@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../common.h"
+#include <stddef.h>
 #include <stdint.h>
 
 #define BLOCK_PADDING 2
@@ -59,6 +60,18 @@ bool is_wall_valid(const uint8_t x, const uint8_t y, const enum Direction dir);
 bool is_wall_between(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
 
 /**
+ * @brief iterative, stack-based DFS that check wether or not a path exists from
+ * the source coordinate to the winning side
+ *
+ * @param x x board coordinate
+ * @param y y board coordinate
+ * @param it number that gets incremented at each iteration of the DFS
+ * @param winning_y y coordinate that makes the pawn in (x, y) win
+ * @return true if player has a path to the winning coordinate, false otherwise
+ */
+bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y);
+
+/**
  * @brief checks if placing a wall would cause the player to be trapped using
  * DFS on a matrix representation of the board
  *
@@ -66,8 +79,20 @@ bool is_wall_between(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
  */
 bool is_not_trapped(const enum Player player);
 
+void backup_walls(const uint8_t x,
+                  const uint8_t y,
+                  uint8_t *backup,
+                  const struct Coordinate *neighbors,
+                  size_t size_of_neighbors);
+
+void rollback_walls(uint8_t x,
+                    uint8_t y,
+                    uint8_t *backup,
+                    const struct Coordinate *neighbors,
+                    size_t size_of_neighbors);
+
 /**
- * @pre position is valid
+ * @pre coordinates are valid
  *
  * @param x coordinate on board
  * @param y coordinate on board

@@ -18,8 +18,8 @@ extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the
 
 int main(void)
 {
-    srand(time(NULL));
     SystemInit(); /* System Initialization (i.e., PLL)  */
+    // srand(time(NULL)); FIXME: everything breaks if I do this
     LCD_Initialization();
     CAN_Init();
     BUTTON_init();
