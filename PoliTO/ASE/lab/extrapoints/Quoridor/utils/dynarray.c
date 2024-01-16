@@ -1,18 +1,20 @@
 #include "dynarray.h"
 #include "../common.h"
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
 struct DynArray *dyn_array_new(const unsigned int size)
 {
-    struct DynArray *new = malloc(sizeof(struct DynArray));
+    struct DynArray *new = (struct DynArray *)malloc(sizeof(struct DynArray));
     if (new == NULL) return NULL;
 
     new->_allocated = size ? size : DYN_ARRAY_INITIAL_SIZE;
     new->size = 0;
-    new->data = malloc(size ? size * sizeof(DYN_ARRAY_TYPE) :
-                              DYN_ARRAY_INITIAL_SIZE * sizeof(DYN_ARRAY_TYPE));
+    new->data = (uint32_t *)malloc(size ? size * sizeof(DYN_ARRAY_TYPE) :
+                                          DYN_ARRAY_INITIAL_SIZE *
+                                              sizeof(DYN_ARRAY_TYPE));
     if (new->data == NULL)
     {
         free(new);
