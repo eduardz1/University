@@ -20,7 +20,7 @@ node_new(const uint8_t x, const uint8_t y, const uint8_t g, const uint8_t h);
 
 void node_free(struct Node *node);
 
-struct Node **
+struct Coordinate
 reconstruct_path(struct Node *start, struct Node *goal, uint8_t *path_length);
 
 /**
@@ -37,8 +37,8 @@ reconstruct_path(struct Node *start, struct Node *goal, uint8_t *path_length);
  * @return struct Node** the path from #start to #goal or NULL if no path is
  * found
  */
-struct Node **astar(struct Node *start,
-                    uint8_t goal,
-                    Heuristic heuristic,
-                    struct Coordinate *starter_neighbors,
-                    uint8_t *path_length);
+struct Coordinate astar(struct Node *start,
+                        uint8_t goal,
+                        Heuristic heuristic,
+                        struct Coordinate *starter_neighbors,
+                        uint8_t *path_length);

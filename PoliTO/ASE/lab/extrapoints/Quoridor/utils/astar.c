@@ -30,35 +30,35 @@ void node_free(struct Node *node)
     }
 }
 
-struct Node **
+struct Coordinate
 reconstruct_path(struct Node *start, struct Node *goal, uint8_t *path_length)
 {
-    struct Node **path =
-        (struct Node **)malloc(sizeof(struct Node *) * (goal->g + 1));
-    if (path == NULL) return NULL;
+    struct Node *tmp;
 
-    uint8_t path_i = goal->g;
-    *path_length = path_i;
-    path[path_i] = goal;
+    *path_length = goal->g;
 
     while (goal->y != start->y || goal->x != start->x)
     {
-        path[--path_i] = goal->parent;
+        tmp = goal;
         goal = goal->parent;
     }
 
-    return path;
+    return (struct Coordinate){tmp->x, tmp->y};
 }
 
-struct Node **astar(struct Node *start,
-                    uint8_t goal,
-                    Heuristic heuristic,
-                    struct Coordinate *starter_neighbors,
-                    uint8_t *path_length)
+struct Coordinate astar(struct Node *start,
+                        uint8_t goal,
+                        Heuristic heuristic,
+                        struct Coordinate *starter_neighbors,
+                        uint8_t *path_length)
 {
     bool visited[BOARD_SIZE][BOARD_SIZE] = {false};
 
-    struct Node **path;
+    // keep track of nodes that have been allocated to free them afterwards
+    struct Node *allocated_nodes[BOARD_SIZE * BOARD_SIZE];
+    uint16_t allocated_nodes_size = 0;
+
+    struct Coordinate res;
     *path_length = 0;
 
     // init set of discovered nodes as array of pointers,
@@ -80,7 +80,7 @@ struct Node **astar(struct Node *start,
         }
 
         struct Node *curr = open_set[curr_i];
-        if (curr == NULL) return NULL;
+        if (curr == NULL) return (struct Coordinate){0, 0};
 
         if (curr != start) // defaults to explore the 4 adjacent cells
             neigh = (struct Coordinate[]){
@@ -93,7 +93,7 @@ struct Node **astar(struct Node *start,
 
         if (curr->y == goal) // check if we reached the goal
         {
-            path = reconstruct_path(start, curr, path_length);
+            res = reconstruct_path(start, curr, path_length);
             break;
         }
 
@@ -102,7 +102,7 @@ struct Node **astar(struct Node *start,
         visited[curr->x][curr->y] = true;
 
         // iterate over the neighboring cells
-        for (uint8_t i = 0; neigh[i].x != UINT8_MAX; i++)
+        for (uint8_t i = 0; neigh[i].x != UINT8_MAX && i < 5; i++)
         {
             uint8_t next_x = (uint8_t)neigh[i].x;
             uint8_t next_y = (uint8_t)neigh[i].y;
@@ -139,6 +139,8 @@ struct Node **astar(struct Node *start,
                          heuristic(&(struct Coordinate){next_x, next_y},
                                    &(struct Coordinate){0, goal}));
 
+            allocated_nodes[allocated_nodes_size++] = neighbor;
+
             neighbor->parent = curr;
 
             // push neighbor into the open set if not already there
@@ -146,5 +148,10 @@ struct Node **astar(struct Node *start,
         }
     }
 
-    return path;
+    for (uint16_t i = 0; i < allocated_nodes_size; i++)
+    {
+        free(allocated_nodes[i]);
+    }
+
+    return res;
 }
