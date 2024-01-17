@@ -1,8 +1,9 @@
 #pragma once
 
+#include "../../common.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include "../common.h"
+
 /**
  * @brief stack of Coordinate type elements
  *

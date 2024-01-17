@@ -1,4 +1,4 @@
-#include "astar.h"
+#include "headers/astar.h"
 #include "../game/game.h"
 #include <stdbool.h>
 #include <stdint.h>
