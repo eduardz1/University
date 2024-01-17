@@ -65,7 +65,6 @@ _calculate_best_move(const struct PlayerInfo *player, uint8_t *path_length)
 
 struct Coordinate choose_move(void)
 {
-    return (struct Coordinate){0, 0};
     uint8_t path_length = 0; // UNUSED
     return _calculate_best_move(me, &path_length);
 }
