@@ -6,7 +6,7 @@ struct _Tuple
 {
     struct Coordinate co;
     enum Direction dir;
-    uint32_t it;
+    uint8_t path;
 };
 
 void AI_move(void);

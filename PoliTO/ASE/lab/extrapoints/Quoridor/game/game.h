@@ -10,7 +10,7 @@
 #define PLAYER_SELECTOR_PADDING                                                \
     (((empty_square.width - player_selector.width) >> 1))
 
-extern enum Player other_player_color;
+extern enum Player opponent;
 extern union Move current_possible_moves[5];
 extern struct Board board;
 extern enum Player current_player;
@@ -29,7 +29,7 @@ void game_init(void);
  */
 void change_turn(void);
 
-void calculate_possible_moves(void);
+void calculate_possible_moves(const enum Player player);
 
 /**
  * @brief moves the player sprite, updates the current player position on the

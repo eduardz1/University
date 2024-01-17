@@ -12,12 +12,12 @@
 #pragma clang diagnostic ignored "-Wdeclaration-after-statement"
 #endif
 
+#include "game.h"
 #include "../GLCD/GLCD.h"
 #include "../RIT/RIT.h"
 #include "../imgs/sprites.h"
-#include "../utils/dynarray.h"
-#include "../utils/stack.h"
-#include "game.h"
+#include "../utils/headers/dynarray.h"
+#include "../utils/headers/stack.h"
 #include "graphics.h"
 #include "npc.h"
 #include <stdbool.h>
@@ -27,8 +27,7 @@
 #include <string.h>
 
 static bool AI_enabled;
-enum Player other_player_color = WHITE;
-
+enum Player opponent = WHITE;
 
 union Move current_possible_moves[5] = {0};
 enum Player current_player = WHITE;
@@ -104,7 +103,7 @@ void change_turn(void)
     mode = PLAYER_MOVE; // reset to default
     clear_highlighted_moves();
     LCD_draw_rectangle(2, 9, 2 + 8 * 21, 9 + 8 + 4 + 8, TABLE_COLOR);
-    calculate_possible_moves();
+    calculate_possible_moves(current_player);
     highlight_possible_moves();
     refresh_info_panel(20);
 
@@ -121,15 +120,15 @@ void change_turn(void)
     }
 }
 
-void calculate_possible_moves(void)
+void calculate_possible_moves(const enum Player player)
 {
-    uint8_t i, x = current_player == RED ? red.x : white.x,
-               y = current_player == RED ? red.y : white.y;
+    uint8_t i, x = player == RED ? red.x : white.x,
+               y = player == RED ? red.y : white.y;
     union Move possible_moves[5] = {0}; // MAX number of possible moves
 
     for (i = 0; i < ARRAY_SIZE(possible_moves); i++)
     {
-        possible_moves[i].player_id = current_player;
+        possible_moves[i].player_id = player;
     }
     i = 0;
 

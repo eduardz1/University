@@ -315,7 +315,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
@@ -461,19 +461,49 @@
               <FilePath>.\utils\dynarray.c</FilePath>
             </File>
             <File>
-              <FileName>dynarray.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\utils\dynarray.h</FilePath>
-            </File>
-            <File>
               <FileName>stack.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\utils\stack.c</FilePath>
             </File>
             <File>
+              <FileName>astar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\utils\astar.c</FilePath>
+            </File>
+            <File>
+              <FileName>comparable.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\utils\comparable.c</FilePath>
+            </File>
+            <File>
+              <FileName>insert_sort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\utils\insert_sort.c</FilePath>
+            </File>
+            <File>
+              <FileName>comparable.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\utils\headers\comparable.h</FilePath>
+            </File>
+            <File>
+              <FileName>insert_sort.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\utils\headers\insert_sort.h</FilePath>
+            </File>
+            <File>
+              <FileName>astar.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\utils\headers\astar.h</FilePath>
+            </File>
+            <File>
+              <FileName>dynarray.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\utils\headers\dynarray.h</FilePath>
+            </File>
+            <File>
               <FileName>stack.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\utils\stack.h</FilePath>
+              <FilePath>.\utils\headers\stack.h</FilePath>
             </File>
           </Files>
         </Group>

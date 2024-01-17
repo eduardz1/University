@@ -9,7 +9,7 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-#include "utils/dynarray.h"
+#include "utils/headers/dynarray.h"
 #include <stdbool.h>
 #include <stdint.h>
 
