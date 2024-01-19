@@ -315,7 +315,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
@@ -476,11 +476,6 @@
               <FilePath>.\utils\comparable.c</FilePath>
             </File>
             <File>
-              <FileName>insert_sort.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\utils\insert_sort.c</FilePath>
-            </File>
-            <File>
               <FileName>comparable.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\utils\headers\comparable.h</FilePath>
@@ -504,6 +499,26 @@
               <FileName>stack.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\utils\headers\stack.h</FilePath>
+            </File>
+            <File>
+              <FileName>min_heap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\utils\headers\min_heap.h</FilePath>
+            </File>
+            <File>
+              <FileName>min_heap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\utils\min_heap.c</FilePath>
+            </File>
+            <File>
+              <FileName>sort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\utils\sort.c</FilePath>
+            </File>
+            <File>
+              <FileName>sort.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\utils\headers\sort.h</FilePath>
             </File>
           </Files>
         </Group>

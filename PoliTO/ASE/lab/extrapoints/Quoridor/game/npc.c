@@ -1,11 +1,12 @@
 #include <string.h>
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION < 6000000)
 #pragma diag_suppress 68 // integer conversion resulted in a change of sign
+#pragma anon_structs
 #endif
 
 #include "../game/graphics.h"
 #include "../utils/headers/astar.h"
-#include "../utils/headers/insert_sort.h"
+#include "../utils/headers/sort.h"
 #include "game.h"
 #include "npc.h"
 #include <stdint.h>
@@ -28,8 +29,8 @@ static uint8_t heuristic(struct Coordinate *node, struct Coordinate *winning)
     return abs(node->y - winning->y);
 }
 
-static struct Coordinate
-_calculate_best_move(const struct PlayerInfo *player, uint8_t *path_length)
+struct Coordinate
+calculate_best_move(const struct PlayerInfo *player, uint8_t *path_length)
 {
     struct Coordinate best_move;
     struct Node *start = node_new(player->x, player->y, 0, 0);
@@ -49,14 +50,18 @@ _calculate_best_move(const struct PlayerInfo *player, uint8_t *path_length)
         starter_neighbors[i] = neigh;
     }
 
-    struct Coordinate co = astar(start,
-                                 player->player_id == RED ? BOARD_SIZE - 1 : 0,
-                                 heuristic,
-                                 starter_neighbors,
-                                 path_length);
+    struct Node **path = astar(start,
+                               player->player_id == RED ? BOARD_SIZE - 1 : 0,
+                               heuristic,
+                               starter_neighbors,
+                               path_length);
+
+    best_move = (struct Coordinate){path[1]->x, path[1]->y};
 
     free(start);
-    best_move = (struct Coordinate){co.x, co.y};
+    for (uint8_t i = 0; i < *path_length; free(path[i++]))
+        ;
+    free(path);
 
     calculate_possible_moves(me->player_id); // reset current moves
 
@@ -66,21 +71,8 @@ _calculate_best_move(const struct PlayerInfo *player, uint8_t *path_length)
 struct Coordinate choose_move(void)
 {
     uint8_t path_length = 0; // UNUSED
-    return _calculate_best_move(me, &path_length);
+    return calculate_best_move(me, &path_length);
 }
-
-// TODO: no use right now
-// void update_choice_weight(float *move_choice_weight, const float eta)
-// {
-//     uint8_t vs_dist = opponent == RED ? white.y : 1 - red.y;
-//     uint8_t my_dist = opponent == RED ? 1 - red.y : white.y;
-
-//     // Opponent getting closer to the winning side increases likelihood of
-//     wall *move_choice_weight -= eta * vs_dist;
-
-//     // My pawn getting closer to the winning side increase likelihood of move
-//     *move_choice_weight += eta * my_dist;
-// }
 
 struct _Tuple choose_random_valid_wall()
 {
@@ -150,7 +142,7 @@ struct Coordinate choose_random_valid_move()
                                current_possible_moves[index].y};
 }
 
-struct _Tuple choose_wall() // can self-sabotage
+struct _Tuple choose_wall()
 {
     uint8_t path_length;
     uint8_t last_path_length;
@@ -167,7 +159,7 @@ struct _Tuple choose_wall() // can self-sabotage
     struct _Tuple good_walls[(BOARD_SIZE - 2) * (BOARD_SIZE - 2) * 2] = {0};
     uint16_t good_walls_size = 0;
 
-    _calculate_best_move(&main_character, &path_length);
+    calculate_best_move(&main_character, &path_length);
     last_path_length = path_length;
 
     // CHOOSE A WALL THAT MAKES THE MAIN CHARACTER's PATH LONGER
@@ -203,7 +195,7 @@ struct _Tuple choose_wall() // can self-sabotage
 
             if (is_wall_valid(co.x, co.y, dir))
             {
-                _calculate_best_move(&main_character, &path_length);
+                calculate_best_move(&main_character, &path_length);
 
                 if (last_path_length < path_length)
                 {
@@ -225,13 +217,12 @@ struct _Tuple choose_wall() // can self-sabotage
 
     // sort so that the walls that better block the player's movement
     //  are last in the array
-    insert_sort(
-        good_walls, sizeof(struct _Tuple), good_walls_size, compare_tuple);
+    sort(good_walls, sizeof(struct _Tuple), good_walls_size, compare_tuple);
 
     // worst cane scenario: no wall exists that does not sabotage me, take the
     // last good one that still slows the main character down
     struct _Tuple best_wall = good_walls[good_walls_size - 1];
-    _calculate_best_move(me, &path_length);
+    calculate_best_move(me, &path_length);
     last_path_length = path_length;
 
     // FILTER OUT WALL MOVES THAT MAKE MY PATH LONGER
@@ -258,7 +249,7 @@ struct _Tuple choose_wall() // can self-sabotage
             break;
         }
 
-        _calculate_best_move(me, &path_length);
+        calculate_best_move(me, &path_length);
 
         // can even shorten the path when placing a wall enables a diagonal
         // movement, take it with the equal because the last walls in the list
@@ -291,28 +282,19 @@ bool can_make_winning_move(enum Player player)
     return flag;
 }
 
-void AI_move(void)
+bool try_make_winning_move(bool *has_walls)
 {
-    struct Coordinate co;
-    bool has_walls = me->wall_count > 0;
-
-    static bool flag = true;
-    if (flag) // executes only once
-    {
-        me = opponent == RED ? &red : &white;
-        flag = false;
-    }
-
-    // move unconditionally if I can win
     if (can_make_winning_move(me->player_id))
     {
         move_player(me->x, me->player_id == RED ? BOARD_SIZE - 1 : 0);
-        return;
+        return true;
     }
+    return false;
+}
 
-    // place wall unconditionally to try to stop the main character if he is
-    // about to win
-    if (has_walls && can_make_winning_move(me->player_id == RED ? WHITE : RED))
+bool try_place_blocking_wall(bool *has_walls)
+{
+    if (*has_walls && can_make_winning_move(me->player_id == RED ? WHITE : RED))
     {
         clear_highlighted_moves();
 
@@ -321,88 +303,103 @@ void AI_move(void)
         if (tu.path != UINT8_MAX)
         {
             direction = tu.dir;
-            co = tu.co;
-            place_wall(co.x, co.y);
-            return;
+            place_wall(tu.co.x, tu.co.y);
+            return true;
         }
-
-        // LOST :(
     }
+    return false;
+}
 
-    /* POLICY:
-     *
-     * -  2% of the time place a random wall  | <-- (explore)
-     * -  2% of the time choose a random move |
-     *
-     * - 40% of the time place a wall that would best slow | <- (exploit)
-     *       down the main character's path, computed by   |
-     *       calculating its respective optimal, without   |
-     *       slowing ourselves down, if possible. If no    |
-     *       wall exists that can at least slow the main   |
-     *       character down, then move instead             |
-     * - 56% of the time move to the best cell, calculated |
-     *       with a shortest path algorithm (A*)           |
-     */
-    float extracted = RAND(0, 100);
-
-    if (extracted < 2 && has_walls) // random wall
+bool try_place_random_wall(bool *has_walls)
+{
+    if (*has_walls)
     {
         clear_highlighted_moves();
 
         struct _Tuple tu = choose_random_valid_wall();
         direction = tu.dir;
-        co = tu.co;
-        place_wall(co.x, co.y);
-        return;
+        place_wall(tu.co.x, tu.co.y);
+        return true;
     }
-    else if (extracted >= 2 && extracted < 4) // random move
+    return false;
+}
+
+bool try_make_random_move(bool *has_walls)
+{
+    struct Coordinate co = choose_random_valid_move();
+    move_player(co.x, co.y);
+    return true;
+}
+
+bool try_place_wall(bool *has_walls)
+{
+    clear_highlighted_moves();
+
+    struct _Tuple tu = choose_wall();
+
+    if (tu.path != UINT8_MAX)
     {
-        co = choose_random_valid_move();
-        move_player(co.x, co.y);
-        return;
+        direction = tu.dir;
+        place_wall(tu.co.x, tu.co.y);
+        return true;
     }
-    else
+    return false;
+}
+
+bool try_make_move(bool *has_walls)
+{
+    struct Coordinate co = choose_move();
+
+    for (uint8_t i = 0; i < 5; i++) // check if the move is valid
     {
-        if (extracted >= 4 && extracted < 44 && has_walls) // wall
+        if (current_possible_moves[i].x == co.x &&
+            current_possible_moves[i].x == co.x)
         {
-            clear_highlighted_moves();
-
-            struct _Tuple tu = choose_wall();
-
-            if (tu.path == UINT8_MAX)
-            {
-                extracted = 44;
-            }
-            else
-            {
-                direction = tu.dir;
-                co = tu.co;
-                place_wall(co.x, co.y);
-                return;
-            }
+            move_player(co.x, co.y);
+            return true;
         }
+    }
+    return false;
+}
 
-        if (extracted >= 44 || !has_walls) // move pawn
-        {
-            co = choose_move();
+void AI_move(void)
+{
+    // action strategies with cumulative probability of being chosen
+    static struct
+    {
+        uint8_t probability;
+        bool (*strategy)(bool *);
+    } strategies[] = {
+  // unconditional
+        {100, try_make_winning_move  },
+        {100, try_place_blocking_wall},
+ // explore
+        {2,   try_place_random_wall  },
+        {4,   try_make_random_move   },
+ // exploit
+        {44,  try_place_wall         },
+        {100, try_make_move          }
+    };
 
-            for (uint8_t i = 0; i < 5; i++) // check if the move is valid
-            {
-                if (current_possible_moves[i].x == co.x &&
-                    current_possible_moves[i].x == co.x)
-                {
-                    move_player(co.x, co.y);
-                    return;
-                }
-            }
+    static bool flag = true;
+    if (flag) // executes only once
+    {
+        me = opponent == RED ? &red : &white;
+        flag = false;
+    }
+    bool has_walls = me->wall_count > 0;
 
-            move_player(current_possible_moves[0].x,
-                        current_possible_moves[0].y);
+    uint8_t extracted = RAND(0, 100);
 
+    // select strategy base on probability and wether or not last strategy
+    // succeeded
+    for (uint8_t i = 0; i < ARRAY_SIZE(strategies); i++)
+    {
+        if (extracted <= strategies[i].probability &&
+            strategies[i].strategy(&has_walls))
             return;
-        }
     }
 
-    exit(1); // TODO: cleanup these returns everywhere but check that logically
-             // the NPC makes a move for every turn
+    // if everything else fails, select first of the possible moves
+    move_player(current_possible_moves[0].x, current_possible_moves[0].y);
 }

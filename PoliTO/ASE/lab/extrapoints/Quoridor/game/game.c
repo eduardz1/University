@@ -42,7 +42,7 @@ uint32_t turn_id = 0; // number that is incremented each turn
 
 void game_init(void)
 {
-    board.moves = dyn_array_new(0);
+    board.moves = new_dyn_array(0);
 
     draw_main_menu();
     enable_RIT(); /* start accepting inputs */
