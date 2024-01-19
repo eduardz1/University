@@ -40,11 +40,11 @@ calculate_best_move(const struct PlayerInfo *player, uint8_t *path_length);
  *
  * @return struct _Tuple containing the coordinates of the wall and its
  * direction, if no wall exists that can at least slow the main character down,
- * then path length is set to UINT8_MAX. If no wall exists that can be placed
+ * then path length is set to 0. If no wall exists that can be placed
  * without sabotaging our path, returns a wall that can at least slow the main
  * character down
  */
-struct _Tuple choose_wall(void);
+struct _Tuple choose_wall(enum Player player);
 
 /**
  * @brief chooses a random wall from the set of valid walls
@@ -107,7 +107,17 @@ bool try_make_random_move(bool *has_walls);
  * @return true if a wall was placed
  * @return false otherwise
  */
-bool try_place_wall(bool *has_walls);
+bool try_place_offensive_wall(bool *has_walls);
+
+/**
+ * @brief tries to place a wall that makes the main character unable to place a
+ * wall that makes the NPC's path longer
+ *
+ * @param has_walls whether or not the player has walls
+ * @return true if a wall was placed
+ * @return false otherwise
+ */
+bool try_place_defensive_wall(bool *has_walls);
 
 /**
  * @brief tries to make a move based on #choose_move 's policy
