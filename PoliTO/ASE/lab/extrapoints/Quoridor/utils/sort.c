@@ -1,5 +1,13 @@
 #include "headers/insert_sort.h"
 
+#include <assert.h>
+
+__attribute__((always_inline)) void
+sort(void *const array, const size_t size, const int length, const Comp comp)
+{
+    insert_sort(array, size, length, comp);
+}
+
 // TODO: now that I've added a sorting function might as well check if it can be
 // used elsewhere
 void insert_sort(void *const array,

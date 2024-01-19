@@ -1,11 +1,9 @@
 #include "headers/dynarray.h"
-#include "../common.h"
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
-struct DynArray *dyn_array_new(const unsigned int size)
+struct DynArray *new_dyn_array(const unsigned int size)
 {
     struct DynArray *new = (struct DynArray *)malloc(sizeof(struct DynArray));
     if (new == NULL) return NULL;

@@ -1,5 +1,7 @@
 #include "headers/astar.h"
 #include "../game/game.h"
+#include "headers/comparable.h"
+#include "headers/min_heap.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -30,27 +32,62 @@ void node_free(struct Node *node)
     }
 }
 
-struct Coordinate
+// struct Coordinate
+// reconstruct_path(struct Node *start, struct Node *goal, uint8_t *path_length)
+// {
+//     struct Node *tmp;
+
+//     *path_length = goal->g;
+
+//     while (goal->y != start->y || goal->x != start->x)
+//     {
+//         tmp = goal;
+//         goal = goal->parent;
+//     }
+
+//     return (struct Coordinate){tmp->x, tmp->y};
+// }
+
+struct Node **
 reconstruct_path(struct Node *start, struct Node *goal, uint8_t *path_length)
 {
-    struct Node *tmp;
+    struct Node **path = malloc(sizeof(struct Node *) * (goal->g + 1));
+    if (path == NULL) return NULL;
 
-    *path_length = goal->g;
+    *path_length = goal->g + 1;
 
-    while (goal->y != start->y || goal->x != start->x)
+    struct Node *tmp = goal;
+    for (uint8_t i = goal->g; i > 0; i--)
     {
-        tmp = goal;
-        goal = goal->parent;
+        path[i] = node_new(tmp->x, tmp->y, tmp->g, tmp->h);
+        tmp = tmp->parent;
     }
 
-    return (struct Coordinate){tmp->x, tmp->y};
+    path[0] = node_new(start->x, start->y, start->g, start->h);
+
+    return path;
 }
 
-struct Coordinate astar(struct Node *start,
-                        uint8_t goal,
-                        Heuristic heuristic,
-                        struct Coordinate *starter_neighbors,
-                        uint8_t *path_length)
+static bool
+is_node_in_open_set(struct MinHeap *heap, uint8_t x, uint8_t y, uint8_t *i)
+{
+    for (uint8_t j = 0; j < heap->size; j++)
+    {
+        struct Node *node = heap->data[j];
+        if (node->x == x && node->y == y)
+        {
+            *i = j;
+            return true;
+        }
+    }
+    return false;
+}
+
+struct Node **astar(struct Node *start,
+                    uint8_t goal,
+                    Heuristic heuristic,
+                    struct Coordinate *starter_neighbors,
+                    uint8_t *path_length)
 {
     bool visited[BOARD_SIZE][BOARD_SIZE] = {false};
 
@@ -58,29 +95,23 @@ struct Coordinate astar(struct Node *start,
     struct Node *allocated_nodes[BOARD_SIZE * BOARD_SIZE];
     uint16_t allocated_nodes_size = 0;
 
-    struct Coordinate res;
+    struct Node **res;
     *path_length = 0;
 
-    // init set of discovered nodes as array of pointers,
-    // small size means it's unefficient to use a priority queue
-    struct Node *open_set[BOARD_SIZE * BOARD_SIZE];
-    int8_t open_set_size = 1;
-    open_set[0] = start;
+    struct MinHeap *open_set =
+        new_min_heap(BOARD_SIZE * BOARD_SIZE, compare_nodes);
+    min_heap_insert(open_set, start);
 
     // neighboring cells as x and y offset, will replace starter_neighbors after
     // the first pass with the 4 adjacent cells
     struct Coordinate *neigh = starter_neighbors;
 
-    while (open_set_size > 0)
+    while (open_set->size > 0)
     {
-        uint8_t curr_i = 0;
-        for (uint8_t i = 1; i < open_set_size; i++)
-        { // find the node with the smallest f-value
-            if (open_set[i]->f < open_set[curr_i]->f) curr_i = i;
-        }
+        struct Node *curr = min_heap_extract(open_set);
 
-        struct Node *curr = open_set[curr_i];
-        if (curr == NULL) return (struct Coordinate){0, 0};
+        if (curr == NULL) return NULL;
+        visited[curr->x][curr->y] = true;
 
         if (curr != start) // defaults to explore the 4 adjacent cells
             neigh = (struct Coordinate[]){
@@ -97,61 +128,47 @@ struct Coordinate astar(struct Node *start,
             break;
         }
 
-        // pop the current node from the open set and mark as visited
-        open_set[curr_i] = open_set[--open_set_size];
-        visited[curr->x][curr->y] = true;
-
         // iterate over the neighboring cells
         for (uint8_t i = 0; neigh[i].x != UINT8_MAX && i < 5; i++)
         {
             uint8_t next_x = (uint8_t)neigh[i].x;
             uint8_t next_y = (uint8_t)neigh[i].y;
 
-            // check if the neighbor is within the board boundaries
-            if (next_x < 0 || next_x >= BOARD_SIZE || next_y < 0 ||
-                next_y >= BOARD_SIZE || visited[next_x][next_y])
+            if (next_x >= BOARD_SIZE || next_y >= BOARD_SIZE ||
+                visited[next_x][next_y] ||
+                is_wall_between(curr->x, curr->y, next_x, next_y))
                 continue;
-
-            if (is_wall_between(curr->x, curr->y, next_x, next_y)) continue;
 
             // update the tentative g score
             uint8_t tentative_g = curr->g + 1;
 
-            // check if the neighbor is not in the open_set or has a lower g
-            bool in_open_set = false;
-            int8_t open_set_i = -1;
-            for (uint8_t j = 0; j < open_set_size; j++)
-            {
-                if (open_set[j]->x != next_x || open_set[j]->y != next_y)
-                    continue;
+            // check if the neighbor is in open set and if the tentative g score
+            // is higher than the current g score discard the neighbor
+            uint8_t open_set_i;
+            bool in_open_set =
+                is_node_in_open_set(open_set, next_x, next_y, &open_set_i);
+            if (in_open_set &&
+                tentative_g >= ((struct Node *)open_set->data[open_set_i])->g)
+                continue;
 
-                in_open_set = true;
-                open_set_i = j;
-                break;
-            }
-
-            if (in_open_set && tentative_g >= open_set[open_set_i]->g) continue;
-
-            struct Node *neighbor = // push the neighbor into the open set
+            // link the neighbor to the current node
+            struct Node *neighbor =
                 node_new(next_x,
                          next_y,
                          tentative_g,
                          heuristic(&(struct Coordinate){next_x, next_y},
                                    &(struct Coordinate){0, goal}));
-
             allocated_nodes[allocated_nodes_size++] = neighbor;
-
             neighbor->parent = curr;
 
             // push neighbor into the open set if not already there
-            if (!in_open_set) open_set[open_set_size++] = neighbor;
+            if (!in_open_set) min_heap_insert(open_set, neighbor);
         }
     }
 
-    for (uint16_t i = 0; i < allocated_nodes_size; i++)
-    {
-        free(allocated_nodes[i]);
-    }
+    min_heap_free(open_set);
+    for (uint16_t i = 0; i < allocated_nodes_size; free(allocated_nodes[i++]))
+        ;
 
     return res;
 }

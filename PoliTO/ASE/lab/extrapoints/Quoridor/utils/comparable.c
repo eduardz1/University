@@ -7,11 +7,19 @@ int compare_tuple(const void *a, const void *b)
     int res;
     if (is_null(a, b, &res)) return res;
 
-    struct _Tuple v1 = *(struct _Tuple *)a;
-    struct _Tuple v2 = *(struct _Tuple *)b;
-    if (v1.path < v2.path) return -1;
-    if (v1.path > v2.path) return 1;
-    return 0;
+    struct _Tuple tuple_a = *(struct _Tuple *)a;
+    struct _Tuple tuple_b = *(struct _Tuple *)b;
+    return tuple_a.path - tuple_b.path;
+}
+
+int compare_nodes(const void *a, const void *b)
+{
+    int res;
+    if (is_null(a, b, &res)) return res;
+
+    struct Node node_a = *(struct Node *)a;
+    struct Node node_b = *(struct Node *)b;
+    return node_a.f - node_b.f;
 }
 
 int is_null(const void *a, const void *b, int *res)
