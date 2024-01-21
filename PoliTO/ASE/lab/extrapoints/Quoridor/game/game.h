@@ -75,11 +75,10 @@ bool is_wall_between(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
  *
  * @param x x board coordinate
  * @param y y board coordinate
- * @param it number that gets incremented at each iteration of the DFS
  * @param winning_y y coordinate that makes the pawn in (x, y) win
  * @return true if player has a path to the winning coordinate, false otherwise
  */
-bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y);
+bool find_path(uint8_t x, uint8_t y, const uint8_t winning_y);
 
 /**
  * @brief checks if placing a wall would cause the player to be trapped using
@@ -119,3 +118,5 @@ void select_menu_option(bool up_or_down);
 bool can_wall_be_placed(const enum Player player,
                         const uint8_t x,
                         const uint8_t y);
+
+void place_tmp_wall(const enum Direction dir, const uint8_t x, const uint8_t y);

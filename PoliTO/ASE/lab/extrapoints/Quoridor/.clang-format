@@ -5,10 +5,11 @@ AllowShortCaseLabelsOnASingleLine: true
 AllowShortEnumsOnASingleLine: true
 AllowShortBlocksOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
 BinPackArguments: false
 BinPackParameters: false
 BreakBeforeTernaryOperators: false
-AlignArrayOfStructures: Left
+AlignArrayOfStructures: Right
 AlignConsecutiveBitFields: Consecutive
 InsertNewlineAtEOF: true
 

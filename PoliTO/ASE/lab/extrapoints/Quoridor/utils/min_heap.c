@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-static void top_heapify(struct MinHeap *heap, uint8_t i)
+void top_heapify(struct MinHeap *heap, uint8_t i)
 {
     uint8_t l = LEFT(i);
     uint8_t r = RIGHT(i);
@@ -22,11 +22,9 @@ static void top_heapify(struct MinHeap *heap, uint8_t i)
     }
 }
 
-static void bottom_heapify(struct MinHeap *heap, uint8_t i)
+void bottom_heapify(struct MinHeap *heap, uint8_t i)
 {
-    void *a = heap->data[i];
-    void *b = heap->data[PARENT(i)];
-    while (i != 0 && heap->comp(a, b) < 0)
+    while (i != 0 && heap->comp(heap->data[i], heap->data[PARENT(i)]) < 0)
     {
         void *tmp = heap->data[i];
         heap->data[i] = heap->data[PARENT(i)];
@@ -89,4 +87,23 @@ void *min_heap_peek(struct MinHeap *heap)
     if (heap->size == 0) return NULL;
 
     return heap->data[0];
+}
+
+void min_heap_update(struct MinHeap *heap, const uint8_t i, void *value)
+{
+    void *old_value = heap->data[i];
+    heap->data[i] = value;
+
+    if (heap->comp(value, old_value) < 0)
+    {
+        // the new value is less than the old value, so we might violate
+        // the heap property for the node and its parent.
+        bottom_heapify(heap, i);
+    }
+    else
+    {
+        // the new value is greater than the old value, so we might violate
+        // the heap property for the node and its children.
+        top_heapify(heap, i);
+    }
 }

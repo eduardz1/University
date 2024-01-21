@@ -13,7 +13,7 @@ struct Node
     struct Node *parent;
 };
 
-typedef uint8_t (*Heuristic)(struct Coordinate *, struct Coordinate *);
+typedef uint8_t (*Heuristic)(uint8_t x, uint8_t y, uint8_t goal);
 
 struct Node *
 node_new(const uint8_t x, const uint8_t y, const uint8_t g, const uint8_t h);
@@ -41,4 +41,5 @@ struct Node **astar(struct Node *start,
                     uint8_t goal,
                     Heuristic heuristic,
                     struct Coordinate *starter_neighbors,
+                    uint8_t starter_neighbors_length,
                     uint8_t *path_length);

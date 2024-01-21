@@ -322,7 +322,7 @@ bool is_wall_between(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
            (y1 == y2 && x1 > x2 && board.board[x1][y1].walls.left);
 }
 
-bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
+bool find_path(uint8_t x, uint8_t y, const uint8_t winning_y)
 {
     struct Stack stack;
     struct Coordinate coordinate;
@@ -334,8 +334,6 @@ bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
 
     while (!is_empty(&stack))
     {
-        (*it)++;
-
         coordinate = pop(&stack);
         x = (uint8_t)coordinate.x;
         y = (uint8_t)coordinate.y;
@@ -348,10 +346,10 @@ bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
 
         // neighbors to visit
         struct Coordinate neighbors[] = {
-            {x,     y - 1},
-            {x,     y + 1},
-            {x + 1, y    },
-            {x - 1, y    }
+            {    x, y - 1},
+            {    x, y + 1},
+            {x + 1,     y},
+            {x - 1,     y}
         };
 
         for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
@@ -374,11 +372,10 @@ bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
 
 bool is_not_trapped(const enum Player player)
 {
-    uint32_t it = 0; // UNUSED
     uint8_t x = player == RED ? red.x : white.x;
     uint8_t y = player == RED ? red.y : white.y;
 
-    return find_path(x, y, &it, player == RED ? BOARD_SIZE - 1 : 0);
+    return find_path(x, y, player == RED ? BOARD_SIZE - 1 : 0);
 }
 
 bool is_wall_clipping(const uint8_t x,
@@ -527,4 +524,23 @@ union Move place_wall(const uint8_t x, const uint8_t y)
 
     dyn_array_push(board.moves, move.as_uint32_t);
     return move;
+}
+
+void place_tmp_wall(const enum Direction dir, const uint8_t x, const uint8_t y)
+{
+    switch (dir)
+    {
+    case HORIZONTAL:
+        board.board[x][y].walls.bottom = true;
+        board.board[x + 1][y].walls.bottom = true;
+        board.board[x][y + 1].walls.top = true;
+        board.board[x + 1][y + 1].walls.top = true;
+        break;
+    case VERTICAL:
+        board.board[x][y].walls.right = true;
+        board.board[x + 1][y].walls.left = true;
+        board.board[x][y + 1].walls.right = true;
+        board.board[x + 1][y + 1].walls.left = true;
+        break;
+    }
 }

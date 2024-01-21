@@ -24,41 +24,39 @@ extern enum Direction direction;
 // (i.e. for training a neural network)
 static const struct PlayerInfo *me;
 
-static uint8_t heuristic(struct Coordinate *node, struct Coordinate *winning)
+static uint8_t heuristic(uint8_t x, uint8_t y, uint8_t goal)
 {
-    return abs(node->y - winning->y);
+    return goal == BOARD_SIZE - 1 ? BOARD_SIZE - 1 - y : y;
 }
 
 struct Coordinate
 calculate_best_move(const struct PlayerInfo *player, uint8_t *path_length)
 {
     struct Coordinate best_move;
-    struct Node *start = node_new(player->x, player->y, 0, 0);
-    if (start == NULL) exit(1); // out of memory
+    struct Node start = (struct Node){player->x, player->y, 0, 0};
 
     calculate_possible_moves(player->player_id); // TODO: can be optimized
 
     struct Coordinate starter_neighbors[5];
+    uint8_t starter_neighbors_length = 0;
     for (uint8_t i = 0; i < 5; i++)
     {
-        struct Coordinate neigh = {UINT8_MAX, UINT8_MAX};
         if (current_possible_moves[i].as_uint32_t != -1)
         {
-            neigh.x = current_possible_moves[i].x;
-            neigh.y = current_possible_moves[i].y;
+            starter_neighbors[starter_neighbors_length++] = (struct Coordinate){
+                current_possible_moves[i].x, current_possible_moves[i].y};
         }
-        starter_neighbors[i] = neigh;
     }
 
-    struct Node **path = astar(start,
+    struct Node **path = astar(&start,
                                player->player_id == RED ? BOARD_SIZE - 1 : 0,
                                heuristic,
                                starter_neighbors,
+                               starter_neighbors_length,
                                path_length);
 
     best_move = (struct Coordinate){path[1]->x, path[1]->y};
 
-    free(start);
     for (uint8_t i = 0; i < *path_length; free(path[i++]))
         ;
     free(path);
@@ -76,15 +74,15 @@ struct Coordinate choose_move(void)
 
 struct _Tuple choose_random_valid_wall()
 {
-    struct _Tuple valid_walls[(BOARD_SIZE - 2) * (BOARD_SIZE - 2) * 2] = {0};
-    uint8_t valid_walls_size = 0;
-    // wall placement affects 4 cells
-    const struct Coordinate neighbors[] = {
+    static const struct Coordinate neighbors[] = {
+  // wall placement affects 4 cells
         {0, 0},
         {1, 0},
         {0, 1},
         {1, 1}
     };
+    struct _Tuple valid_walls[(BOARD_SIZE - 2) * (BOARD_SIZE - 2) * 2] = {0};
+    uint8_t valid_walls_size = 0;
     uint8_t walls_backup[ARRAY_SIZE(neighbors)];
 
     for (uint8_t i = 0; i < (BOARD_SIZE - 2) * (BOARD_SIZE - 2); i++)
@@ -101,21 +99,7 @@ struct _Tuple choose_random_valid_wall()
             backup_walls(
                 co.x, co.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
 
-            switch (dir)
-            {
-            case HORIZONTAL:
-                board.board[co.x][co.y].walls.bottom = true;
-                board.board[co.x + 1][co.y].walls.bottom = true;
-                board.board[co.x][co.y + 1].walls.top = true;
-                board.board[co.x + 1][co.y + 1].walls.top = true;
-                break;
-            case VERTICAL:
-                board.board[co.x][co.y].walls.right = true;
-                board.board[co.x + 1][co.y].walls.left = true;
-                board.board[co.x][co.y + 1].walls.right = true;
-                board.board[co.x + 1][co.y + 1].walls.left = true;
-                break;
-            }
+            place_tmp_wall(dir, co.x, co.y);
 
             if (is_wall_valid(co.x, co.y, dir))
                 valid_walls[valid_walls_size++] = (struct _Tuple){co, dir, 0};
@@ -130,17 +114,18 @@ struct _Tuple choose_random_valid_wall()
 
 struct _Tuple choose_defensive_wall(const uint8_t path)
 {
-    uint8_t last_path_length;
-    struct PlayerInfo opponent = me->player_id == RED ? white : red;
-
-    // wall placement affects 4 cells
-    const struct Coordinate neighbors[] = {
+    static const struct Coordinate neighbors[] = {
+  // wall placement affects 4 cells
         {0, 0},
         {1, 0},
         {0, 1},
         {1, 1}
     };
-    uint8_t walls_backup[ARRAY_SIZE(neighbors)];
+    uint8_t last_path_length;
+    struct PlayerInfo opponent = me->player_id == RED ? white : red;
+
+    struct Cell board_backup[BOARD_SIZE][BOARD_SIZE];
+    memcpy(board_backup, board.board, sizeof(board.board));
     struct _Tuple good_walls[(BOARD_SIZE - 2) * (BOARD_SIZE - 2) * 2] = {0};
     uint16_t good_walls_size = 0;
 
@@ -159,24 +144,7 @@ struct _Tuple choose_defensive_wall(const uint8_t path)
         {
             if (is_wall_clipping(co.x, co.y, dir)) continue;
 
-            backup_walls(
-                co.x, co.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
-
-            switch (dir)
-            {
-            case HORIZONTAL:
-                board.board[co.x][co.y].walls.bottom = true;
-                board.board[co.x + 1][co.y].walls.bottom = true;
-                board.board[co.x][co.y + 1].walls.top = true;
-                board.board[co.x + 1][co.y + 1].walls.top = true;
-                break;
-            case VERTICAL:
-                board.board[co.x][co.y].walls.right = true;
-                board.board[co.x + 1][co.y].walls.left = true;
-                board.board[co.x][co.y + 1].walls.right = true;
-                board.board[co.x + 1][co.y + 1].walls.left = true;
-                break;
-            }
+            place_tmp_wall(dir, co.x, co.y);
 
             if (is_wall_valid(co.x, co.y, dir))
             {
@@ -191,8 +159,11 @@ struct _Tuple choose_defensive_wall(const uint8_t path)
                 last_path_length = tu.path;
             }
 
-            rollback_walls(
-                co.x, co.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
+            for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
+            { // TODO: analyze if it's faster to only restore .walls
+                board.board[co.x + neighbors[i].x][co.y + neighbors[i].y] =
+                    board_backup[co.x + neighbors[i].x][co.y + neighbors[i].y];
+            }
         }
     }
 
@@ -209,24 +180,7 @@ struct _Tuple choose_defensive_wall(const uint8_t path)
     {
         struct Coordinate co = good_walls[i].co;
 
-        backup_walls(
-            co.x, co.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
-
-        switch (good_walls[i].dir)
-        {
-        case HORIZONTAL:
-            board.board[co.x][co.y].walls.bottom = true;
-            board.board[co.x + 1][co.y].walls.bottom = true;
-            board.board[co.x][co.y + 1].walls.top = true;
-            board.board[co.x + 1][co.y + 1].walls.top = true;
-            break;
-        case VERTICAL:
-            board.board[co.x][co.y].walls.right = true;
-            board.board[co.x + 1][co.y].walls.left = true;
-            board.board[co.x][co.y + 1].walls.right = true;
-            board.board[co.x + 1][co.y + 1].walls.left = true;
-            break;
-        }
+        place_tmp_wall(good_walls[i].dir, co.x, co.y);
 
         calculate_best_move(opponent.player_id == RED ? &white : &red,
                             &path_length);
@@ -240,8 +194,11 @@ struct _Tuple choose_defensive_wall(const uint8_t path)
             best_wall = good_walls[i];
         }
 
-        rollback_walls(
-            co.x, co.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
+        for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
+        { // TODO: analyze if it's faster to only restore .walls
+            board.board[co.x + neighbors[i].x][co.y + neighbors[i].y] =
+                board_backup[co.x + neighbors[i].x][co.y + neighbors[i].y];
+        }
     }
 
     return best_wall;
@@ -262,19 +219,21 @@ struct Coordinate choose_random_valid_move()
 }
 
 struct _Tuple choose_wall(enum Player player)
-{
-    uint8_t path_length;
-    uint8_t last_path_length;
-    struct PlayerInfo opponent = player == RED ? white : red;
 
-    // wall placement affects 4 cells
-    const struct Coordinate neighbors[] = {
+{
+    static const struct Coordinate neighbors[] = {
+  // wall placement affects 4 cells
         {0, 0},
         {1, 0},
         {0, 1},
         {1, 1}
     };
-    uint8_t walls_backup[ARRAY_SIZE(neighbors)];
+    uint8_t path_length;
+    uint8_t last_path_length;
+    struct PlayerInfo opponent = player == RED ? white : red;
+    struct Cell board_backup[BOARD_SIZE][BOARD_SIZE];
+    memcpy(board_backup, board.board, sizeof(board.board));
+
     struct _Tuple good_walls[(BOARD_SIZE - 2) * (BOARD_SIZE - 2) * 2] = {0};
     uint16_t good_walls_size = 0;
 
@@ -293,24 +252,7 @@ struct _Tuple choose_wall(enum Player player)
         {
             if (is_wall_clipping(co.x, co.y, dir)) continue;
 
-            backup_walls(
-                co.x, co.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
-
-            switch (dir)
-            {
-            case HORIZONTAL:
-                board.board[co.x][co.y].walls.bottom = true;
-                board.board[co.x + 1][co.y].walls.bottom = true;
-                board.board[co.x][co.y + 1].walls.top = true;
-                board.board[co.x + 1][co.y + 1].walls.top = true;
-                break;
-            case VERTICAL:
-                board.board[co.x][co.y].walls.right = true;
-                board.board[co.x + 1][co.y].walls.left = true;
-                board.board[co.x][co.y + 1].walls.right = true;
-                board.board[co.x + 1][co.y + 1].walls.left = true;
-                break;
-            }
+            place_tmp_wall(dir, co.x, co.y);
 
             if (is_wall_valid(co.x, co.y, dir))
             {
@@ -323,8 +265,11 @@ struct _Tuple choose_wall(enum Player player)
                 }
             }
 
-            rollback_walls(
-                co.x, co.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
+            for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
+            { // TODO: analyze if it's faster to only restore .walls
+                board.board[co.x + neighbors[i].x][co.y + neighbors[i].y] =
+                    board_backup[co.x + neighbors[i].x][co.y + neighbors[i].y];
+            }
         }
     }
 
@@ -347,24 +292,7 @@ struct _Tuple choose_wall(enum Player player)
     {
         struct Coordinate co = good_walls[i].co;
 
-        backup_walls(
-            co.x, co.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
-
-        switch (good_walls[i].dir)
-        {
-        case HORIZONTAL:
-            board.board[co.x][co.y].walls.bottom = true;
-            board.board[co.x + 1][co.y].walls.bottom = true;
-            board.board[co.x][co.y + 1].walls.top = true;
-            board.board[co.x + 1][co.y + 1].walls.top = true;
-            break;
-        case VERTICAL:
-            board.board[co.x][co.y].walls.right = true;
-            board.board[co.x + 1][co.y].walls.left = true;
-            board.board[co.x][co.y + 1].walls.right = true;
-            board.board[co.x + 1][co.y + 1].walls.left = true;
-            break;
-        }
+        place_tmp_wall(good_walls[i].dir, co.x, co.y);
 
         calculate_best_move(opponent.player_id == RED ? &white : &red,
                             &path_length);
@@ -378,8 +306,11 @@ struct _Tuple choose_wall(enum Player player)
             best_wall = good_walls[i];
         }
 
-        rollback_walls(
-            co.x, co.y, walls_backup, neighbors, ARRAY_SIZE(neighbors));
+        for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
+        { // TODO: analyze if it's faster to only restore .walls
+            board.board[co.x + neighbors[i].x][co.y + neighbors[i].y] =
+                board_backup[co.x + neighbors[i].x][co.y + neighbors[i].y];
+        }
     }
 
     return best_wall;
@@ -451,33 +382,40 @@ bool try_make_random_move(bool *has_walls)
 
 bool try_place_offensive_wall(bool *has_walls)
 {
-    clear_highlighted_moves();
-
-    struct _Tuple tu = choose_wall(me->player_id);
-
-    if (tu.path != 0)
+    if (*has_walls)
     {
-        direction = tu.dir;
-        place_wall(tu.co.x, tu.co.y);
-        return true;
+        clear_highlighted_moves();
+
+        struct _Tuple tu = choose_wall(me->player_id);
+
+        if (tu.path != 0)
+        {
+            direction = tu.dir;
+            place_wall(tu.co.x, tu.co.y);
+            return true;
+        }
     }
     return false;
 }
 
 bool try_place_defensive_wall(bool *has_walls)
 {
-    clear_highlighted_moves();
+    if (*has_walls)
+    {
+        clear_highlighted_moves();
 
-    struct _Tuple tu = choose_wall(me->player_id == RED ? WHITE : RED);
+        struct _Tuple tu = choose_wall(me->player_id == RED ? WHITE : RED);
 
-    if (tu.path == 0) return false;
+        if (tu.path == 0) return false;
 
-    tu = choose_defensive_wall(tu.path);
-    if (tu.path == 0) return false;
+        tu = choose_defensive_wall(tu.path);
+        if (tu.path == 0) return false;
 
-    direction = tu.dir;
-    place_wall(tu.co.x, tu.co.y);
-    return true;
+        direction = tu.dir;
+        place_wall(tu.co.x, tu.co.y);
+        return true;
+    }
+    return false;
 }
 
 bool try_make_move(bool *has_walls)
@@ -505,15 +443,15 @@ void AI_move(void)
         bool (*strategy)(bool *);
     } strategies[] = {
   // unconditional
-        {100, try_make_winning_move   },
-        {100, try_place_blocking_wall },
+        {100,    try_make_winning_move},
+        {100,  try_place_blocking_wall},
  // explore
-        {2,   try_place_random_wall   },
-        {4,   try_make_random_move    },
+        {  2,    try_place_random_wall},
+        {  4,     try_make_random_move},
  // exploit
-        {24,  try_place_defensive_wall},
-        {44,  try_place_offensive_wall},
-        {100, try_make_move           }
+        { 14, try_place_defensive_wall},
+        { 54, try_place_offensive_wall},
+        {100,            try_make_move}
     };
 
     static bool flag = true;
