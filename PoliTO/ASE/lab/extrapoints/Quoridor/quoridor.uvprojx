@@ -324,7 +324,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>0</wLevel>
+            <wLevel>3</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
@@ -398,12 +398,7 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>common.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\common.h</FilePath>
+              <FilePath>.\src\main.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -423,47 +418,17 @@
             <File>
               <FileName>AsciiLib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\GLCD\AsciiLib.c</FilePath>
-            </File>
-            <File>
-              <FileName>AsciiLib.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\GLCD\AsciiLib.h</FilePath>
+              <FilePath>.\src\GLCD\AsciiLib.c</FilePath>
             </File>
             <File>
               <FileName>GLCD.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\GLCD\GLCD.c</FilePath>
-            </File>
-            <File>
-              <FileName>GLCD.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\GLCD\GLCD.h</FilePath>
+              <FilePath>.\src\GLCD\GLCD.c</FilePath>
             </File>
             <File>
               <FileName>HzLib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\GLCD\HzLib.c</FilePath>
-            </File>
-            <File>
-              <FileName>HzLib.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\GLCD\HzLib.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>TP</GroupName>
-          <Files>
-            <File>
-              <FileName>TouchPanel.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\TouchPanel\TouchPanel.c</FilePath>
-            </File>
-            <File>
-              <FileName>TouchPanel.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\TouchPanel\TouchPanel.h</FilePath>
+              <FilePath>.\src\GLCD\HzLib.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -471,24 +436,34 @@
           <GroupName>utils</GroupName>
           <Files>
             <File>
-              <FileName>dynarray.c</FileName>
+              <FileName>astar.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\utils\dynarray.c</FilePath>
+              <FilePath>.\src\utils\astar.c</FilePath>
             </File>
             <File>
-              <FileName>dynarray.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\utils\dynarray.h</FilePath>
+              <FileName>comparable.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\utils\comparable.c</FilePath>
+            </File>
+            <File>
+              <FileName>dyn_array.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\utils\dyn_array.c</FilePath>
+            </File>
+            <File>
+              <FileName>min_heap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\utils\min_heap.c</FilePath>
+            </File>
+            <File>
+              <FileName>sort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\utils\sort.c</FilePath>
             </File>
             <File>
               <FileName>stack.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\utils\stack.c</FilePath>
-            </File>
-            <File>
-              <FileName>stack.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\utils\stack.h</FilePath>
+              <FilePath>.\src\utils\stack.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -496,24 +471,19 @@
           <GroupName>imgs</GroupName>
           <Files>
             <File>
-              <FileName>sprites.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\imgs\sprites.h</FilePath>
-            </File>
-            <File>
-              <FileName>wall.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\imgs\wall.c</FilePath>
-            </File>
-            <File>
               <FileName>cell.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\imgs\cell.c</FilePath>
+              <FilePath>.\src\imgs\cell.c</FilePath>
             </File>
             <File>
               <FileName>player.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\imgs\player.c</FilePath>
+              <FilePath>.\src\imgs\player.c</FilePath>
+            </File>
+            <File>
+              <FileName>wall.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\imgs\wall.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -521,19 +491,14 @@
           <GroupName>button_EXINT</GroupName>
           <Files>
             <File>
-              <FileName>button.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\button_EXINT\button.h</FilePath>
-            </File>
-            <File>
               <FileName>IRQ_button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\button_EXINT\IRQ_button.c</FilePath>
+              <FilePath>.\src\button_EXINT\IRQ_button.c</FilePath>
             </File>
             <File>
               <FileName>lib_button.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\button_EXINT\lib_button.c</FilePath>
+              <FilePath>.\src\button_EXINT\lib_button.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -541,39 +506,9 @@
           <GroupName>joystick</GroupName>
           <Files>
             <File>
-              <FileName>funct_joystick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\joystick\funct_joystick.c</FilePath>
-            </File>
-            <File>
-              <FileName>joystick.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\joystick\joystick.h</FilePath>
-            </File>
-            <File>
               <FileName>lib_joystick.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\joystick\lib_joystick.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>led</GroupName>
-          <Files>
-            <File>
-              <FileName>funct_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\led\funct_led.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\led\led.h</FilePath>
-            </File>
-            <File>
-              <FileName>lib_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\led\lib_led.c</FilePath>
+              <FilePath>.\src\joystick\lib_joystick.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -583,17 +518,12 @@
             <File>
               <FileName>IRQ_RIT.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\RIT\IRQ_RIT.c</FilePath>
+              <FilePath>.\src\RIT\IRQ_RIT.c</FilePath>
             </File>
             <File>
               <FileName>lib_RIT.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\RIT\lib_RIT.c</FilePath>
-            </File>
-            <File>
-              <FileName>RIT.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\RIT\RIT.h</FilePath>
+              <FilePath>.\src\RIT\lib_RIT.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -603,22 +533,32 @@
             <File>
               <FileName>game.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\game\game.c</FilePath>
-            </File>
-            <File>
-              <FileName>game.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\game\game.h</FilePath>
+              <FilePath>.\src\game\game.c</FilePath>
             </File>
             <File>
               <FileName>graphics.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\game\graphics.c</FilePath>
+              <FilePath>.\src\game\graphics.c</FilePath>
             </File>
             <File>
-              <FileName>graphics.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\game\graphics.h</FilePath>
+              <FileName>npc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\game\npc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>CAN</GroupName>
+          <Files>
+            <File>
+              <FileName>IRQ_CAN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\CAN\IRQ_CAN.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_CAN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\CAN\lib_CAN.c</FilePath>
             </File>
           </Files>
         </Group>
