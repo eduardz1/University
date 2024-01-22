@@ -10,8 +10,12 @@
 #define PLAYER_SELECTOR_PADDING                                                \
     (((empty_square.width - player_selector.width) >> 1))
 
-extern enum Player other_player_color;
-extern union Move current_possible_moves[5];
+#define MAX_NEIGHBORS                                                          \
+    5 // there are no configurations where more that 5 possible moves are
+      // possible
+
+extern enum Player opponent;
+extern union Move current_possible_moves[MAX_NEIGHBORS];
 extern struct Board board;
 extern enum Player current_player;
 extern enum Direction direction;
@@ -29,7 +33,7 @@ void game_init(void);
  */
 void change_turn(void);
 
-void calculate_possible_moves(void);
+void calculate_possible_moves(const enum Player player);
 
 /**
  * @brief moves the player sprite, updates the current player position on the
@@ -75,11 +79,10 @@ bool is_wall_between(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
  *
  * @param x x board coordinate
  * @param y y board coordinate
- * @param it number that gets incremented at each iteration of the DFS
  * @param winning_y y coordinate that makes the pawn in (x, y) win
  * @return true if player has a path to the winning coordinate, false otherwise
  */
-bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y);
+bool find_path(uint8_t x, uint8_t y, const uint8_t winning_y);
 
 /**
  * @brief checks if placing a wall would cause the player to be trapped using
@@ -119,3 +122,5 @@ void select_menu_option(bool up_or_down);
 bool can_wall_be_placed(const enum Player player,
                         const uint8_t x,
                         const uint8_t y);
+
+void place_tmp_wall(const enum Direction dir, const uint8_t x, const uint8_t y);

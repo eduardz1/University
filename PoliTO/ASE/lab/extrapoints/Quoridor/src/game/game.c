@@ -12,12 +12,12 @@
 #pragma clang diagnostic ignored "-Wdeclaration-after-statement"
 #endif
 
+#include "game.h"
 #include "../GLCD/GLCD.h"
 #include "../RIT/RIT.h"
 #include "../imgs/sprites.h"
-#include "../utils/dynarray.h"
-#include "../utils/stack.h"
-#include "game.h"
+#include "../utils/headers/dyn_array.h"
+#include "../utils/headers/stack.h"
 #include "graphics.h"
 #include "npc.h"
 #include <stdbool.h>
@@ -27,8 +27,7 @@
 #include <string.h>
 
 static bool AI_enabled;
-enum Player other_player_color = WHITE;
-
+enum Player opponent = WHITE;
 
 union Move current_possible_moves[5] = {0};
 enum Player current_player = WHITE;
@@ -43,7 +42,7 @@ uint32_t turn_id = 0; // number that is incremented each turn
 
 void game_init(void)
 {
-    board.moves = dyn_array_new(0);
+    board.moves = new_dyn_array(0);
 
     draw_main_menu();
     enable_RIT(); /* start accepting inputs */
@@ -104,7 +103,7 @@ void change_turn(void)
     mode = PLAYER_MOVE; // reset to default
     clear_highlighted_moves();
     LCD_draw_rectangle(2, 9, 2 + 8 * 21, 9 + 8 + 4 + 8, TABLE_COLOR);
-    calculate_possible_moves();
+    calculate_possible_moves(current_player);
     highlight_possible_moves();
     refresh_info_panel(20);
 
@@ -121,15 +120,15 @@ void change_turn(void)
     }
 }
 
-void calculate_possible_moves(void)
+void calculate_possible_moves(const enum Player player)
 {
-    uint8_t i, x = current_player == RED ? red.x : white.x,
-               y = current_player == RED ? red.y : white.y;
+    uint8_t i, x = player == RED ? red.x : white.x,
+               y = player == RED ? red.y : white.y;
     union Move possible_moves[5] = {0}; // MAX number of possible moves
 
     for (i = 0; i < ARRAY_SIZE(possible_moves); i++)
     {
-        possible_moves[i].player_id = current_player;
+        possible_moves[i].player_id = player;
     }
     i = 0;
 
@@ -323,7 +322,7 @@ bool is_wall_between(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
            (y1 == y2 && x1 > x2 && board.board[x1][y1].walls.left);
 }
 
-bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
+bool find_path(uint8_t x, uint8_t y, const uint8_t winning_y)
 {
     struct Stack stack;
     struct Coordinate coordinate;
@@ -335,8 +334,6 @@ bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
 
     while (!is_empty(&stack))
     {
-        (*it)++;
-
         coordinate = pop(&stack);
         x = (uint8_t)coordinate.x;
         y = (uint8_t)coordinate.y;
@@ -349,10 +346,10 @@ bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
 
         // neighbors to visit
         struct Coordinate neighbors[] = {
-            {x,     y - 1},
-            {x,     y + 1},
-            {x + 1, y    },
-            {x - 1, y    }
+            {    x, y - 1},
+            {    x, y + 1},
+            {x + 1,     y},
+            {x - 1,     y}
         };
 
         for (uint8_t i = 0; i < ARRAY_SIZE(neighbors); i++)
@@ -375,11 +372,10 @@ bool find_path(uint8_t x, uint8_t y, uint32_t *it, const uint8_t winning_y)
 
 bool is_not_trapped(const enum Player player)
 {
-    uint32_t it = 0; // UNUSED
     uint8_t x = player == RED ? red.x : white.x;
     uint8_t y = player == RED ? red.y : white.y;
 
-    return find_path(x, y, &it, player == RED ? BOARD_SIZE - 1 : 0);
+    return find_path(x, y, player == RED ? BOARD_SIZE - 1 : 0);
 }
 
 bool is_wall_clipping(const uint8_t x,
@@ -417,11 +413,7 @@ bool is_wall_clipping(const uint8_t x,
 
 bool is_wall_valid(const uint8_t x, const uint8_t y, const enum Direction dir)
 {
-    if (x > BOARD_SIZE - 1 || y > BOARD_SIZE - 1 ||
-        (x == BOARD_SIZE - 1 && dir == VERTICAL) || // outside right boundary
-        (y == BOARD_SIZE - 1 && dir == HORIZONTAL)  // outside bottom boundary
-    )
-        return false;
+    if (x > BOARD_SIZE - 1 || y > BOARD_SIZE - 1) return false;
 
     return is_not_trapped(RED) && is_not_trapped(WHITE);
 }
@@ -528,4 +520,23 @@ union Move place_wall(const uint8_t x, const uint8_t y)
 
     dyn_array_push(board.moves, move.as_uint32_t);
     return move;
+}
+
+void place_tmp_wall(const enum Direction dir, const uint8_t x, const uint8_t y)
+{
+    switch (dir)
+    {
+    case HORIZONTAL:
+        board.board[x][y].walls.bottom = true;
+        board.board[x + 1][y].walls.bottom = true;
+        board.board[x][y + 1].walls.top = true;
+        board.board[x + 1][y + 1].walls.top = true;
+        break;
+    case VERTICAL:
+        board.board[x][y].walls.right = true;
+        board.board[x + 1][y].walls.left = true;
+        board.board[x][y + 1].walls.right = true;
+        board.board[x + 1][y + 1].walls.left = true;
+        break;
+    }
 }

@@ -206,7 +206,7 @@ void refresh_walls(void)
 
 void highlight_possible_moves(void)
 {
-    uint8_t i = 0;
+    uint8_t i;
     uint16_t start_x, start_y;
     const uint8_t HIGHLIGHT_PADDING =
         (uint8_t)(empty_square.width - highlighted_square.width) >> 1;
@@ -232,7 +232,7 @@ void highlight_possible_moves(void)
 
 void clear_highlighted_moves(void)
 {
-    uint8_t i = 0;
+    uint8_t i;
     uint16_t x, y, start_x, start_y;
     const uint8_t HIGHLIGHT_PADDING =
         (uint8_t)(empty_square.width - highlighted_square.width) >> 1;
