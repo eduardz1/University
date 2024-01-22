@@ -22,3 +22,6 @@
 [submodule "UniTO/Bachelor-Thesis"]
 	path = UniTO/Bachelor-Thesis
 	url = https://github.com/eduardz1/Bachelor-Thesis
+[submodule "PoliTO/ASE/lab/extrapoints"]
+	path = PoliTO/ASE/lab/extrapoints
+	url = https://github.com/eduardz1/quoridor-landtiger
