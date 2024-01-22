@@ -10,8 +10,12 @@
 #define PLAYER_SELECTOR_PADDING                                                \
     (((empty_square.width - player_selector.width) >> 1))
 
+#define MAX_NEIGHBORS                                                          \
+    5 // there are no configurations where more that 5 possible moves are
+      // possible
+
 extern enum Player opponent;
-extern union Move current_possible_moves[5];
+extern union Move current_possible_moves[MAX_NEIGHBORS];
 extern struct Board board;
 extern enum Player current_player;
 extern enum Direction direction;

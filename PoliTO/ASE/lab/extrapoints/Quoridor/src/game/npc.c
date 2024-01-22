@@ -13,7 +13,7 @@
 #include <stdlib.h>
 
 extern enum Player opponent; // I AM THE OPPONENT!
-extern union Move current_possible_moves[5];
+extern union Move current_possible_moves[MAX_NEIGHBORS];
 
 extern struct PlayerInfo red;
 extern struct PlayerInfo white;
@@ -24,42 +24,45 @@ extern enum Direction direction;
 // (i.e. for training a neural network)
 static const struct PlayerInfo *me;
 
-static uint8_t heuristic(uint8_t x, uint8_t y, uint8_t goal)
-{
-    return goal == BOARD_SIZE - 1 ? BOARD_SIZE - 1 - y : y;
-}
-
 struct Coordinate
 calculate_best_move(const struct PlayerInfo *player, uint8_t *path_length)
 {
     struct Coordinate best_move;
-    struct Node start = (struct Node){player->x, player->y, 0, 0};
 
     calculate_possible_moves(player->player_id); // TODO: can be optimized
 
-    struct Coordinate starter_neighbors[5];
-    uint8_t starter_neighbors_length = 0;
-    for (uint8_t i = 0; i < 5; i++)
+    struct
+    {
+        uint8_t size;
+        uint8_t data[MAX_NEIGHBORS][2];
+    } neighbors = {.size = 0};
+    for (uint8_t i = 0; i < MAX_NEIGHBORS; i++)
     {
         if (current_possible_moves[i].as_uint32_t != -1)
         {
-            starter_neighbors[starter_neighbors_length++] = (struct Coordinate){
-                current_possible_moves[i].x, current_possible_moves[i].y};
+            neighbors.data[neighbors.size][0] = current_possible_moves[i].x;
+            neighbors.data[neighbors.size][1] = current_possible_moves[i].y;
+            neighbors.size++;
         }
     }
 
-    struct Node **path = astar(&start,
-                               player->player_id == RED ? BOARD_SIZE - 1 : 0,
-                               heuristic,
-                               starter_neighbors,
-                               starter_neighbors_length,
-                               path_length);
+    union {
+        struct
+        {
+            uint8_t x;
+            uint8_t y;
+        } coordinate;
+        uint16_t as_uint16_t;
+    } next_move;
+    next_move.as_uint16_t = astar(player->x,
+                                  player->y,
+                                  player->player_id == RED ? BOARD_SIZE - 1 : 0,
+                                  neighbors.data,
+                                  neighbors.size,
+                                  path_length);
 
-    best_move = (struct Coordinate){path[1]->x, path[1]->y};
-
-    for (uint8_t i = 0; i < *path_length; free(path[i++]))
-        ;
-    free(path);
+    best_move =
+        (struct Coordinate){next_move.coordinate.x, next_move.coordinate.y};
 
     calculate_possible_moves(me->player_id); // reset current moves
 
