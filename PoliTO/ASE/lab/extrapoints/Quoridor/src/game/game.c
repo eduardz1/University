@@ -16,7 +16,7 @@
 #include "../GLCD/GLCD.h"
 #include "../RIT/RIT.h"
 #include "../imgs/sprites.h"
-#include "../utils/headers/dynarray.h"
+#include "../utils/headers/dyn_array.h"
 #include "../utils/headers/stack.h"
 #include "graphics.h"
 #include "npc.h"
@@ -413,11 +413,7 @@ bool is_wall_clipping(const uint8_t x,
 
 bool is_wall_valid(const uint8_t x, const uint8_t y, const enum Direction dir)
 {
-    if (x > BOARD_SIZE - 1 || y > BOARD_SIZE - 1 ||
-        (x == BOARD_SIZE - 1 && dir == VERTICAL) || // outside right boundary
-        (y == BOARD_SIZE - 1 && dir == HORIZONTAL)  // outside bottom boundary
-    )
-        return false;
+    if (x > BOARD_SIZE - 1 || y > BOARD_SIZE - 1) return false;
 
     return is_not_trapped(RED) && is_not_trapped(WHITE);
 }

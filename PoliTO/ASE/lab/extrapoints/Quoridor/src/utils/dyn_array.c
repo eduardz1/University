@@ -1,4 +1,4 @@
-#include "headers/dynarray.h"
+#include "headers/dyn_array.h"
 
 #include <stdlib.h>
 #include <string.h>

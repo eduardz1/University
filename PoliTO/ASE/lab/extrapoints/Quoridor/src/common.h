@@ -9,7 +9,7 @@
 #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-#include "utils/headers/dynarray.h"
+#include "utils/headers/dyn_array.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -30,8 +30,7 @@
 #define RAND(min, max) ((rand() % (max - min + 1)) + min)
 
 #define CLAMP(n, min, max)                                                     \
-    do                                                                         \
-    {                                                                          \
+    do {                                                                       \
         n = n < min ? min : n;                                                 \
         n = n > max ? max : n;                                                 \
     } while (0);

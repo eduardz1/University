@@ -1,8 +1,8 @@
-#include "headers/insert_sort.h"
+#include "headers/sort.h"
 
 #include <assert.h>
 
-__attribute__((always_inline)) void
+__attribute__((flatten)) void
 sort(void *const array, const size_t size, const int length, const Comp comp)
 {
     insert_sort(array, size, length, comp);

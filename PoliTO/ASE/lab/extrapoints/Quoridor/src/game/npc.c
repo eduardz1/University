@@ -81,16 +81,16 @@ struct _Tuple choose_random_valid_wall()
         {0, 1},
         {1, 1}
     };
-    struct _Tuple valid_walls[(BOARD_SIZE - 2) * (BOARD_SIZE - 2) * 2] = {0};
+    struct _Tuple valid_walls[(BOARD_SIZE - 1) * (BOARD_SIZE - 1) * 2] = {0};
     uint8_t valid_walls_size = 0;
     uint8_t walls_backup[ARRAY_SIZE(neighbors)];
 
-    for (uint8_t i = 0; i < (BOARD_SIZE - 2) * (BOARD_SIZE - 2); i++)
+    for (uint8_t i = 0; i < (BOARD_SIZE - 1) * (BOARD_SIZE - 1); i++)
     {
         // initializing coordinate like this ensures we are iterating over all
         // of the possible coordinates. For example with BOARD_SIZE equal to 5
         // the first iterations will be: (0,0) (1,0) (2,0) (0,1) (1,1) (2,1) ..
-        struct Coordinate co = {i % (BOARD_SIZE - 2), i / (BOARD_SIZE - 2)};
+        struct Coordinate co = {i % (BOARD_SIZE - 1), i / (BOARD_SIZE - 1)};
 
         for (enum Direction dir = VERTICAL; dir <= HORIZONTAL; dir++)
         {
@@ -126,19 +126,19 @@ struct _Tuple choose_defensive_wall(const uint8_t path)
 
     struct Cell board_backup[BOARD_SIZE][BOARD_SIZE];
     memcpy(board_backup, board.board, sizeof(board.board));
-    struct _Tuple good_walls[(BOARD_SIZE - 2) * (BOARD_SIZE - 2) * 2] = {0};
+    struct _Tuple good_walls[(BOARD_SIZE - 1) * (BOARD_SIZE - 1) * 2] = {0};
     uint16_t good_walls_size = 0;
 
     struct _Tuple tu = choose_wall(opponent.player_id);
     last_path_length = tu.path;
 
     // CHOOSE A WALL THAT MAKES THE MAIN CHARACTER's PATH LONGER
-    for (uint8_t i = 0; i < (BOARD_SIZE - 2) * (BOARD_SIZE - 2); i++)
+    for (uint8_t i = 0; i < (BOARD_SIZE - 1) * (BOARD_SIZE - 1); i++)
     {
         // initializing coordinate like this ensures we are iterating over all
         // of the possible coordinates. For example with BOARD_SIZE equal to 5
         // the first iterations will be: (0,0) (1,0) (2,0) (0,1) (1,1) (2,1) ...
-        struct Coordinate co = {i % (BOARD_SIZE - 2), i / (BOARD_SIZE - 2)};
+        struct Coordinate co = {i % (BOARD_SIZE - 1), i / (BOARD_SIZE - 1)};
 
         for (enum Direction dir = VERTICAL; dir <= HORIZONTAL; dir++)
         {
@@ -234,19 +234,19 @@ struct _Tuple choose_wall(enum Player player)
     struct Cell board_backup[BOARD_SIZE][BOARD_SIZE];
     memcpy(board_backup, board.board, sizeof(board.board));
 
-    struct _Tuple good_walls[(BOARD_SIZE - 2) * (BOARD_SIZE - 2) * 2] = {0};
+    struct _Tuple good_walls[(BOARD_SIZE - 1) * (BOARD_SIZE - 1) * 2] = {0};
     uint16_t good_walls_size = 0;
 
     calculate_best_move(&opponent, &path_length);
     last_path_length = path_length;
 
     // CHOOSE A WALL THAT MAKES THE MAIN CHARACTER's PATH LONGER
-    for (uint8_t i = 0; i < (BOARD_SIZE - 2) * (BOARD_SIZE - 2); i++)
+    for (uint8_t i = 0; i < (BOARD_SIZE - 1) * (BOARD_SIZE - 1); i++)
     {
         // initializing coordinate like this ensures we are iterating over all
         // of the possible coordinates. For example with BOARD_SIZE equal to 5
         // the first iterations will be: (0,0) (1,0) (2,0) (0,1) (1,1) (2,1) ...
-        struct Coordinate co = {i % (BOARD_SIZE - 2), i / (BOARD_SIZE - 2)};
+        struct Coordinate co = {i % (BOARD_SIZE - 1), i / (BOARD_SIZE - 1)};
 
         for (enum Direction dir = VERTICAL; dir <= HORIZONTAL; dir++)
         {
@@ -449,7 +449,7 @@ void AI_move(void)
         {  2,    try_place_random_wall},
         {  4,     try_make_random_move},
  // exploit
-        { 14, try_place_defensive_wall},
+        { 19, try_place_defensive_wall},
         { 54, try_place_offensive_wall},
         {100,            try_make_move}
     };

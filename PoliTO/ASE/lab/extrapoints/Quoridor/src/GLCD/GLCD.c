@@ -131,8 +131,7 @@ static __attribute__((always_inline)) void LCD_Send(uint16_t byte)
 static void wait_delay(int count)
 {
 #ifndef DISABLE_DELAY
-    while (count--)
-        ;
+    while (count--) __asm("nop");
 #else
     return;
 #endif
@@ -328,8 +327,7 @@ void delay_ms(uint16_t ms)
     uint16_t i, j;
     for (i = 0; i < ms; i++)
     {
-        for (j = 0; j < 1141; j++)
-            ;
+        for (j = 0; j < 1141; j++) __asm("nop");
     }
 #else
     return;
@@ -588,8 +586,7 @@ void LCD_DrawLine(
 
     if (dx == 0) /* X����û������ ����ֱ�� */
     {
-        do
-        {
+        do {
             LCD_SetPoint(x0, y0, color); /* �����ʾ �费ֱ�� */
             y0++;
         } while (y1 >= y0);
@@ -597,8 +594,7 @@ void LCD_DrawLine(
     }
     if (dy == 0) /* Y����û������ ��ˮƽֱ�� */
     {
-        do
-        {
+        do {
             LCD_SetPoint(x0, y0, color); /* �����ʾ ��ˮƽ�� */
             x0++;
         } while (x1 >= x0);
@@ -678,8 +674,7 @@ void LCD_write_text(uint16_t x,
                     const uint8_t scale)
 {
     char tmp;
-    do
-    {
+    do {
         tmp = *str++;
         put_char(x, y, tmp, color, background_color, scale);
         if (x < MAX_X - FONT_WIDTH * scale)

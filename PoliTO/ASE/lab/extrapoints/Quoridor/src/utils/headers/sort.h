@@ -1,9 +1,14 @@
 #pragma once
 
 #include "comparable.h"
-#include <assert.h>
-#include <string.h>
 
+/**
+ * @brief stub for sort function
+ */
+void sort(void *const array,
+          const size_t size,
+          const int length,
+          const Comp comp);
 
 /**
  * @brief insertion sort of generic array
