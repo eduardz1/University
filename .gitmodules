@@ -1,3 +1,27 @@
 [submodule "PoliTO/ASE/lab/extrapoints"]
-path = PoliTO/ASE/lab/extrapoints
-url = https://github.com/eduardz1/quoridor-landtiger
+	path = PoliTO/ASE/lab/extrapoints
+	url = https://github.com/eduardz1/quoridor-landtiger
+[submodule "UniTO/DB/progetto"]
+	path = UniTO/DB/progetto
+	url = https://github.com/eduardz1/Home-Booking
+[submodule "UniTO/SO/progetto"]
+	path = UniTO/SO/progetto
+	url = https://github.com/eduardz1/Simulazione-Transazioni
+[submodule "UniTO/SAS/progetto"]
+	path = UniTO/SAS/progetto
+	url = https://github.com/eduardz1/Cat_e_Ring
+[submodule "UniTO/P3/progetto"]
+	path = UniTO/P3/progetto
+	url = https://github.com/eduardz1/Jmail
+[submodule "UniTO/LFT/progetto"]
+	path = UniTO/LFT/progetto
+	url = https://github.com/eduardz1/Progetto-LFT
+[submodule "UniTO/ASD/progetto"]
+	path = UniTO/ASD/progetto
+	url = https://github.com/eduardz1/Laboratorio-Algoritmi
+[submodule "UniTO/thesis"]
+	path = UniTO/thesis
+	url = https://github.com/eduardz1/Bachelor-Thesis
+[submodule "UniTO/SAS/questionario_esame"]
+	path = UniTO/SAS/questionario_esame
+	url = https://github.com/Mezzolla/Unito-Questionario-Esame-Sas
