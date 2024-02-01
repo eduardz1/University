@@ -16,6 +16,6 @@ Repository containing exercises, notes and all the projects that I have done dur
   - [SO - Sistemi Operativi](UniTO/SO) con appunti (quasi) completi e [progetto](UniTO/SO/progetto)
   - [thesis](UniTO/thesis) tesi di laurea
 - [PoliTO - Master Degree in Computer Engineering](PoliTO)
-  - [ASE - Architetture dei Sistemi di Elaborazione](PoliTO/ASE) con tutti i vari laboratori e [extrapoints (progetto)](PoliTO/ASE/lab/extrapoints)
+  - [ASE - Architetture dei Sistemi di Elaborazione](PoliTO/ASE) con tutti i vari laboratori e [extrapoints (progetto)](PoliTO/ASE/extrapoints)
   - [BDPA - Big Data Processing and Analytics](PoliTO/BDPA)
   - [DSDBT - Data Science and Database Technology](PoliTO/DSDBT)

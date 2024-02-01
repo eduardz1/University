@@ -1,5 +1,5 @@
 [submodule "PoliTO/ASE/lab/extrapoints"]
-	path = PoliTO/ASE/lab/extrapoints
+	path = PoliTO/ASE/extrapoints
 	url = https://github.com/eduardz1/quoridor-landtiger
 [submodule "UniTO/DB/progetto"]
 	path = UniTO/DB/progetto
