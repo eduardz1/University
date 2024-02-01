@@ -1,6 +1,6 @@
 # University
 
-Repository containing exercises, notes and all the projects that I have done during my university career. The repository is structured as follows:
+Repository containing exercises, notes and all the projects (project are usually submodules in this repo, to initialize them run `git submodule init --recursive` after cloning the repo) that I have done during my university career. The repository is structured as follows:
 
 - [UniTO - Laurea Triennale in Informatica all'Università degli Studi di Torino](UniTO)
   - [ASD - Algoritmi e Strutture Dati](UniTO/ASD) con strutture dati utili per fare esercizi, corredati da Makeile per eseguirli e [progetto](UniTO/ASD/progetto)
