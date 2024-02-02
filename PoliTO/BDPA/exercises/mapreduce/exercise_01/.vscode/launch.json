@@ -6,16 +6,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
             "name": "DriverBigData",
             "request": "launch",
             "mainClass": "it.polito.bigdata.hadoop.DriverBigData",
-            "projectName": "MapReduceProject",
+            "projectName": "exercise_01",
             "args": [
                 "2",
                 "example_data/",
