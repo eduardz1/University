@@ -1,0 +1,6 @@
+MID1,Presentation of New Phone,2022/11/07-21:40:00,90,UID1
+MID1,Random Meeting,2020/11/07-18:40:00,80,UID1
+MID1,Super important meeting,2022/11/07-22:40:00,70,UID2
+MID1,Presentation of this exam,2022/12/07-20:40:00,120,UID4
+MID2,Meeting about the Pope,2021/11/07-20:40:00,290,UID3
+MID3,Meeting that could have been avoided,2020/11/07-19:40:00,300,UID1

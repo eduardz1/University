@@ -1,0 +1,5 @@
+UID1,Enrico,Marino,2000/02/06,Business
+UID2,Enrico,Pensa,1999/12/02,Personal
+UID3,Marco,Marino,1998/09/01,Personal
+UID4,Eduard,Occhipinti,2001/02/14,Business
+UID5,Jhon,Smith,1980/06/16,Personal

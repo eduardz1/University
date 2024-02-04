@@ -1,7 +1,7 @@
 #import "@preview/fletcher:0.4.0" as fletcher: node, edge
 #import "@preview/tablex:0.0.8": tablex, rowspanx, colspanx
 
-#set page("a4", margin: (top: 0.8cm, bottom: 0.8cm, left: 0.8cm, right: 0.8cm))
+#set page("a4", margin: (top: 0.7cm, bottom: 0.5cm, left: 0.7cm, right: 0.5cm))
 #set text(size: 6pt, font: "Inter")
 #show raw.where(block: true): set text(font: "Fira Code")
 
@@ -149,6 +149,47 @@ the first one is the sum of the values of the RDD and the second the number of e
   [```java Double min()```],[Return the minimum of the elements of the RDD.],[```java inputRDD.min()```],[1.5]
 )
 
+= Conversions
+#tablex(
+  stroke: 0.5pt + gray,
+  columns: (20%, auto, 15%, 15%),
+  [*Conversion*],[*Purpose*],[*Example*],[*Result*],
+  colspanx(4)[starting from a regular RDD],
+  [```java JavaPairRDD<K,V> 
+  mapToPair(
+    PairFunction<T,K,V> f
+  )```],[Return a PairRDD\<K,V> containing the pairs of the input RDD. The function f is applied to each element of the input RDD and returns a pair (k,v) for each element.],[```java x -> new Tuple2<>(x, x+1)```],[{(1,2), (2,3), (3,4), (3,4)}],
+  [```java JavaPairRDD<K,V> 
+  flatMapToPair(
+    PairFlatMapFunction<T,K,V> f
+  )```],[Return a new RDD by first applying a function to all elements of this RDD, and then flattening the results.],colspanx(2)[```java line -> {
+    List<Tuple2<String,Integer>>
+    pairs = new ArrayList<>();
+    line.split(" ").forEach(word -> pairs.add(
+      new Tuple2<>(word, 1)
+    ));
+    // creates a JavaPairRDD of (word, 1) pairs
+    // from a JavaRDD of lines
+    return pairs.iterator();
+  }```],
+  [```java JavaDoubleRDD 
+  mapToDouble(
+    DoubleFunction<T> f
+  )```],[Return a DoubleRDD containing the result of applying the function f to each element of the input RDD.],[```java x -> x+1```],[{2.0, 3.0, 4.0, 4.0}],
+  [```java JavaDoubleRDD 
+  flatMapToDouble(
+    DoubleFlatMapFunction<T> f
+  )```],[Return a new RDD by first applying a function to all elements of this RDD, and then flattening the results.],colspanx(2)[```java sentence -> {
+    ArrayList<Double> lengths=new ArrayList<Double>();
+    sentence.split(" ").forEach(word -> lengths.add(
+      new Double(word.length())
+    ));
+    // creates a JavaDoubleRDD of word lengths
+    // from a JavaRDD of lines
+    return lengths.iterator(); 
+  }```]
+)
+
 #pagebreak()
 
 = Persistance and Cache: Storage Levels
@@ -165,6 +206,8 @@ the first one is the sum of the values of the RDD and the second the number of e
   [MEMORY_ONLY_2, MEMORY_AND_DISK_2, etc.],[Same as the levels above, but replicate each partition on two cluster nodes.],
   [OFF_HEAP (experimental)],[Similar to MEMORY_ONLY_SER, but store the data in off-heap memory. This requires off-heap memory to be enabled.]
 )
+
+#set text(size: 7.7pt)
 
 \
 = Design Patterns for MapReduce applications
@@ -350,14 +393,14 @@ Mapper receives one input (key, value) pair for each record of the large table a
 #pagebreak()
 
 #set page(columns: 2)
-#show raw.where(block: true): set text(font: "Fira Code", size: 4pt)
+#show raw.where(block: true): set text(font: "Fira Code", size: 5.3pt)
 
 == Example Hadoop Mapper
 \
 
 ```java
 class MapperBigData extends Mapper<LongWritable, Text, String, Integer> {
-  
+
   private final Map<String, Integer> osToNumPatches;
 
   @Override
@@ -367,15 +410,15 @@ class MapperBigData extends Mapper<LongWritable, Text, String, Integer> {
 
   protected void map(LongWritable key, Text value, Context context) {
     String[] fields = value.toString().split(","); // for blank you can use "\\s+"
-    
-    if (fields[0].matches("S*")) // matches accepts regex
-      return;
+
+    if (
+      fields[0].matches("S*")
+    ) return; // matches accepts regex
 
     String[] dateS = fields[1].split("/");
     Integer date = Integer.parseInt("" + dateS[0] + dateS[1] + dateS[2]);
 
-    if (date < 20210704 || date > 20220703)
-      return;
+    if (date < 20210704 || date > 20220703) return;
 
     osToNumPatches.merge(fields[0], 1, Integer::sum);
   }
@@ -392,7 +435,7 @@ class MapperBigData extends Mapper<LongWritable, Text, String, Integer> {
 
 ```java
 class ReducerBigData extends Reducer<String, Integer, String, NullWritable> {
-  
+
   private final Map<String, Integer> osToNumPatches = new HashMap<>();
 
   protected void reduce(String key, Iterable<Integer> values, Context context) {
@@ -402,12 +445,11 @@ class ReducerBigData extends Reducer<String, Integer, String, NullWritable> {
 
     List<String> maxOs = new ArrayList<>();
     osToNumPatches.forEach((k, v) -> {
-      if (v == max)
-        maxOs.add(k);
+      if (v == max) maxOs.add(k);
     });
 
     Collections.sort(maxOs); // to sort in reverse use Collections.sort(
-                             // maxOs, Collections.reverseOrder());
+    // maxOs, Collections.reverseOrder());
 
     context.write(maxOs.get(0), NullWritable.get());
   }
@@ -420,127 +462,286 @@ class ReducerBigData extends Reducer<String, Integer, String, NullWritable> {
 ```java
 public class SparkDriver {
 
-    public static void main(String[] args) {
-        SparkConf conf = new SparkConf().setAppName("Exam20220202 Spark");
-        JavaSparkContext sc = new JavaSparkContext(conf);
+  public static void main(String[] args) {
+    SparkConf conf = new SparkConf().setAppName("Exam20220202 Spark");
+    JavaSparkContext sc = new JavaSparkContext(conf);
 
-        JavaRDD<String> houseRDD = sc.textFile(args[0]);
-        JavaRDD<String> consumptionRDD = sc.textFile(args[1]);
+    JavaRDD<String> houseRDD = sc.textFile(args[0]);
+    JavaRDD<String> consumptionRDD = sc.textFile(args[1]);
 
-        // Part 1 filter only the readings associated with year 2022
-        JavaRDD<String> consumption2022 = consumptionRDD
-                .filter(s -> {
-                    String[] fields = s.split(",");
-                    String date = fields[1];
-                    return date.startsWith("2022");
-                });
+    // Part 1 filter only the readings associated with year 2022
+    JavaRDD<String> consumption2022 = consumptionRDD.filter(s -> {
+      String[] fields = s.split(",");
+      String date = fields[1];
+      return date.startsWith("2022");
+    });
 
-        // compute the total amount of energy consumed in year 2022 for each house
-        // key = houseID
-        // value = kWh consumed in year 2022
-        JavaPairRDD<String, Double> totalCons2022 = consumption2022
-                .mapToPair(s -> {
-                    String[] fields = s.split(",");
-                    String hid = fields[0];
-                    Double consumption = Double.parseDouble(fields[2]);
-                    return new Tuple2<>(hid, consumption);
-                })
-                .reduceByKey((v1, v2) -> v1 + v2);
+    // compute the total amount of energy consumed in year 2022 for each house
+    // key = houseID
+    // value = kWh consumed in year 2022
+    JavaPairRDD<String, Double> totalCons2022 = consumption2022
+      .mapToPair(s -> {
+        String[] fields = s.split(",");
+        String hid = fields[0];
+        Double consumption = Double.parseDouble(fields[2]);
+        return new Tuple2<>(hid, consumption);
+      })
+      .reduceByKey((v1, v2) -> v1 + v2);
 
-        // compute the avg power consumption per day
-        // key = houseID
-        // value = avg kWh consumed per day in year 2022
-        // and filter only those with high avg consumption
-        JavaPairRDD<String, Double> highAvgDailyCons = totalCons2022
-                .mapValues(v -> v / 365)
-                .filter(i -> i._2() > 30);
+    // compute the avg power consumption per day
+    // key = houseID
+    // value = avg kWh consumed per day in year 2022
+    // and filter only those with high avg consumption
+    JavaPairRDD<String, Double> highAvgDailyCons = totalCons2022
+      .mapValues(v -> v / 365)
+      .filter(i -> i._2() > 30);
 
-        // compute the pairRDD house -> country
-        // key = houseID
-        // value = country
-        JavaPairRDD<String, String> houseCountry = houseRDD.mapToPair(s -> {
-            String[] fields = s.split(",");
-            String hid = fields[0];
-            String country = fields[2];
-            return new Tuple2<>(hid, country);
-        });
+    // compute the pairRDD house -> country
+    // key = houseID
+    // value = country
+    JavaPairRDD<String, String> houseCountry = houseRDD.mapToPair(s -> {
+      String[] fields = s.split(",");
+      String hid = fields[0];
+      String country = fields[2];
+      return new Tuple2<>(hid, country);
+    });
 
-        // keep an RDD containing countries with at least one house with high avg power
-        // consumption
-        JavaRDD<String> countriesWithHighAvgPwrConsHouses = houseCountry
-                .join(highAvgDailyCons)
-                .map(it -> it._2()._1());
+    // keep an RDD containing countries with at least one house with high avg power
+    // consumption
+    JavaRDD<String> countriesWithHighAvgPwrConsHouses = houseCountry
+      .join(highAvgDailyCons)
+      .map(it -> it._2()._1());
 
-        // compute an RDD with all the countries
-        // and subtract the countries with at least one house with high avg power
-        // consumption
-        JavaRDD<String> res1 = houseCountry
-                .map(v -> v._2())
-                .distinct()
-                .subtract(countriesWithHighAvgPwrConsHouses);
-        res1.saveAsTextFile(args[2]);
+    // compute an RDD with all the countries
+    // and subtract the countries with at least one house with high avg power
+    // consumption
+    JavaRDD<String> res1 = houseCountry
+      .map(v -> v._2())
+      .distinct()
+      .subtract(countriesWithHighAvgPwrConsHouses);
+    res1.saveAsTextFile(args[2]);
 
-        // Part 2 keep only the houses for which the total power consumption over 2021 is >
-        // threshold kWh
-        JavaPairRDD<String, Double> highTotalPowerCons2021 = consumptionRDD
-                .filter(s -> {
-                    String[] fields = s.split(",");
-                    String date = fields[1];
-                    return date.startsWith("2021");
-                })
-                .mapToPair(s -> {
-                    String[] fields = s.split(",");
-                    String hid = fields[0];
-                    Double consumption = Double.parseDouble(fields[2]);
-                    return new Tuple2<>(hid, consumption);
-                })
-                .reduceByKey((v1, v2) -> v1 + v2)
-                .filter(v -> v._2() > 10000);
+    // Part 2 keep only the houses for which the total power consumption over 2021 is >
+    // threshold kWh
+    JavaPairRDD<String, Double> highTotalPowerCons2021 = consumptionRDD
+      .filter(s -> {
+        String[] fields = s.split(",");
+        String date = fields[1];
+        return date.startsWith("2021");
+      })
+      .mapToPair(s -> {
+        String[] fields = s.split(",");
+        String hid = fields[0];
+        Double consumption = Double.parseDouble(fields[2]);
+        return new Tuple2<>(hid, consumption);
+      })
+      .reduceByKey((v1, v2) -> v1 + v2)
+      .filter(v -> v._2() > 10000);
 
-        // compute an RDD with
-        // key = houseID
-        // value = (country, city)
-        JavaPairRDD<String, Tuple2<String, String>> citiesRDD = houseRDD
-                .mapToPair(s -> {
-                    String[] fields = s.split(",");
-                    String hid = fields[0];
-                    String city = fields[1];
-                    String country = fields[2];
+    // compute an RDD with
+    // key = houseID
+    // value = (country, city)
+    JavaPairRDD<String, Tuple2<String, String>> citiesRDD = houseRDD.mapToPair(s -> {
+        String[] fields = s.split(",");
+        String hid = fields[0];
+        String city = fields[1];
+        String country = fields[2];
 
-                    return new Tuple2<>(hid, new Tuple2<>(country, city));
-                });
+        return new Tuple2<>(hid, new Tuple2<>(country, city));
+      }
+    );
 
-        // join the two RDDs and count for each city the number of houses with high
-        // annual power consumption
-        // and filter only those cities with value > 500
-        // key = (country, city)
-        // value = #houses with high power consumption
-        JavaPairRDD<Tuple2<String, String>, Integer> highPwrConsHousesPerCity = highTotalPowerCons2021
-                .join(citiesRDD)
-                .mapToPair(it -> new Tuple2<>(it._2()._2(), 1))
-                .reduceByKey((v1, v2) -> v1 + v2)
-                .filter(it -> it._2() > 500);
+    // join the two RDDs and count for each city the number of houses with high
+    // annual power consumption
+    // and filter only those cities with value > 500
+    // key = (country, city)
+    // value = #houses with high power consumption
+    JavaPairRDD<Tuple2<String, String>, Integer> highPwrConsHousesPerCity = highTotalPowerCons2021
+      .join(citiesRDD)
+      .mapToPair(it -> new Tuple2<>(it._2()._2(), 1))
+      .reduceByKey((v1, v2) -> v1 + v2)
+      .filter(it -> it._2() > 500);
 
-        // count for each country the number of cities with at least 500 houses with
-        // high annual power consumption
-        // key = country
-        // value = number of cities with at least 500 houses with high power consumption
-        JavaPairRDD<String, Integer> highPwrConsCitiesPerCountry = highPwrConsHousesPerCity
-                .mapToPair(it -> new Tuple2<>(it._1()._1(), 1))
-                .reduceByKey((v1, v2) -> v1 + v2);
+    // count for each country the number of cities with at least 500 houses with
+    // high annual power consumption
+    // key = country
+    // value = number of cities with at least 500 houses with high power consumption
+    JavaPairRDD<String, Integer> highPwrConsCitiesPerCountry = highPwrConsHousesPerCity
+      .mapToPair(it -> new Tuple2<>(it._1()._1(), 1))
+      .reduceByKey((v1, v2) -> v1 + v2);
 
-        JavaPairRDD<String, Integer> countries = houseCountry
-                .mapToPair(it -> new Tuple2<>(it._2(), 0))
-                .distinct();
+    JavaPairRDD<String, Integer> countries = houseCountry
+      .mapToPair(it -> new Tuple2<>(it._2(), 0))
+      .distinct();
 
-        // add with a rightOuterJoin the countries with count == 0
-        JavaPairRDD<String, Integer> res2 = highPwrConsCitiesPerCountry
-                .rightOuterJoin(countries)
-                .mapValues(it -> it._1().orElse(0));
+    // add with a rightOuterJoin the countries with count == 0
+    JavaPairRDD<String, Integer> res2 = highPwrConsCitiesPerCountry
+      .rightOuterJoin(countries)
+      .mapValues(it -> it._1().orElse(0));
 
-        res2.saveAsTextFile(args[3]);
-        sc.close();
-    }
+    res2.saveAsTextFile(args[3]);
+    sc.close();
+  }
+}
+
+```
+
+== Another Example
+\
+
+```java
+public class SparkDriver {
+
+  public static void main(String[] args) {
+    // The following two lines are used to switch off some verbose log messages
+    Logger.getLogger("org").setLevel(Level.OFF);
+    Logger.getLogger("akka").setLevel(Level.OFF);
+
+    // String companiesPath; Useless for this program
+    String dataCenterPath, dailyPwrConsPath;
+    String outputPath1, outputPath2;
+
+    // companiesPath = args[0]; Useless for this program
+    dataCenterPath = args[1];
+    dailyPwrConsPath = args[2];
+    outputPath1 = args[3];
+    outputPath2 = args[4];
+
+    // Create a configuration object and set the name of the application
+    SparkConf conf = new SparkConf()
+      .setAppName("Spark - Exam20220906")
+      .setMaster("local");
+
+    // Use the following command to create the SparkConf object if you want to run
+    // your application inside Eclipse.
+    // Remember to remove .setMaster("local") before running your application on the
+    // cluster
+    // SparkConf conf=new SparkConf().setAppName("Spark Lab #5").setMaster("local");
+
+    // Create a Spark Context object
+    JavaSparkContext sc = new JavaSparkContext(conf);
+
+    //JavaRDD<String> companiesRDD = sc.textFile(companiesPath); Useless for this program
+    JavaRDD<String> dataCenterRDD = sc.textFile(dataCenterPath).cache();
+    JavaRDD<String> pwrConsRDD = sc.textFile(dailyPwrConsPath);
+
+    // Part 1
+    // Count the total number of data centers worl-wide and compute the threshold
+    int threshold = (int) (dataCenterRDD.count() * 0.9);
+
+    // Filter only the dates associated with high power consumption
+    // and prepare a pairRDD with
+    // key = date
+    // value = +1
+    // to count the number of data centers with high power consumption for each day.
+    JavaPairRDD<String, Integer> highPwrConsDCPerDay = pwrConsRDD
+      .filter(line -> {
+        String[] fields = line.split(",");
+        double pwrCons = Double.parseDouble(fields[2]);
+        return pwrCons >= 1000;
+      })
+      .mapToPair(line -> {
+        String[] fields = line.split(",");
+        String date = fields[1];
+        return new Tuple2<>(date, 1);
+      })
+      .reduceByKey((v1, v2) -> v1 + v2);
+
+    JavaRDD<String> res1 = highPwrConsDCPerDay
+      .filter(t -> t._2() >= threshold)
+      .keys();
+
+    res1.saveAsTextFile(outputPath1);
+
+    // Part 2
+
+    // Consider the power consumptions and keep only the entries related to year 2021
+    // and obtain the following pairRDD
+    // key = codDC
+    // value = kWh
+    // and use a reduceByKey to sum the power consumption for the entire year for
+    // each data center
+    JavaPairRDD<String, Double> yearlyPwrCons = pwrConsRDD
+      .filter(line -> {
+        String[] fields = line.split(",");
+        return fields[1].startsWith("2021");
+      })
+      .mapToPair(line -> {
+        String[] fields = line.split(",");
+        String codDC = fields[0];
+        double pwrCons = Double.parseDouble(fields[2]);
+        return new Tuple2<>(codDC, pwrCons);
+      })
+      .reduceByKey((v1, v2) -> v1 + v2);
+
+    // for each data center, keep the continent information
+    // key = codDC
+    // value = continent
+    JavaPairRDD<String, String> dcAndContinent = dataCenterRDD.mapToPair(line -> {
+        String[] fields = line.split(",");
+        String codDC = fields[0];
+        String continent = fields[4];
+        return new Tuple2<>(codDC, continent);
+      }
+    );
+
+    // Join yearlyPwrCons with dcAndContinent and
+    // returns pairs
+    // key = continent
+    // value = (+1, kWhPerDataCenter2021)
+    JavaPairRDD<String, Tuple2<Integer, Double>> continentOnePwr = yearlyPwrCons
+      .join(dcAndContinent)
+      .mapToPair(t ->
+        new Tuple2<String, Tuple2<Integer, Double>>(
+          t._2()._2(),
+          new Tuple2<Integer, Double>(1, t._2()._1())
+        )
+      );
+
+    // Sum the value parts to compute for each continent
+    // the number of data centers and the total power consumption in the year 2021.
+    // Finally, compute the avg power consumption
+    // key = continent
+    // value = (the number of data centers, avg power consumption in the year 2021)
+    JavaPairRDD<String, Tuple2<Integer, Double>> numDCandAvgPwrCons = continentOnePwr
+      .reduceByKey((t1, t2) ->
+        new Tuple2<Integer, Double>(t1._1() + t2._1(), t1._2() + t2._2())
+      )
+      .mapValues(t -> new Tuple2<Integer, Double>(t._1(), t._2() / t._1()))
+      .cache();
+
+    // compute the maximum number of data centers and the maximum avg consumption in
+    // the 2021 among the continents
+    Tuple2<Integer, Double> maxDCAndConsumptionPerContinentThresholds = numDCandAvgPwrCons
+      .values()
+      .reduce((t1, t2) ->
+        new Tuple2<Integer, Double>(
+          t1._1() > t2._1() ? t1._1() : t2._1(),
+          t1._2() > t2._2() ? t1._2() : t2._2()
+        )
+      );
+
+    // filter only those continents for which both constraints are satisfied
+    JavaRDD<String> res2 = numDCandAvgPwrCons
+      .filter(t ->
+        (
+          t
+            ._2()
+            ._1()
+            .compareTo(maxDCAndConsumptionPerContinentThresholds._1()) ==
+          0 &&
+          t
+            ._2()
+            ._2()
+            .compareTo(maxDCAndConsumptionPerContinentThresholds._2()) ==
+          0
+        )
+      )
+      .keys();
+
+    res2.saveAsTextFile(outputPath2);
+    sc.close();
+  }
 }
 ```
 
@@ -549,102 +750,302 @@ public class SparkDriver {
 
 ```java
 public class SparkDriver {
-    public static void main(String[] args) {
-        // Create a Spark Session object and set the name of the application
-        SparkSession ss = SparkSession.builder().appName("Exam20220202 Spark")
-                .master("local").getOrCreate();
 
-        // Define the dataframes associated with the input files
-        Dataset<Row> houseDF = ss.read().format("csv")
-                .option("header", false).option("inferSchema", true)
-                .load(args[0])
-                .withColumnRenamed("_c0", "HouseID")
-                .withColumnRenamed("_c1", "City")
-                .withColumnRenamed("_c2", "Country")
-                .withColumnRenamed("_c3", "SizeSQM");
+  public static void main(String[] args) {
+    // Create a Spark Session object and set the name of the application
+    SparkSession ss = SparkSession
+      .builder()
+      .appName("Exam20220202 Spark")
+      .master("local")
+      .getOrCreate();
 
-        // Register the temporary table houses
-        houseDF.createOrReplaceTempView("houses");
+    // Define the dataframes associated with the input files
+    Dataset<Row> houseDF = ss
+      .read()
+      .format("csv")
+      .option("header", false)
+      .option("inferSchema", true)
+      .load(args[0])
+      .withColumnRenamed("_c0", "HouseID")
+      .withColumnRenamed("_c1", "City")
+      .withColumnRenamed("_c2", "Country")
+      .withColumnRenamed("_c3", "SizeSQM");
 
-        Dataset<Row> consumptionDF = ss.read().format("csv")
-                .option("header", false).option("inferSchema", true)
-                .load(args[1])
-                .withColumnRenamed("_c0", "HouseID")
-                .withColumnRenamed("_c1", "Date")
-                .withColumnRenamed("_c2", "kWh");
+    // Register the temporary table houses
+    houseDF.createOrReplaceTempView("houses");
 
-        // Register the temporary table consumption
-        consumptionDF.createOrReplaceTempView("consumption");
+    Dataset<Row> consumptionDF = ss
+      .read()
+      .format("csv")
+      .option("header", false)
+      .option("inferSchema", true)
+      .load(args[1])
+      .withColumnRenamed("_c0", "HouseID")
+      .withColumnRenamed("_c1", "Date")
+      .withColumnRenamed("_c2", "kWh");
 
-        // Part 1 Register a function that given a date in the format "" returns the
-        // year
-        ss.udf().register("YEAR",
-                (String date) -> Integer.parseInt(date.split("/")[0]),
-                DataTypes.IntegerType);
+    // Register the temporary table consumption
+    consumptionDF.createOrReplaceTempView("consumption");
 
-        // Consider only the readings associated with the year 2022,
-        // compute the average daily consumption for each house in the year 2022,
-        // and select the houses with a daily consumption >30
-        Dataset<Row> housesHighConsumptionDF = ss.sql("SELECT HouseID "
-                + "FROM consumption "
-                + "WHERE YEAR(Date)=2022 "
-                + "GROUP BY HouseID "
-                + "HAVING SUM(kWh)/365>30");
+    // Part 1 Register a function that given a date in the format "" returns the
+    // year
+    ss
+      .udf()
+      .register(
+        "YEAR",
+        (String date) -> Integer.parseInt(date.split("/")[0]),
+        DataTypes.IntegerType
+      );
 
-        // Register the temporary table housesHighCons
-        housesHighConsumptionDF.createOrReplaceTempView("housesHighCons");
+    // Consider only the readings associated with the year 2022,
+    // compute the average daily consumption for each house in the year 2022,
+    // and select the houses with a daily consumption >30
+    Dataset<Row> housesHighConsumptionDF = ss.sql(
+      "SELECT HouseID " +
+      "FROM consumption " +
+      "WHERE YEAR(Date)=2022 " +
+      "GROUP BY HouseID " +
+      "HAVING SUM(kWh)/365>30"
+    );
 
-        Dataset<Row> res1DF = ss.sql("SELECT DISTINCT Country "
-                + "FROM houses "
-                + "WHERE Country NOT IN ("
-                + " SELECT Country "
-                + " FROM housesHighCons, houses "
-                + " WHERE housesHighCons.HouseID=houses.HouseID)");
+    // Register the temporary table housesHighCons
+    housesHighConsumptionDF.createOrReplaceTempView("housesHighCons");
 
-        res1DF.write()
-                .format("csv")
-                .option("header", false)
-                .save(args[2]);
+    Dataset<Row> res1DF = ss.sql(
+      "SELECT DISTINCT Country " +
+      "FROM houses " +
+      "WHERE Country NOT IN (" +
+      " SELECT Country " +
+      " FROM housesHighCons, houses " +
+      " WHERE housesHighCons.HouseID=houses.HouseID)"
+    );
 
-        // Part 2 keep only the houses for which the total power consumption over 2021
-        // is > threshold kWh
-        Dataset<Row> highTotalPowerCons2021DF = ss.sql("SELECT HouseID "
-                + "FROM consumption "
-                + "WHERE YEAR(Date)=2021 "
-                + "GROUP BY HouseID "
-                + "HAVING SUM(kWh)>10000");
+    res1DF.write().format("csv").option("header", false).save(args[2]);
 
-        // Register the temporary table housesHighCons2021
-        highTotalPowerCons2021DF.createOrReplaceTempView("housesHighCons2021");
+    // Part 2 keep only the houses for which the total power consumption over 2021
+    // is > threshold kWh
+    Dataset<Row> highTotalPowerCons2021DF = ss.sql(
+      "SELECT HouseID " +
+      "FROM consumption " +
+      "WHERE YEAR(Date)=2021 " +
+      "GROUP BY HouseID " +
+      "HAVING SUM(kWh)>10000"
+    );
 
-        // Select for each country the cities with at least 500 houses with high annual
-        // power consumption
-        Dataset<Row> coutryCityManyHighConsHousesDF = ss.sql("SELECT Country "
-                + "FROM houses, housesHighCons2021 "
-                + "WHERE houses.HouseID=housesHighCons2021.HouseID "
-                + "GROUP BY City, Country "
-                + "HAVING COUNT(*)>500");
+    // Register the temporary table housesHighCons2021
+    highTotalPowerCons2021DF.createOrReplaceTempView("housesHighCons2021");
 
-        // Register the temporary table citiesWithManyHighConsHouses
-        coutryCityManyHighConsHousesDF.createOrReplaceTempView("citiesWithManyHighConsHouses");
+    // Select for each country the cities with at least 500 houses with high annual
+    // power consumption
+    Dataset<Row> coutryCityManyHighConsHousesDF = ss.sql(
+      "SELECT Country " +
+      "FROM houses, housesHighCons2021 " +
+      "WHERE houses.HouseID=housesHighCons2021.HouseID " +
+      "GROUP BY City, Country " +
+      "HAVING COUNT(*)>500"
+    );
 
-        // Compute for each country the number of cities with at least 500 houses with
-        // high annual power consumption
-        // We must consider also the countries without cities with at least 500 houses
-        // with high annual power consumption
-        Dataset<Row> highPwrConsCitiesPerCountryDF = ss.sql("SELECT Country, SUM(CityWithManyHighConsHouses) "
-                + "FROM ( (SELECT Country, 1 as CityWithManyHighConsHouses FROM citiesWithManyHighConsHouses) "
-                + "        UNION ALL " // Note SQL command "UNION ALL" and not the SQL command "UNION"
-                + "        (SELECT Country, 0 as CityWithManyHighConsHouses FROM Houses) "
-                + "		) "
-                + "GROUP BY Country");
+    // Register the temporary table citiesWithManyHighConsHouses
+    coutryCityManyHighConsHousesDF.createOrReplaceTempView(
+      "citiesWithManyHighConsHouses"
+    );
 
-        highPwrConsCitiesPerCountryDF.write()
-                .format("csv")
-                .option("header", false)
-                .save(args[3]);
+    // Compute for each country the number of cities with at least 500 houses with
+    // high annual power consumption
+    // We must consider also the countries without cities with at least 500 houses
+    // with high annual power consumption
+    Dataset<Row> highPwrConsCitiesPerCountryDF = ss.sql(
+      "SELECT Country, SUM(CityWithManyHighConsHouses) " +
+      "FROM ( (SELECT Country, 1 as CityWithManyHighConsHouses FROM citiesWithManyHighConsHouses) " +
+      "        UNION ALL " + // Note SQL command "UNION ALL" and not the SQL command "UNION"
+      "        (SELECT Country, 0 as CityWithManyHighConsHouses FROM Houses) " +
+      "		) " +
+      "GROUP BY Country"
+    );
 
-        ss.stop(); // Close the Spark session
-    }
+    highPwrConsCitiesPerCountryDF
+      .write()
+      .format("csv")
+      .option("header", false)
+      .save(args[3]);
+
+    ss.stop(); // Close the Spark session
+  }
+}
+```
+
+== Example Spark Driver Dataset API
+\
+
+```java
+public class SparkDriver {
+
+  public static void main(String[] args) {
+    SparkSession spark = SparkSession
+      .builder()
+      .appName("MeetingStatistics")
+      .getOrCreate();
+    JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
+
+    // Load the data
+    Dataset<Row> users = spark.read().option("header", "true").csv(args[0]);
+    Dataset<Row> meetings = spark.read().option("header", "true").csv(args[1]);
+    Dataset<Row> invitations = spark
+      .read()
+      .option("header", "true")
+      .csv(args[2]);
+
+    // Filter for users with a Business pricing plan who organized at least one
+    // meeting
+    Dataset<Row> businessUsers = users.filter(
+      col("PricingPlan").equalTo("Business")
+    );
+    Dataset<Row> businessMeetings = meetings.join(
+      businessUsers,
+      meetings.col("OrganizerUID").equalTo(businessUsers.col("UID"))
+    );
+
+    // Group by user ID and calculate statistics
+    Dataset<Row> result1 = businessMeetings
+      .groupBy("UID")
+      .agg(
+        avg("Duration").as("AverageDuration"),
+        max("Duration").as("MaxDuration"),
+        min("Duration").as("MinDuration")
+      );
+
+    // Store the result to HDFS
+    result1.write().csv(args[3]);
+
+    // Calculate the distribution of the number of invitations per organized
+    // meeting
+    Dataset<Row> invitationCounts = invitations.groupBy("MID").count();
+    Dataset<Row> meetingsWithCounts = businessMeetings.join(
+      invitationCounts,
+      businessMeetings.col("MID").equalTo(invitationCounts.col("MID"))
+    );
+
+    // Classify meetings by size
+    Dataset<Row> result2 = meetingsWithCounts.withColumn(
+      "MeetingSize",
+      when(col("count").gt(20), "large")
+        .when(col("count").between(5, 20), "medium")
+        .otherwise("small")
+    );
+
+    // Count the number of each size of meeting per user
+    result2 = result2.groupBy("UID", "MeetingSize").count();
+
+    // Store result to HDFS
+    result2.write().csv(args[4]);
+
+    sc.close();
+  }
+}
+```
+
+== Another Example
+\
+
+```java
+public class HouseWaterConsumption {
+
+  public static void main(String[] args) {
+    SparkSession spark = SparkSession
+      .builder()
+      .appName("HouseWaterConsumption")
+      .getOrCreate();
+
+    // Read the input files
+    Dataset<Row> houses = spark
+      .read()
+      .format("csv")
+      .option("header", "false")
+      .load(args[0]);
+    houses =
+      houses.withColumnRenamed("_c0", "HID").withColumnRenamed("_c1", "City");
+
+    Dataset<Row> consumption = spark
+      .read()
+      .format("csv")
+      .option("header", "false")
+      .load(args[1]);
+    consumption =
+      consumption
+        .withColumnRenamed("_c0", "HID")
+        .withColumnRenamed("_c1", "Date")
+        .withColumnRenamed("_c2", "M3");
+
+    // Calculate the water consumption per trimester for each house for the years 2021 and 2022
+    consumption =
+      consumption
+        .withColumn("Year", year(to_date(col("Date"), "yyyy/MM")))
+        .withColumn("Trimester", quarter(to_date(col("Date"), "yyyy/MM")))
+        .groupBy("HID", "Year", "Trimester")
+        .agg(sum("M3").alias("M3"));
+
+    WindowSpec windowSpec = Window
+      .partitionBy("HID", "Trimester")
+      .orderBy("Year");
+    consumption =
+      consumption
+        .withColumn("PrevM3", lag("M3", 1).over(windowSpec))
+        .withColumn(
+          "Increased",
+          when(col("M3").gt(col("PrevM3")), 1).otherwise(0)
+        );
+
+    // Count the number of trimesters with increased consumption in 2022
+    Dataset<Row> increasedConsumption = consumption
+      .filter("Year = 2022")
+      .groupBy("HID")
+      .agg(sum("Increased").alias("CountIncreased"));
+
+    // Filter the houses that have an increased consumption in at least three trimesters in 2022
+    Dataset<Row> selectedHouses = increasedConsumption.filter(
+      "CountIncreased >= 3"
+    );
+
+    // Join with the houses DataFrame and save the result to the first HDFS output folder
+    Dataset<Row> result = houses
+      .join(selectedHouses, "HID")
+      .select("HID", "City");
+    result.write().format("csv").save(args[2]);
+
+    // Calculate the annual water consumption for each house
+    Dataset<Row> annualConsumption = consumption
+      .groupBy("HID", "Year")
+      .agg(sum("M3").alias("AnnualM3"));
+
+    WindowSpec windowSpec2 = Window.partitionBy("HID").orderBy("Year");
+    annualConsumption =
+      annualConsumption
+        .withColumn("PrevAnnualM3", lag("AnnualM3", 1).over(windowSpec2))
+        .withColumn(
+          "Decreased",
+          when(col("AnnualM3").lt(col("PrevAnnualM3")), 1).otherwise(0)
+        );
+
+    // Count the number of houses with at least one annual consumption decrease for each city
+    Dataset<Row> decreasedConsumption = annualConsumption
+      .filter("Decreased = 1")
+      .groupBy("HID")
+      .agg(count("Decreased").alias("CountDecreased"));
+    Dataset<Row> housesWithDecreasedConsumption = houses.join(
+      decreasedConsumption,
+      "HID"
+    );
+    Dataset<Row> countDecreased = housesWithDecreasedConsumption
+      .groupBy("City")
+      .agg(count("HID").alias("CountHouses"));
+
+    // Filter the cities with at most 2 houses with at least one annual consumption decrease
+    Dataset<Row> selectedCities = countDecreased.filter("CountHouses <= 2");
+
+    // Save the result to the second HDFS output folder
+    selectedCities.select("City").write().format("csv").save(args[3]);
+
+    spark.stop();
+  }
 }
 ```
