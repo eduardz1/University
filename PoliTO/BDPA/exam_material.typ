@@ -32,7 +32,7 @@
     boolean withReplacement, 
     double fraction
   )```],[Sample the content of the “input” RDD, with or without replacement and return the selected sample.The “input” RDD and the new RDD have the same data type.],[],[Nondeterministic],
-  colspanx(4)[examples based on  {(“k1”, 2), (“k3”, 4), (“k3”, 6)}],
+  colspanx(4)[examples based on  {(“k1”, 2), (“k3”, 4), (“k3”, 6)} (create from regular RDDs with maptToPair() or flatMapToPair())],
   [```java JavaPairRDD<K,V> reduceByKey(
     Function2<V,V,V> f
   )```],[Return a PairRDD\<K,V> containing one pair for each key of the “input” PairRDD. The value of each pair of the new PairRDD is obtained by combining the values of the input PairRDD with the same key.The “input” PairRDD and the new PairRDD have the same data type.],[```java (x, y) -> x + y```],[{“k1”, 2}, {“k3”, 10}],
