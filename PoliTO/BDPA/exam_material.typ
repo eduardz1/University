@@ -1,7 +1,9 @@
+#import "@preview/fletcher:0.4.0" as fletcher: node, edge
+#import "@preview/tablex:0.0.8": tablex, rowspanx, colspanx
+
 #set page("a4", margin: (top: 0.8cm, bottom: 0.8cm, left: 0.8cm, right: 0.8cm))
 #set text(size: 6pt, font: "Inter")
 #show raw.where(block: true): set text(font: "Fira Code")
-#import "@preview/tablex:0.0.8": tablex, rowspanx, colspanx
 
 #show heading.where(level: 1): it => block(width: 100%)[
   #set align(center)
@@ -164,10 +166,189 @@ the first one is the sum of the values of the RDD and the second the number of e
   [OFF_HEAP (experimental)],[Similar to MEMORY_ONLY_SER, but store the data in off-heap memory. This requires off-heap memory to be enabled.]
 )
 
-#pagebreak()
-
+\
+= Design Patterns for MapReduce applications
 
 #set align(left)
+
+== Distinct
+\
+
+#fletcher.diagram(
+  spacing: (10em, 1em),
+  node((0,0), text(font: "Fira Code")[(offset, recordX)\ (offset, recordY)\ ...]),
+  node((0,1), text(font: "Fira Code")[(offset, recordZ)\ (offset, recordX)\ ...]),
+  node((0,2), text(font: "Fira Code")[...\ ...\ ...]),
+  node((1,0),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((1,1),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((1,2),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((2,0.5),text(font: "Fira Code")[Reducer],stroke: 0.5pt, shape: "rect"),
+  node((2,1.5),text(font: "Fira Code")[Reducer],stroke: 0.5pt, shape: "rect"),
+  node((3,0.5),text(font: "Fira Code")[recordX, null\ recordZ, null\ ...]),
+  node((3,1.5),text(font: "Fira Code")[recordY, null\ ...]),
+  edge((0,0), (1,0), "-|>"),
+  edge((0,1), (1,1), "-|>"),
+  edge((0,2), (1,2), "-|>"),
+  edge((1,0), (2,0.5), "-|>", label: text(font: "Fira Code")[recordX, null\ recordY, null]),
+  edge((1,1), (2,1.5), "-|>", label: text(font: "Fira Code")[...]),
+  edge((1,2), (2,0.5), "-|>"),
+  edge((1,0), (2,1.5), "-|>"),
+  edge((1,1), (2,0.5), "-|>", label: "..."),
+  edge((1,2), (2,1.5), "-|>", label: "..."),
+  edge((2,0.5), (3,0.5), "-|>"),
+  edge((2,1.5), (3,1.5), "-|>")
+)
+
+== Top K
+- k is small enough to fit in memory
+- initialization perfomed in the setup method of the Mapper
+- the map function updates the current in-mapper top k list
+- the cleanup method emits the (key, value) pairs associated with the local top k records
+  - key is a NullWritable
+  - value is the value of the record
+- only one reducer is instanciated
+- all pairs have the same key, the reduce method is called only once
+\
+
+#fletcher.diagram(
+  spacing: (10em, 1em),
+  node((0,0), text(font: "Fira Code")[(record_idX, recordX)\ (record_idY, recordY)\ ...]),
+  node((0,1), text(font: "Fira Code")[(record_idZ, recordZ)\ (record_idW, recordW)\ ...]),
+  node((0,2), text(font: "Fira Code")[...\ ...\ ...]),
+  node((1,0),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((1,1),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((1,2),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((2,1),text(font: "Fira Code")[Reducer],stroke: 0.5pt, shape: "rect"),
+  node((3,1),[Final top K list]),
+  edge((0,0), (1,0), "-|>"),
+  edge((0,1), (1,1), "-|>"),
+  edge((0,2), (1,2), "-|>"),
+  edge((1,0), (2,1), "-|>", label: [local top K list]),
+  edge((1,1), (2,1), "-|>", label: [local top K list]),
+  edge((1,2), (2,1), "-|>", label: [local top K list]),
+  edge((2,1), (3,1), "-|>")
+)
+
+== Filtering
+- map-only job
+\
+
+#fletcher.diagram(
+  spacing: (10em, 1em),
+  node((0,0), text(font: "Fira Code")[(record_idX, recordX)\ (record_idU, recordU)\ (record_idY, recordY)\ ...]),
+  node((0,1), text(font: "Fira Code")[(record_idZ, recordZ)\ (record_idW, recordA)\ (record_idW, recordW)\ ...]),
+  node((0,2), text(font: "Fira Code")[...\ ...\ ...]),
+  node((1,0),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((1,1),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((1,2),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((2,0),text(font: "Fira Code")[record_idX, recordX\ record_idY, recordY\ ...]),
+  node((2,1),text(font: "Fira Code")[record_idZ, recordZ\ record_idW, recordW\ ...]),
+  node((2,2),text(font: "Fira Code")[...\ ...\ ...]),
+
+  edge((0,0), (1,0), "-|>"),
+  edge((0,1), (1,1), "-|>"),
+  edge((0,2), (1,2), "-|>"),
+  edge((1,0), (2,0), "-|>", label: [filtered records]),
+  edge((1,1), (2,1), "-|>", label: [filtered records]),
+  edge((1,2), (2,2), "-|>")
+)
+
+#pagebreak()
+
+== Numerical Summarization
+Group records by key and compute a numerical aggregate function (e.g., sum, average, max, min, etc.) for each group
+\
+
+Mapper emits (key, value) pairs
+  - key is associated with the fields used to define groups
+  - value is associated with the fields used to compute the aggregate statistic
+
+Reducer receives a set of numerical values for each `GROUP BY` key and computes the final statistic for each group
+\
+
+Combiners can be used if the statistic is commutative and associative to speed up the computation
+\
+
+#fletcher.diagram(
+  spacing: (20em, 2em),
+  node((0,0),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((0,1),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((0,2),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((1,0.5),text(font: "Fira Code")[Reducer],stroke: 0.5pt, shape: "rect"),
+  node((1,1.5),text(font: "Fira Code")[Reducer],stroke: 0.5pt, shape: "rect"),
+  node((2,0.5),text(font: "Fira Code")[groupX, summary\ groupY, summary\ ...]),
+  node((2,1.5),text(font: "Fira Code")[groupZ, summary\ groupW, summary\ ...]),
+  edge((0,0), (1,0.5), "-|>", label: text(font: "Fira Code")[key fields, summary fields\ key fields, summary fields\ ...]),
+  edge((0,0), (1,1.5), "-|>"),
+  edge((0,1), (1,0.5), "-|>"),
+  edge((0,1), (1,1.5), "-|>"),
+  edge((0,2), (1,0.5), "-|>"),
+  edge((0,2), (1,1.5), "-|>"),
+  edge((1,0.5), (2,0.5), "-|>"),
+  edge((1,1.5), (2,1.5), "-|>")
+)
+
+== Inverted Index
+Used to improve search efficiency
+\
+
+Mapper emits (key, value) pairs where
+- key is the set of fields to index (a keyword)
+- value is a unique identifier of the objects associated with the keyword
+
+Reducer receives a set of unique identifiers for each keyword and concatenates them
+\
+
+#fletcher.diagram(
+  spacing: (10em, 2em),
+  node((0,0),text(font: "Fira Code")[id1, keywordX, keywordY\ id2, keywordY\ ...]),
+  node((0,1),text(font: "Fira Code")[id3, keywordX, keywordZ\ id4, keywordW\ ...]),
+  node((0,2),text(font: "Fira Code")[...]),
+  node((1,0),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((1,1),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((1,2),text(font: "Fira Code")[Mapper],stroke: 0.5pt, shape: "rect"),
+  node((2,0.5),text(font: "Fira Code")[Reducer],stroke: 0.5pt, shape: "rect"),
+  node((2,1.5),text(font: "Fira Code")[Reducer],stroke: 0.5pt, shape: "rect"),
+  node((3,0.5),text(font: "Fira Code")[keywordX, [id1, id3]\ keywordY, [id1, id2]\ ...]),
+  node((3,1.5),text(font: "Fira Code")[keywordZ, [id3]\ keywordW, [id4]\ ...]),
+  edge((0,0), (1,0), "-|>"),
+  edge((0,1), (1,1), "-|>"),
+  edge((0,2), (1,2), "-|>"),
+  edge((1,0), (2,0.5), "-|>", label: text(font: "Fira Code")[keywordY, id1\ keywordY, id2\ ...]),
+  edge((1,0), (2,1.5), "-|>", label: text(font: "Fira Code")[...]),
+  edge((1,1), (2,0.5), "-|>"),
+  edge((1,1), (2,1.5), "-|>", label: text(font: "Fira Code")[...]),
+  edge((1,2), (2,0.5), "-|>"),
+  edge((1,2), (2,1.5), "-|>"),
+  edge((2,0.5), (3,0.5), "-|>"),
+  edge((2,1.5), (3,1.5), "-|>")
+)
+
+== Reduce-side Natural Join
+Mappers are 2, one for each table, they emit (key, value) pairs where
+- key is the join attribute(s)
+- value is the concatenation of the name of the table of the current record and the content of the current record
+
+Reducers iterate over the values associated with each key and compute the "local natural join" for the current key
+- generate a copy for each pair of values such that one record is a record of the first table and the other is the record of the other table
+For instance the (key, [list of values]) pair (UID1,["User:Paolo,Garza","Likes:horror","Likes:adventure"]) will generate the following pairs
+- (UID1, "Paolo,Garza,horror")
+- (UID1, "Paolo,Garza,adventure")
+
+== Map-side Natural Join
+Used when one of the two tables is small enough to fit in memory
+\
+
+Map-only job
+\
+
+Mapper receives one input (key, value) pair for each record of the large table and joins it with the "small" table
+- the distributed cache approeaach is used to provide a copy of the small table to each mapper
+- each mapper perforoms the "local natural join" between the current record it is processing and the records of the small table
+- the content of the small table (file) is loaded in the main memory of each mapper during the execution of its setup method
+
+#pagebreak()
+
 #set page(columns: 2)
 #show raw.where(block: true): set text(font: "Fira Code", size: 4pt)
 
