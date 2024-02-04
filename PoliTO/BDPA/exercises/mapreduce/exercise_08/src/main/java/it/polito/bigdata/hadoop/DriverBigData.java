@@ -3,6 +3,7 @@ package it.polito.bigdata.hadoop;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -22,34 +23,55 @@ public class DriverBigData extends Configured implements Tool {
   public int run(String[] args) throws Exception {
     int numberOfReducers = Integer.parseInt(args[0]);
     Path inputPath = new Path(args[1]);
-    Path outputDir = new Path(args[2]);
+    Path outputDirStep1 = new Path(args[2]);
+    Path outputDirStep2 = new Path(args[3]);
 
     Configuration conf = this.getConf();
 
-    // Define a new job
-    Job job = Job.getInstance(conf, "exercise_07");
+    Job job1 = Job.getInstance(conf, "exercise_08 - step 1");
 
-    // Set path of the input file/folder (if it is a folder, the job reads all the
-    // files in the specified folder) for this job
-    FileInputFormat.addInputPath(job, inputPath);
-    FileOutputFormat.setOutputPath(job, outputDir);
+    FileInputFormat.addInputPath(job1, inputPath);
+    FileOutputFormat.setOutputPath(job1, outputDirStep1);
 
-    job.setJarByClass(DriverBigData.class);
+    job1.setJarByClass(DriverBigData.class);
 
-    job.setInputFormatClass(KeyValueTextInputFormat.class);
-    job.setOutputFormatClass(TextOutputFormat.class);
+    job1.setInputFormatClass(KeyValueTextInputFormat.class);
+    job1.setOutputFormatClass(TextOutputFormat.class);
 
-    job.setMapperClass(MapperBigData.class);
-    job.setMapOutputKeyClass(Text.class);
-    job.setMapOutputValueClass(Text.class);
+    job1.setMapperClass(MapperBigData1.class);
+    job1.setMapOutputKeyClass(Text.class);
+    job1.setMapOutputValueClass(FloatWritable.class);
 
-    job.setReducerClass(ReducerBigData.class);
-    job.setOutputKeyClass(Text.class);
-    job.setOutputValueClass(Text.class);
+    job1.setReducerClass(ReducerBigData1.class);
+    job1.setOutputKeyClass(Text.class);
+    job1.setOutputValueClass(FloatWritable.class);
 
-    job.setNumReduceTasks(numberOfReducers);
+    job1.setNumReduceTasks(numberOfReducers);
 
-    return job.waitForCompletion(true) ? 0 : 1;
+    if (!job1.waitForCompletion(true))
+      return 1;
+
+    Job job2 = Job.getInstance(conf, "exercise_08 - step 2");
+
+    FileInputFormat.addInputPath(job2, outputDirStep1);
+    FileOutputFormat.setOutputPath(job2, outputDirStep2);
+
+    job2.setJarByClass(DriverBigData.class);
+
+    job2.setInputFormatClass(KeyValueTextInputFormat.class);
+    job2.setOutputFormatClass(TextOutputFormat.class);
+
+    job2.setMapperClass(MapperBigData2.class);
+    job2.setMapOutputKeyClass(Text.class);
+    job2.setMapOutputValueClass(FloatWritable.class);
+
+    job2.setReducerClass(ReducerBigData2.class);
+    job2.setOutputKeyClass(Text.class);
+    job2.setOutputValueClass(FloatWritable.class);
+
+    job2.setNumReduceTasks(numberOfReducers);
+
+    return job2.waitForCompletion(true) ? 0 : 1;
   }
 
   /**

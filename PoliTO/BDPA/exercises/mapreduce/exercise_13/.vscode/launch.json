@@ -9,12 +9,10 @@
             "name": "DriverBigData",
             "request": "launch",
             "mainClass": "it.polito.bigdata.hadoop.DriverBigData",
-            "projectName": "exercise_08",
+            "projectName": "exercise_13",
             "args": [
-                "2",
                 "data/",
-                "output/step1/",
-                "output/step2/"
+                "output/"
             ]
         }
     ]
