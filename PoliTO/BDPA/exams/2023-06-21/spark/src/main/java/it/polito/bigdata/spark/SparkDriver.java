@@ -1,178 +1,118 @@
-// package it.polito.bigdata.spark;
-
-// import static org.apache.spark.sql.functions.*;
-
-// import org.apache.spark.api.java.JavaSparkContext;
-// import org.apache.spark.sql.*;
-
-// public class SparkDriver {
-
-//   public static void main(String[] args) {
-//     SparkSession spark = SparkSession
-//       .builder()
-//       .appName("MeetingStatistics")
-//       .getOrCreate();
-//     JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
-
-//     // Load the data
-//     Dataset<Row> users = spark.read().option("header", "true").csv(args[0]);
-//     Dataset<Row> meetings = spark.read().option("header", "true").csv(args[1]);
-//     Dataset<Row> invitations = spark
-//       .read()
-//       .option("header", "true")
-//       .csv(args[2]);
-
-//     // Filter for users with a Business pricing plan who organized at least one
-//     // meeting
-//     Dataset<Row> businessUsers = users.filter(
-//       col("PricingPlan").equalTo("Business")
-//     );
-//     Dataset<Row> businessMeetings = meetings.join(
-//       businessUsers,
-//       meetings.col("OrganizerUID").equalTo(businessUsers.col("UID"))
-//     );
-
-//     // Group by user ID and calculate statistics
-//     Dataset<Row> result1 = businessMeetings
-//       .groupBy("UID")
-//       .agg(
-//         avg("Duration").as("AverageDuration"),
-//         max("Duration").as("MaxDuration"),
-//         min("Duration").as("MinDuration")
-//       );
-
-//     // Store the result to HDFS
-//     result1.write().csv(args[3]);
-
-//     // Calculate the distribution of the number of invitations per organized
-//     // meeting
-//     Dataset<Row> invitationCounts = invitations.groupBy("MID").count();
-//     Dataset<Row> meetingsWithCounts = businessMeetings.join(
-//       invitationCounts,
-//       businessMeetings.col("MID").equalTo(invitationCounts.col("MID"))
-//     );
-
-//     // Classify meetings by size
-//     Dataset<Row> result2 = meetingsWithCounts.withColumn(
-//       "MeetingSize",
-//       when(col("count").gt(20), "large")
-//         .when(col("count").between(5, 20), "medium")
-//         .otherwise("small")
-//     );
-
-//     // Count the number of each size of meeting per user
-//     result2 = result2.groupBy("UID", "MeetingSize").count();
-
-//     // Store result to HDFS
-//     result2.write().csv(args[4]);
-
-//     sc.close();
-//   }
-// }
+package it.polito.bigdata.spark;
 
 import static org.apache.spark.sql.functions.*;
 
-import org.apache.spark.sql.*;
-import org.apache.spark.sql.expressions.Window;
-import org.apache.spark.sql.expressions.WindowSpec;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
 
-public class HouseWaterConsumption {
+public class SparkDriver {
 
   public static void main(String[] args) {
-    SparkSession spark = SparkSession
+    Logger.getLogger("org").setLevel(Level.OFF);
+    Logger.getLogger("akka").setLevel(Level.OFF);
+
+    String neObjectData;
+    String observationData;
+    String outputPath1;
+    String outputPath2;
+
+    neObjectData = "exam_ex2_data/NEObject.txt";
+    observationData = "exam_ex2_data/Observations.txt";
+
+    outputPath1 = "outPart1/";
+    outputPath2 = "outPart2/";
+
+    SparkSession ss = SparkSession
       .builder()
-      .appName("HouseWaterConsumption")
+      .appName("Exam20240205 Spark")
+      .master("local")
       .getOrCreate();
 
-    // Read the input files
-    Dataset<Row> houses = spark
+    Dataset<Row> neos = ss
       .read()
       .format("csv")
-      .option("header", "false")
-      .load(args[0]);
-    houses =
-      houses.withColumnRenamed("_c0", "HID").withColumnRenamed("_c1", "City");
+      .option("header", true)
+      .option("inferSchema", true)
+      .load(neObjectData);
 
-    Dataset<Row> consumption = spark
+    Dataset<Row> observations = ss
       .read()
       .format("csv")
-      .option("header", "false")
-      .load(args[1]);
-    consumption =
-      consumption
-        .withColumnRenamed("_c0", "HID")
-        .withColumnRenamed("_c1", "Date")
-        .withColumnRenamed("_c2", "M3");
+      .option("header", true)
+      .option("inferSchema", true)
+      .load(observationData);
 
-    // Calculate the water consumption per trimester for each house for the years 2021 and 2022
-    consumption =
-      consumption
-        .withColumn("Year", year(to_date(col("Date"), "yyyy/MM")))
-        .withColumn("Trimester", quarter(to_date(col("Date"), "yyyy/MM")))
-        .groupBy("HID", "Year", "Trimester")
-        .agg(sum("M3").alias("M3"));
+    // Number of observations for the Most Relevant NEOs from 2023. Considering
+    // only the observations starting from 2023, the application aims to
+    // calculate the number of observations associated with the Most Relevant NEOs.
+    // The Most Relevant NEOs are the NEOs that (i) have not already fallen and
+    // (ii) are characterized by a dimension exceeding the average dimension
+    // considering all the registered NEOs in the “NEObjects.txt” file. Calculate
+    // the number of observations starting from 2023 for each Most Relevant NEO,
+    // sort the result by this number in descending order, and store the result
+    // in the first HDFS output folder. Consider only the Most Relevant NEOs that
+    // have been observed at least one time starting from 2023 in this first part
+    // of the application. The first HDFS output folder must contain information
+    // in the format "NEOID,Number of observations starting from 2023" for
+    // the Most Relevant NEOs (one line for each Most Relevant NEO).
 
-    WindowSpec windowSpec = Window
-      .partitionBy("HID", "Trimester")
-      .orderBy("Year");
-    consumption =
-      consumption
-        .withColumn("PrevM3", lag("M3", 1).over(windowSpec))
-        .withColumn(
-          "Increased",
-          when(col("M3").gt(col("PrevM3")), 1).otherwise(0)
-        );
+    Dataset<Row> avgDimension = neos.agg(avg("Dimension").as("AvgDim"));
 
-    // Count the number of trimesters with increased consumption in 2022
-    Dataset<Row> increasedConsumption = consumption
-      .filter("Year = 2022")
-      .groupBy("HID")
-      .agg(sum("Increased").alias("CountIncreased"));
+    Dataset<Row> mostRelNEOs = neos
+      .join(avgDimension, neos.col("Dimension").gt(avgDimension.col("AvgDim")))
+      .filter(neos.col("alreadyFallen").equalTo(false))
+      .select("NEOID")
+      .cache();
 
-    // Filter the houses that have an increased consumption in at least three trimesters in 2022
-    Dataset<Row> selectedHouses = increasedConsumption.filter(
-      "CountIncreased >= 3"
-    );
+    Dataset<Row> observationsFrom2023 = observations
+      .filter(year(observations.col("ObsDateTime")).geq(2023))
+      .select("NEOID", "ObservatoryID")
+      .cache();
 
-    // Join with the houses DataFrame and save the result to the first HDFS output folder
-    Dataset<Row> result = houses
-      .join(selectedHouses, "HID")
-      .select("HID", "City");
-    result.write().format("csv").save(args[2]);
+    Dataset<Row> res1 = observationsFrom2023
+      .join(
+        mostRelNEOs,
+        observationsFrom2023.col("NEOID").equalTo(mostRelNEOs.col("NEOID"))
+      )
+      .groupBy("NEOID")
+      .agg(count("*").as("ObservationCount"))
+      .orderBy(desc("ObservationCount"));
 
-    // Calculate the annual water consumption for each house
-    Dataset<Row> annualConsumption = consumption
-      .groupBy("HID", "Year")
-      .agg(sum("M3").alias("AnnualM3"));
+    res1.write().format("csv").option("header", false).save(outputPath1);
 
-    WindowSpec windowSpec2 = Window.partitionBy("HID").orderBy("Year");
-    annualConsumption =
-      annualConsumption
-        .withColumn("PrevAnnualM3", lag("AnnualM3", 1).over(windowSpec2))
-        .withColumn(
-          "Decreased",
-          when(col("AnnualM3").lt(col("PrevAnnualM3")), 1).otherwise(0)
-        );
+    // The most relevant NEOs observed by a few observatories starting from 2023.
+    // The second part of this application considers only the Most Relevant NEOs
+    // observed by less than 10 unique observatories starting from the year 2023.
+    // For each Most Relevant NEO of that subset, store in the second HDFS output
+    // folder its identifier (NEOID) and the identifiers (ObservatoryIDs) of the
+    // unique observatories that observed it starting from the year 2023
+    // (one pair (NEOID, ObservatoryID) per output line). If a NEOD For each of
+    // the selected Most Relevant NEOs never observed starting from 2023, store
+    // the pair (NEOID, "NONE") in the output folder. The output format of each
+    // output line is “NEOID, ObservatoryID”. Report the string "NONE" instead
+    // of the ObservatoryID for each of the selected Most Relevant NEOs
+    // never observed starting from 2023.
+    Dataset<Row> res2 = mostRelNEOs
+      .join(
+        observationsFrom2023,
+        mostRelNEOs.col("NEOID").equalTo(observationsFrom2023.col("NEOID")),
+        "left_outer"
+      )
+      .groupBy("NEOID")
+      .agg(countDistinct("ObservatoryID").as("count"))
+      .filter(col("count").lt(10))
+      .select(
+        col("NEOID"),
+        // coalesce returns the first column that is not null, or null if all
+        // inputs are null. lit creates a Column of literal value.
+        coalesce(col("ObservatoryID"), lit("NONE")).as("ObservatoryID")
+      );
 
-    // Count the number of houses with at least one annual consumption decrease for each city
-    Dataset<Row> decreasedConsumption = annualConsumption
-      .filter("Decreased = 1")
-      .groupBy("HID")
-      .agg(count("Decreased").alias("CountDecreased"));
-    Dataset<Row> housesWithDecreasedConsumption = houses.join(
-      decreasedConsumption,
-      "HID"
-    );
-    Dataset<Row> countDecreased = housesWithDecreasedConsumption
-      .groupBy("City")
-      .agg(count("HID").alias("CountHouses"));
+    res2.write().format("csv").option("header", false).save(outputPath2);
 
-    // Filter the cities with at most 2 houses with at least one annual consumption decrease
-    Dataset<Row> selectedCities = countDecreased.filter("CountHouses <= 2");
-
-    // Save the result to the second HDFS output folder
-    selectedCities.select("City").write().format("csv").save(args[3]);
-
-    spark.stop();
+    ss.stop();
   }
 }

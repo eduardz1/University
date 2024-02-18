@@ -1049,3 +1049,667 @@ public class HouseWaterConsumption {
   }
 }
 ```
+
+#pagebreak()
+
+== Another Example
+
+```java
+public class SparkDriver {
+
+  public static void main(String[] args) {
+    ...
+
+    // Number of observations for the Most Relevant NEOs from 2023. Considering
+    // only the observations starting from 2023, the application aims to
+    // calculate the number of observations associated with the Most Relevant NEOs
+    // The Most Relevant NEOs are the NEOs that (i) have not already fallen and
+    // (ii) are characterized by a dimension exceeding the average dimension
+    // considering all the registered NEOs in the “NEObjects.txt” file. Calculate
+    // the number of observations starting from 2023 for each Most Relevant NEO,
+    // sort the result by this number in descending order, and store the result
+    // in the first HDFS output folder. Consider only the Most Relevant NEOs that
+    // have been observed at least one time starting from 2023 in this first part
+    // of the application. The first HDFS output folder must contain information
+    // in the format "NEOID,Number of observations starting from 2023" for
+    // the Most Relevant NEOs (one line for each Most Relevant NEO).
+
+    Dataset<Row> avgDimension = neos.agg(avg("Dimension").as("AvgDim"));
+
+    Dataset<Row> mostRelNEOs = neos
+      .join(avgDimension, neos.col("Dimension").gt(avgDimension.col("AvgDim")))
+      .filter(neos.col("alreadyFallen").equalTo(false))
+      .select("NEOID")
+      .cache();
+
+    Dataset<Row> observationsFrom2023 = observations
+      .filter(year(observations.col("ObsDateTime")).geq(2023))
+      .select("NEOID", "ObservatoryID")
+      .cache();
+
+    Dataset<Row> res1 = observationsFrom2023
+      .join(
+        mostRelNEOs,
+        observationsFrom2023.col("NEOID").equalTo(mostRelNEOs.col("NEOID"))
+      )
+      .groupBy("NEOID")
+      .agg(count("*").as("ObservationCount"))
+      .orderBy(desc("ObservationCount"));
+
+    res1.write().format("csv").option("header", false).save(outputPath1);
+
+    // The most relevant NEOs observed by a few observatories starting from 2023.
+    // The second part of this application considers only the Most Relevant NEOs
+    // observed by less than 10 unique observatories starting from the year 2023.
+    // For each Most Relevant NEO of that subset, store in the second HDFS output
+    // folder its identifier (NEOID) and the identifiers (ObservatoryIDs) of the
+    // unique observatories that observed it starting from the year 2023
+    // (one pair (NEOID, ObservatoryID) per output line). If a NEOD For each of
+    // the selected Most Relevant NEOs never observed starting from 2023, store
+    // the pair (NEOID, "NONE") in the output folder. The output format of each
+    // output line is “NEOID, ObservatoryID”. Report the string "NONE" instead
+    // of the ObservatoryID for each of the selected Most Relevant NEOs
+    // never observed starting from 2023.
+    Dataset<Row> res2 = mostRelNEOs
+      .join(
+        observationsFrom2023,
+        mostRelNEOs.col("NEOID").equalTo(observationsFrom2023.col("NEOID")),
+        "left_outer"
+      )
+      .groupBy("NEOID")
+      .agg(countDistinct("ObservatoryID").as("count"))
+      .filter(col("count").lt(10))
+      .select(
+        col("NEOID"),
+        // coalesce returns the first column that is not null, or null if all
+        // inputs are null. lit creates a Column of literal value.
+        coalesce(col("ObservatoryID"), lit("NONE")).as("ObservatoryID")
+      );
+
+    res2.write().format("csv").option("header", false).save(outputPath2);
+
+    ss.stop();
+  }
+}
+```
+
+== Spark Example Left and Left-Anti Join
+
+```java
+public class SparkDriver {
+
+  public static void main(String[] args) {
+    ...
+
+    // Countries without houses that are characterized by a high average daily
+    // consumption in the year 2022. The first part of this application
+    // considers only the year 2022 and selects the countries that are never
+    // associated with houses with a high average daily consumption in the year
+    // 2022. A house is considered a house with a high average daily consumption
+    // in the year 2022 if the average daily consumption of that house in the
+    // year 2022 is greater than 30 kWh. Store the selected countries in the
+    // first HDFS output folder (one country per line).
+
+    Dataset<Row> housesWithHighAvgConsumption2022 = consumption
+      .filter(year(consumption.col("date")).equalTo(2022))
+      .groupBy("id")
+      .agg(avg("consumption").as("avg_consumption"))
+      .filter("avg_consumption > 30")
+      .select("id");
+
+    Dataset<Row> res1 = houses.join(
+      housesWithHighAvgConsumption2022,
+      houses.col("id").equalTo(housesWithHighAvgConsumption2022.col("id")),
+      "left_anti"
+    );
+
+    res1.select("country").distinct().write().csv(args[2]);
+
+    // The number of cities with many houses with high power consumption in the
+    // year 2021 for each country. This second part of the application considers
+    // only the consumption in the year 2021 and computes for each country the
+    // number of cities each one with at least 500 houses with high annual
+    // consumption in the year 2021. Specifically, a house is classified as a
+    // “house with a high annual consumption in the year 2021” if its annual
+    // consumption in the year 2021 is greater than 10000 kWh. Store the result
+    // in the second output folder (one country per output line). The output
+    // format is “country,number of cities each one with at least 500 houses
+    // with a high annual consumption in the year 2021 for that country”. Save
+    // also the information for the countries with no cities with at least 500
+    // houses with a high annual consumption in the year 2021. In those cases,
+    // the output line will be “country,0”.
+
+    Dataset<Row> housesWithHighCumConsumption2021 = consumption
+      .filter(year(consumption.col("date")).equalTo(2021))
+      .groupBy("id")
+      .agg(sum("consumption").as("tot_consumption"))
+      .filter("tot_consumption > 10000");
+
+    Dataset<Row> citiesWithMoreThan500Houses = houses
+      .join(housesWithHighCumConsumption2021, "id")
+      .groupBy("city")
+      .agg(count("*").as("num_houses"))
+      .filter("num_houses >= 500");
+
+    Dataset<Row> countriesWithNumCities = houses
+      .join(citiesWithMoreThan500Houses, "city")
+      .groupBy("country")
+      .agg(countDistinct("city").as("num_cities"));
+
+    Dataset<Row> res2 = houses
+      .join(countriesWithNumCities, "country", "left")
+      .select(
+        houses.col("country"),
+        coalesce(col("num_cities"), lit(0).cast("integer")).as("num_cities")
+      );
+
+    res2.distinct().write().csv(args[3]);
+
+    ss.stop();
+  }
+}
+```
+
+== Another Example
+
+```java
+public class SparkDriver {
+
+  public static void main(String[] args) {
+  ...
+
+    customers =
+      customers.withColumn(
+        "DateOfBirth",
+        to_date(customers.col("DateOfBirth"), "yyyy/MM/dd")
+      );
+    itemsCatalog =
+      itemsCatalog.withColumn(
+        "FirstTimeInCatalog",
+        to_timestamp(itemsCatalog.col("FirstTimeInCatalog"), "yyyy/MM/dd-HH:mm:ss")
+      );
+    purchases =
+      purchases.withColumn(
+        "SaleTimestamp",
+        to_timestamp(purchases.col("SaleTimestamp"), "yyyy/MM/dd-HH:mm:ss")
+      );
+
+    // Items purchased at least 10K times in 2020 and at least 10K times in
+    // 2021. This first part of the application considers all the items included
+    // in the catalog and selects the subset of items bought at least 10000
+    // times in the year 2020 and at least 10000 times in the year 2021. Only
+    // the subset of items that satisfy both conditions are selected. The
+    // identifiers of the selected items are stored in the first HDFS output
+    // folder (one ItemID per line).
+
+    Dataset<Row> itemsPurchased10KTimes2020 = purchases
+      .filter(year(purchases.col("SaleTimestamp")).equalTo(2020))
+      .groupBy("ItemID")
+      .agg(count("*").as("count"))
+      .filter("count >= 10000");
+
+    Dataset<Row> itemsPurchased10KTimes2021 = purchases
+      .filter(year(purchases.col("SaleTimestamp")).equalTo(2021))
+      .groupBy("ItemID")
+      .agg(count("*").as("count"))
+      .filter("count >= 10000");
+
+    Dataset<Row> res1 = itemsPurchased10KTimes2020
+      .join(itemsPurchased10KTimes2021, "ItemID")
+      .select("ItemID");
+
+    res1.write().csv(args[3]);
+
+    // Items included in the catalog before the year 2020 with at least two
+    // months in the year 2020 each one with less than 10 distinct customers.
+    // This second part of the application considers only the items that were
+    // included in the catalog before the year 2020
+    // (i.e., the items with FirstTimeInCatalog<’2020/01/01’). Considering only
+    // those items, an item is selected if it is characterized by at least two
+    // months in the year 2020 such that each of those months has less than 10
+    // distinct customers who purchased that item. The identifiers and the
+    // categories of the selected items are stored in the second output folder
+    // (one pair (ItemID, Category) per output line).
+    //
+    // NOTE: The months with less than 10 distinct customers can be either
+    // consecutive or not consecutive.
+
+    Dataset<Row> itemsIncludedInCatalogBefore2020 = itemsCatalog
+      .filter(year(itemsCatalog.col("FirstTimeInCatalog")).lt(2020))
+      .select("ItemID");
+
+    Dataset<Row> itemsWithLessThan10CustomersEachMonth = purchases
+      .join(itemsIncludedInCatalogBefore2020, "ItemID")
+      .withColumn("Year", year(purchases.col("SaleTimestamp")))
+      .withColumn("Month", month(purchases.col("SaleTimestamp")))
+      .groupBy("Year", "Month", "ItemID")
+      .agg(count_distinct(purchases.col("Username")).as("NumCustomers"))
+      .filter("NumCustomers < 10");
+
+    Dataset<Row> itemsWithLessThan10CustomersEachMonthInMoreThan2Months = itemsWithLessThan10CustomersEachMonth
+      .groupBy("Year", "ItemID")
+      .agg(count_distinct(col("Month")).as("NumMonths"))
+      .filter("NumMonths >= 2")
+      .select("ItemID");
+
+    Dataset<Row> res2 = itemsWithLessThan10CustomersEachMonthInMoreThan2Months
+      .join(itemsCatalog, "ItemID")
+      .select("ItemID", "Category");
+
+    res2.write().csv(args[4]);
+
+    ss.stop();
+  }
+}
+```
+
+== Spark Example WindowSpec
+
+```java
+public class SparkDriver {
+
+  public static void main(String[] args) {
+    ...
+
+    // Movies that have been watched frequently but only in one year in the last
+    // five years. Considering only the lines of WatchedMovies.txt related to
+    // the last five years (i.e., the lines with StartTimestamp in the range
+    // September 17, 2015 - September 16, 2020), the application selects the
+    // movies that (i) have been watched only in one of those 5 years and (ii)
+    // at least 1000 times in that year. For each of the selected movies, the
+    // application stores in the first HDFS output folder its identifier (MID)
+    // and the single year in which it has been watched at least 1000 times
+    // (one pair (MID, year) per line).
+    //
+    // NOTE: The value of StartTimestamp is used to decide in which year a user
+    // watched a specific movie. Do not consider the value of EndTimestamp.
+
+    Dataset<Row> watchedInLast5Years = watchedMovies.where(
+      col("StartTimestamp")
+        .between(
+          lit("2015-09-18 00:00:00").cast(DataTypes.TimestampType),
+          lit("2020-09-16 23:59:59").cast(DataTypes.TimestampType)
+        )
+    );
+
+    Dataset<Row> res1 = watchedInLast5Years
+      .withColumn("Year", year(col("StartTimestamp")))
+      .groupBy("MID")
+      .agg(
+        count_distinct(col("Year")).as("DifferentYearsCount"),
+        count("*").as("TimesWatched"),
+        first("Year").as("Year")
+      )
+      .filter("DifferentYearsCount == 1")
+      .filter("TimesWatched >= 1000")
+      .select("MID", "Year");
+
+    res1.write().mode("overwrite").csv(args[3]);
+
+    // Most popular movie in at least two years. Considering all the lines of
+    // WatchedMovies.txt (i.e., all years), the application selects the movies
+    // that have been the most popular movie in at least two years. The annual
+    // popularity of a movie in a specific year is given by the number of
+    // distinct users who watched that movie in that specific year. A movie is
+    // the most popular movie in a specific year if it is associated with the
+    // highest annual popularity of that year. The application stores in the
+    // second HDFS output folder the identifiers (MIDs) of the selected movies
+    // (one MID per line).
+    //
+    // NOTE: The value of StartTimestamp is used to decide in which year a user
+    // watched a specific movie. Do not consider the value of EndTimestamp.
+
+    Dataset<Row> moviesWithNumDistinctUsersPerYear = watchedMovies
+      .withColumn("Year", year(col("StartTimestamp")))
+      .groupBy("MID", "Year")
+      .agg(count_distinct(col("Username")).as("NumDistinctUsers"));
+
+    // use window when you need to partition without discarding the other
+    // columns of the record
+    WindowSpec windowSpec = Window
+      .partitionBy("Year")
+      .orderBy(col("NumDistinctUsers").desc());
+
+    Dataset<Row> mostPopularMovies = moviesWithNumDistinctUsersPerYear
+      // can also use row_number() instead of rank() to only select the first
+      .withColumn("Rank", rank().over(windowSpec))
+      .filter(col("Rank").equalTo(1));
+
+    Dataset<Row> res2 = mostPopularMovies
+      .groupBy("MID")
+      .agg(count(col("Year")).as("NumYears"))
+      .filter("NumYears >= 2")
+      .select("MID");
+
+    res2.write().mode("overwrite").csv(args[4]);
+
+    ss.stop();
+  }
+}
+```
+#v(10em)
+
+== Lots of Fun with WindowSpec
+
+```java
+public class SparkDriver {
+
+  public static void main(String[] args) {
+    BasicConfigurator.configure();
+
+    // The following two lines are used to switch off some verbose log messages
+    Logger.getLogger("org").setLevel(Level.OFF);
+    Logger.getLogger("akka").setLevel(Level.OFF);
+
+    SparkSession ss = SparkSession
+      .builder()
+      .appName("exam_2020-06-16 spark")
+      .master("local[12]")
+      .config("spark.executor.memory", "3G")
+      .config("spark.driver.memory", "12G")
+      .getOrCreate();
+
+    Dataset<Row> books = ss
+      .read()
+      .option("header", true)
+      .option("inferSchema", true)
+      .csv(args[0]);
+
+    Dataset<Row> purchases = ss
+      .read()
+      .option("header", true)
+      .option("inferSchema", true)
+      .csv(args[1]);
+
+    purchases = purchases.withColumn("Date", to_date(col("Date"), "yyyyMMdd"));
+
+    books.printSchema();
+    purchases.printSchema();
+
+    // Maximum number of daily purchases per book in year 2018. Consider only
+    // the purchases of years 2018 and only the books with at least one purchase
+    // in year 2018. The application computes the maximum number of daily
+    // purchases for each book. The application stores in the first HDFS output
+    // folder for each book its identifier and its maximum number of daily
+    // purchases (one pair (BID, maximum number of daily purchases) per line).
+
+    Dataset<Row> purchases2018 = purchases
+      .filter(year(col("date")).equalTo(2018))
+      .cache();
+
+    WindowSpec windowSpec = Window.partitionBy("Date", "BID");
+
+    Dataset<Row> res1 = purchases2018
+      .withColumn("NumOfDailyPurchases", count("*").over(windowSpec))
+      .groupBy("BID")
+      .agg(max("NumOfDailyPurchases"));
+
+    res1.write().mode("overwrite").csv(args[2]);
+
+    // Windows of three consecutive days with many purchases. Consider only the
+    // purchases of years 2018. The application must select, for each book, all
+    // the windows of three consecutive dates such that each date of the window
+    // is characterized by a number of purchases that is greater than 10% of the
+    // purchases of the considered book in year 2018. Specifically, given a book
+    // and a window of three consecutive dates, that window of three consecutive
+    // dates is selected for that book if and only if in each of those three
+    // dates the number of purchases of that book is greater than 0.1*total
+    // number of purchases of that book in year 2018. The application stores
+    // the result in the second HDFS output folder. Specifically, each of the
+    // selected combinations (book, window of three consecutive dates) is stored
+    // in one output line and the used format is the following: (BID of the
+    // selected book, first date of the selected window of three consecutive
+    // dates).
+    //
+    // NOTE: that you can have overlapped windows of three consecutive dates
+    // among the selected windows.
+
+    // partition by date, order by date and select the range -1 to 1
+    // (groups of 3 days at a time)
+    WindowSpec windowSpec2 = Window
+      .partitionBy("BID", "Date")
+      .orderBy(col("Date"))
+      .rowsBetween(-1, 1); // rangeBetween() can only be used
+                           // with int on the order by
+
+    WindowSpec windowSpec3 = Window.partitionBy(col("BID"), year(col("Date")));
+
+    Dataset<Row> res2 = purchases2018
+      .withColumn("Sum3Days", sum("Price").over(windowSpec2))
+      .withColumn("SumYear", sum("Price").over(windowSpec3).as("SumYear"))
+      .withColumn("FirstDay", first("Date").over(windowSpec2))
+      .filter(col("Sum3Days").gt(col("SumYear").multiply(0.1)))
+      .select("BID", "FirstDay");
+
+    res2.write().mode("overwrite").csv(args[3]);
+
+    ss.stop();
+  }
+}
+```
+
+
+#pagebreak()
+
+== Hadoop Example First with Max
+
+```java
+// The first year with the maximum number of purchases. The application
+// considers all purchases and selects the year with the maximum number of
+// purchases. If there is more than one year associated with maximum number of
+// purchases, the first one in the temporal order is selected. Store the
+// selected year and the associated number of purchases in the output HDFS
+// folder (the pair (year, number of purchases in that year).
+
+class MapperBigData1
+  extends Mapper<LongWritable, Text, IntWritable, IntWritable> {
+
+  private IntWritable year = new IntWritable();
+  private static IntWritable one = new IntWritable(1);
+
+  protected void map(LongWritable key, Text value, Context context)
+    throws IOException, InterruptedException {
+    String[] fields = value.toString().split(",");
+    String[] date = fields[0].split("/");
+
+    year.set(Integer.parseInt(date[0]));
+    context.write(year, one);
+  }
+}
+
+public class ReducerBigData1
+  extends Reducer<IntWritable, IntWritable, IntWritable, IntWritable> {
+
+  private IntWritable year = new IntWritable();
+  private IntWritable count = new IntWritable();
+
+  private int maxCount;
+  private int minYear;
+
+  @Override
+  protected void setup(
+    Reducer<IntWritable, IntWritable, IntWritable, IntWritable>.Context context
+  ) throws IOException, InterruptedException {
+    maxCount = -1;
+    minYear = Integer.MAX_VALUE;
+  }
+
+  @Override
+  protected void reduce(
+    IntWritable key,
+    Iterable<IntWritable> values,
+    Reducer<IntWritable, IntWritable, IntWritable, IntWritable>.Context context
+  ) throws IOException, InterruptedException {
+    int accumulator = 0;
+    for (IntWritable value : values) {
+      accumulator += value.get();
+    }
+
+    if (accumulator > maxCount) {
+      maxCount = accumulator;
+      minYear = key.get();
+    } else if (accumulator == maxCount && minYear > key.get()) {
+      minYear = key.get();
+    }
+  }
+
+  @Override
+  protected void cleanup(
+    Reducer<IntWritable, IntWritable, IntWritable, IntWritable>.Context context
+  ) throws IOException, InterruptedException {
+    year.set(minYear);
+    count.set(maxCount);
+    context.write(year, count);
+  }
+}
+
+class MapperBigData2 extends Mapper<Text, Text, NullWritable, Text> {
+
+  private Text year_count = new Text();
+
+  protected void map(Text key, Text value, Context context)
+    throws IOException, InterruptedException {
+    year_count.set("" + key + "," + value);
+    context.write(NullWritable.get(), year_count);
+  }
+}
+
+public class ReducerBigData2
+  extends Reducer<NullWritable, Text, IntWritable, IntWritable> {
+
+  @Override
+  protected void reduce(
+    NullWritable key,
+    Iterable<Text> values,
+    Reducer<NullWritable, Text, IntWritable, IntWritable>.Context context
+  ) throws IOException, InterruptedException {
+    int maxCount = -1;
+    int minYear = Integer.MAX_VALUE;
+
+    for (Text value : values) {
+      String[] split = value.toString().split(",");
+
+      int year = Integer.parseInt(split[0]);
+      int count = Integer.parseInt(split[1]);
+
+      if (count > maxCount) {
+        maxCount = count;
+        minYear = year;
+      } else if (count == maxCount && minYear > year) {
+        minYear = year;
+      }
+    }
+
+    context.write(new IntWritable(minYear), new IntWritable(maxCount));
+  }
+}
+```
+
+== Hadoop Example Inverted Index
+
+```java
+// Movies watched by one single user in year 2019. The application considers
+// only the visualizations related to year 2019 (i.e., the lines of
+// WatchedMovies with StartTimestamp in the range January 1, 2019 – December 31,
+// 2019) and selects the movies that have been watched by one single user in
+// 2019. Store the identifiers (MIDs) of the selected movies in the output HDFS
+// folder (one MID per line).
+//
+// NOTE: If a movie has been watched many times in 2019 but always by the same
+// user, that movie satisfies the constraint and must be selected.
+
+class MapperBigData extends Mapper<LongWritable, Text, Text, Text> {
+
+  private Text movie = new Text();
+  private Text username = new Text();
+
+  protected void map(LongWritable key, Text value, Context context)
+    throws IOException, InterruptedException {
+    String[] fields = value.toString().split(",");
+    String[] date = fields[2].split("/");
+
+    int year = Integer.parseInt(date[0]);
+
+    if (year != 2019) return;
+
+    movie.set(fields[1]);
+    username.set(fields[0]);
+
+    context.write(movie, username); // inverted index
+  }
+}
+
+public class ReducerBigData extends Reducer<Text, Text, Text, NullWritable> {
+
+  @Override
+  protected void reduce(
+    Text key,
+    Iterable<Text> values,
+    Reducer<Text, Text, Text, NullWritable>.Context context
+  ) throws IOException, InterruptedException {
+    String first_user = values.iterator().next().toString();
+
+    for (Text value : values) {
+      if (!value.toString().equals(first_user)) return;
+    }
+
+    context.write(key, NullWritable.get());
+  }
+}
+```
+
+== Hadoop example combine two values
+
+```java
+// Customers who bought the same book at least two times in year 2018. The
+// application considers only the purchases of year 2018 and selects the
+// identifiers of the customers who bought the same book at least two times in
+// year 2018. For each of the selected customers store in the output HDFS folder
+// one line for each of the books he/she bought at least two times in year 2018.
+// Each output line has the format Customerid\tBID.
+
+class MapperBigData extends Mapper<LongWritable, Text, Text, NullWritable> {
+
+  private Text customer_book = new Text();
+
+  protected void map(LongWritable key, Text value, Context context)
+    throws IOException, InterruptedException {
+    String[] fields = value.toString().split(",");
+    String date = fields[2];
+
+    if (!date.matches("^2018.*")) return; // equivalent to .startsWith("2018")
+
+    customer_book.set("" + fields[0] + "," + fields[1]);
+
+    context.write(customer_book, NullWritable.get());
+  }
+}
+
+public class ReducerBigData extends Reducer<Text, NullWritable, Text, Text> {
+
+  private Text customer = new Text();
+  private Text book = new Text();
+
+  @Override
+  protected void reduce(
+    Text key,
+    Iterable<NullWritable> values,
+    Reducer<Text, NullWritable, Text, Text>.Context context
+  ) throws IOException, InterruptedException {
+    int count = 0;
+
+    while (values.iterator().hasNext()) {
+      count++;
+      values.iterator().next();
+    }
+
+    if (count < 2) return;
+
+    String[] customer_book = key.toString().split(",");
+    customer.set(customer_book[0]);
+    book.set(customer_book[1]);
+
+    context.write(customer, book);
+  }
+}
+```
