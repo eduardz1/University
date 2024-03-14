@@ -25,3 +25,15 @@
 [submodule "UniTO/SAS/questionario_esame"]
 	path = UniTO/SAS/questionario_esame
 	url = https://github.com/Mezzolla/Unito-Questionario-Esame-Sas
+[submodule "PoliTO/WA1/slides"]
+	path = PoliTO/WA1/slides
+	url = https://github.com/polito-webapp1/material-2024
+[submodule "PoliTO/WA1/exercises"]
+	path = PoliTO/WA1/exercises
+	url = https://github.com/polito-webapp1/wa1-weeks-2024
+[submodule "PoliTO/WA1/labs"]
+	path = PoliTO/WA1/labs
+	url = https://github.com/polito-webapp1/lab-2024
+[submodule "PoliTO/WA1/project"]
+	path = PoliTO/WA1/project
+	url = https://github.com/eduardz1/Film-Library
