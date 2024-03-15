@@ -1,0 +1,9 @@
+name: ml-and-pr
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - scikit-learn
+  - ipykernel
+  - pandas
+  - matplotlib
