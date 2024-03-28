@@ -37,3 +37,6 @@
 [submodule "PoliTO/WA1/project"]
 	path = PoliTO/WA1/project
 	url = https://github.com/eduardz1/Film-Library
+[submodule "PoliTO/MLPR/project"]
+	path = PoliTO/MLPR/project
+	url = https://github.com/eduardz1/MLPR-Project
