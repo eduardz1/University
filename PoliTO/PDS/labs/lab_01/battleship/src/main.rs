@@ -13,7 +13,7 @@ pub mod board;
 fn main() -> std::io::Result<()> {
     let args = Args::parse();
 
-    match &args.command {
+    match &args.command { 
         Commands::New { file, boats } => {
             let board = Board::new(
                 boats
