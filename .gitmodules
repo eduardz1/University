@@ -34,8 +34,8 @@
 [submodule "PoliTO/WA1/labs"]
 	path = PoliTO/WA1/labs
 	url = https://github.com/polito-webapp1/lab-2024
-[submodule "PoliTO/WA1/project"]
-	path = PoliTO/WA1/project
+[submodule "PoliTO/WA1/lab_project"]
+	path = PoliTO/WA1/lab_project
 	url = https://github.com/eduardz1/Film-Library
 [submodule "PoliTO/MLPR/project"]
 	path = PoliTO/MLPR/project
