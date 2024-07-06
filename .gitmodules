@@ -40,3 +40,6 @@
 [submodule "PoliTO/MLPR/project"]
 	path = PoliTO/MLPR/project
 	url = https://github.com/eduardz1/MLPR-Project
+[submodule "PoliTO/WA1/project"]
+	path = PoliTO/WA1/project
+	url = https://github.com/eduardz1/Meme-Game
