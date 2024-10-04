@@ -18,7 +18,7 @@
   aspect-ratio: "16-9",
   footer: self => self.info.institution,
   navigation: "mini-slides",
-  alpha:  30%,
+  alpha: 30%,
   config-common(preamble: {
     codly(
       languages: (
@@ -74,13 +74,13 @@ TensorFlow è una libreria open-source per il machine learning sviluppata da Goo
 
 - Supporta varie tecniche di compressione per ridurre la dimensione dei modelli
 
-#pause
+// #pause
 
 === Keras
 
 Una `API` di alto livello per la costruzione di modelli in TensorFlow.
 
-#pause
+// #pause
 
 === TensorFlow Lite
 
@@ -429,7 +429,7 @@ Ho quindi deciso di riutilizzare il checkpoint in formato `.onnx` fornito dall'a
 
 Quantizzando abbiamo ridotto la dimensione del modello da 1.2 MB a 0.42 MB, riuscendo con successo a scendere sotto il nostro target di 0.5 MB.
 
-#pause
+// #pause
 
 - Il modello riesce ad operare anche su immagini scalate, senza bisogno di re-training
 
@@ -450,7 +450,7 @@ Quantizzando abbiamo ridotto la dimensione del modello da 1.2 MB a 0.42 MB, rius
 Andiamo adesso a convertire il modello in un `header file` in maniera tale da poterlo usare direttamente in un progetto `C`/`C++` per effettuare inference.
 Per fare ciò ho scritto due piccole funzioni, un' alternativa poteva essere quella di usare `xxd -i [file]` ma fare la conversione in maniera programmatica permette di avere più controllo sul risultato finale.
 
-#pause
+// #pause
 
 #columns(2)[
   ```python
@@ -504,7 +504,7 @@ Per fare ciò ho scritto due piccole funzioni, un' alternativa poteva essere que
     ```,
   )
 
-  #pause
+  // #pause
 
   #figure(
     caption: [Comprimiamo l'immagine e la salviamo come file `C`],
@@ -535,7 +535,7 @@ Per fare ciò ho scritto due piccole funzioni, un' alternativa poteva essere que
 
 Generiamo infine l'header file che verrà incluso nel codice sorgente con `build_header(HEADER, [("input_data", input_size), ("model_data", model_size)])`.
 
-#pause
+// #pause
 
 #columns(2)[
   #figure(
@@ -550,7 +550,7 @@ Generiamo infine l'header file che verrà incluso nel codice sorgente con `build
     ```,
   )
 
-  #pause
+  // #pause
 
   #figure(
     caption: [`models/fastest_det_rom.c`],
@@ -564,7 +564,7 @@ Generiamo infine l'header file che verrà incluso nel codice sorgente con `build
     ```,
   )
 
-  #pause
+  // #pause
 
   #figure(
     caption: [`models/fastest_det.h`],
