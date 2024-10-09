@@ -16,8 +16,8 @@
 )
 #importModules((
   "education",
-  "projects",
   "certificates",
   "publications",
   "skills",
+  "projects",
 ))

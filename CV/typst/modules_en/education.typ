@@ -21,7 +21,7 @@
     [
       / Other Experiences:
 
-        - Participated in a Special project for the Computer Architecture course, the project consisted in studying the various *TinyML* techniques used to optimize *TensorFlow* models with the objective to run inference on a pre-trained model running on an *embedded device*(RISC-V, X-HEEP platform).
+        - Participated in a Special project for the Computer Architecture course, the project consisted in studying the various *TinyML* techniques used to optimize *TensorFlow* models with the objective to run inference on a pre-trained model running on an *embedded device* (RISC-V, X-HEEP platform).
         - Currently working on a *Fault Injection System for Redundant Systems* written in *Rust* with the System and Device Programming professor.
     ],
   ),
