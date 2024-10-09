@@ -8,7 +8,7 @@
   recipientName: "D3S",
   recipientAddress: "Grenoble",
   date: datetime.today().display(),
-  subject: "Subject: CPU Microarchitecture and Design Intern",
+  subject: "Subject: Data Scientist / AI developer",
   signature: image("../src/signature.jpeg"), 
 )
 
