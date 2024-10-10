@@ -95,6 +95,31 @@
 )
 
 #cvEntry(
+  title: [Project for the "Software Engineering" course at the Polytechnic University of Turin],
+  society: "EZElectronics",
+  date: "2024",
+  location: "Typescript, React, Node.js, Express, SQLite, Docker, Git, Gitlab CI/CD, Testing",
+  description: [
+    - https://git-softeng.polito.it/se-2023-24/group-eng-24/ezelectronics
+
+    Software engineering that consists in all the backend phase of software engineering, from the requirements to the implementation and testing (both unit and integration).
+  ],
+)
+
+#cvEntry(
+  title: [Bachelor Thesis],
+  society: "Design and Development of the Digital Twin of a Greenhouse",
+  location: "SMOL, Semantic Web, Digital Twin, Python, SPARQL, RDF, Ontologies, InfluxDB",
+  date: [2023],
+  description: [
+    - https://github.com/smolang/SemanticObjects
+    - https://github.com/eduardz1/greenhouse-data-collector
+    - https://github.com/eduardz1/smol_scheduler
+    - https://github.com/eduardz1/greenhouse_twin_project
+  ],
+)
+
+#cvEntry(
   title: [Project for the "Programming 3" course at the University of Turin],
   society: "JMail",
   date: "2023",
@@ -107,6 +132,44 @@
     - The server handles multiple clients at the same time and errors should be logged.
     - Client and server parallelize each activity that does not require sequential execution.
     - The application is distributed through the use of Java Sockets.
+  ],
+)
+
+#cvEntry(
+  title: [Software Engineering project at the University of Turin],
+  society: "Cat & Ring",
+  date: "2022",
+  location: "Java, Gradle, Design Patterns, Software Engineering, DSD, UC, UML",
+  description: [
+    - https://github.com/eduardz1/Cat_e_Ring
+
+    Project that focused on the software engineering part more than the implementation. We had to concetualize in detail the gloassary, design sequence diagrams and use case diagrams, starting from the requirements and description of the use case.
+  ],
+)
+
+#cvEntry(
+  title: [Database project at the University of Turin],
+  society: "Home Booking",
+  date: "2022",
+  location: "SQL, ER Diagrams, Database Design",
+  description: [
+    -https://github.com/eduardz1/Home-Booking
+  ],
+)
+
+#cvEntry(
+  title: [Project for the Algorithms and Data Structures course at the University of Turin],
+  society: "Laboratorio Algoritmi",
+  date: "2022",
+  location: "C, Git, Java, Gradle, Makefile, Design Patterns, Algorithms, Data Structures",
+  description: [
+    -https://github.com/eduardz1/Laboratorio-Algoritmi
+
+    The project consists in the implementation of the following algorithms and data structures:
+    - QuickSort & InsertSort
+    - SkipList
+    - MinHeap
+    - Dijkstra's Shortest Path Algorithm
   ],
 )
 
