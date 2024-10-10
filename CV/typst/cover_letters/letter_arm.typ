@@ -6,15 +6,15 @@
   metadata,
   myAddress: "14 Rue Lebrix, Saint-Martin-d'Hères, France",
   recipientName: "ARM",
-  recipientAddress: "Sophia Antipolis, France",
+  recipientAddress: "Trondheim, Norway",
   date: datetime.today().display(),
   subject: "Subject: CPU Microarchitecture and Design Intern",
-  signature: image("../src/signature.jpeg"), 
+  signature: image("../src/signature.jpeg"),
 )
 
 To whom it might concern,
 
-I am a student currently enrolled in a double degree program between Politecnico di Torino, Italy and the ENSIMAG Grande école in Saint-Martin-d'Hères, France for, respectively, the _Master's degree in Computer Engineering (subfield Artificial Intelligence and Data Analytics)_ and the _Master of Science in Informatics at Grenoble_. I am a highly motivated student with a strong passion for artificial intelligence and computer architecture.
+I am a student currently enrolled in a double degree program between Politecnico di Torino, Italy and the ENSIMAG Grande école in Saint-Martin-d'Hères, France for, respectively, the _Master's degree in Computer Engineering (subfield Artificial Intelligence and Data Analytics)_ and the _Master of Science in Informatics at Grenoble_. I am a highly motivated student with a strong passion for artificial intelligence and computer architecture. I am currently following a course in High Performance Computing and GP-GPU Programming with a mandatory CUDA project.
 
 As I approach the end of my studies, I am looking for every opportunity to further develop my skills and knowledge and grow professionally and personally. In the internship that you propose I see a great opportunity in achieving that.
 
