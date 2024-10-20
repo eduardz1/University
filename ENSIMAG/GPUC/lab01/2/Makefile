@@ -24,7 +24,7 @@ $(OBJ)/matrix_gpu.o : matrix_gpu.cu
 	$(GC) -c $< -o $@
 
 gpu: matrix_gpu
-	srun --gres=shard:1 --cpus-per-task=4 --mem=2GB $(BIN)./matrix_gpu
+	srun --gres=shard:1 --cpus-per-task=4 --mem=2GB $(BIN)/matrix_gpu
 
 cpu: matrix_cpu
-	./matrix_cpu
+	$(BIN)/matrix_cpu

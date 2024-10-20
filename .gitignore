@@ -5,3 +5,7 @@
 *.iml
 
 .conda/
+
+# CMake build files
+build/
+.cache/
