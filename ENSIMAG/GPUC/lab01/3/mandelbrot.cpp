@@ -97,5 +97,5 @@ int main(int argc, char **argv) {
   computeFractal(pixels);
 
   // Dump to PPM
-  writeppm("fractalout.ppm", DIM, DIM, pixels);
+  writeppm("fractalout_cpu.ppm", DIM, DIM, pixels);
 }
