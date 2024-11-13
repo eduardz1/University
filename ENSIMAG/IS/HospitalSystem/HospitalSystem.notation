@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:style="http://www.eclipse.org/papyrus/infra/gmfdiag/style" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_rB_c0KHVEe-FpKz7PbfIVw" type="PapyrusUMLClassDiagram" name="Class Diagram" measurementUnit="Pixel">
+  <children xmi:type="notation:Shape" xmi:id="_Z59IYKHWEe-5VNcZnMsAJA" type="Package_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Z6J8sKHWEe-5VNcZnMsAJA" type="Package_NameLabel"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_Z6LK0KHWEe-5VNcZnMsAJA" type="Package_PackagedElementCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_Z6LK0aHWEe-5VNcZnMsAJA"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Z6LK0qHWEe-5VNcZnMsAJA"/>
+    </children>
+    <element xmi:type="uml:Package" href="HospitalSystem.uml#_Z4JKgKHWEe-5VNcZnMsAJA"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Z59IYaHWEe-5VNcZnMsAJA" x="200" y="320"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_aW1RoKHWEe-5VNcZnMsAJA" type="Package_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_aW14sKHWEe-5VNcZnMsAJA" type="Package_NameLabel"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_aW14saHWEe-5VNcZnMsAJA" type="Package_PackagedElementCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_aW14sqHWEe-5VNcZnMsAJA"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aW14s6HWEe-5VNcZnMsAJA"/>
+    </children>
+    <element xmi:type="uml:Package" href="HospitalSystem.uml#_aWzccKHWEe-5VNcZnMsAJA"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aW1RoaHWEe-5VNcZnMsAJA" x="680" y="300"/>
+  </children>
+  <styles xmi:type="notation:StringValueStyle" xmi:id="_rB_c0aHVEe-FpKz7PbfIVw" name="diagram_compatibility_version" stringValue="1.4.0"/>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_rB_c0qHVEe-FpKz7PbfIVw"/>
+  <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="_rB_c06HVEe-FpKz7PbfIVw" diagramKindId="org.eclipse.papyrus.uml.diagram.class">
+    <owner xmi:type="uml:Model" href="HospitalSystem.uml#_q76C8KHVEe-FpKz7PbfIVw"/>
+  </styles>
+  <element xmi:type="uml:Model" href="HospitalSystem.uml#_q76C8KHVEe-FpKz7PbfIVw"/>
+</notation:Diagram>
