@@ -8,7 +8,7 @@
 #cvSection("Education")
 
 #cvEntry(
-  title: [Master in Computer Engineering with a specialist track in Artificial Intelligence and Data Analytics \ Master of Science in Informatics of Grenoble],
+  title: [Master in Computer Engineering with a specialist track in Artificial Intelligence and Data Analytics #hBar() AVG Grade 29.4  \ Master of Science in Informatics of Grenoble],
   society: [Polytechnic University of Turin #hBar() Grenoble INP - Ensimag, UGA],
   date: [2023 - TBD],
   location: [Italy #hBar() France],

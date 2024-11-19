@@ -4,12 +4,11 @@
 #let cvSection = cvSection.with(metadata: metadata)
 #let cvEntry = cvEntry.with(metadata: metadata)
 
-// #pagebreak()
 
 #cvSection("Projects & Associations")
 
 #cvEntry(
-  title: [Member of the Area Tutoring],
+  title: [Member of the Tutoring Area],
   society: [IEEE - HKN Honor Society],
   logo: image("../src/logos/hkn.svg"),
   date: [2023 - Present],
@@ -30,11 +29,26 @@
 )
 
 #cvEntry(
+  title: [Project for the "GPU Computing" course at ENSIMAG],
+  society: [CUDA Path Tracer],
+  date: [2024],
+  location: "C++, CUDA, CMake, LLVM, Clang, Ray/Path Tracing, Computer Graphics",
+  description: [
+    #highlight(fill: red.lighten(80%))[The repository is currently private]
+    // TODO: fix link
+    - https://github.com/eduardz1/CUDA-Path-Tracer
+
+    The project consists in the implementation of a path tracer in C++ and CUDA.
+  ],
+)
+
+#cvEntry(
   title: [Project for the "System and Device Programming" course at the Polytechnic University of Turin],
   society: [SFIAR - Sistema di Fault Injection per Applicazioni Ridondate],
   date: [2024],
   location: "Rust, Procedural Macros, Fault Injection, Redundant Systems",
   description: [
+    #highlight(fill: red.lighten(80%))[The repository is currently private]
     // TODO: fix link
     - https://github.com/ProgrammazioneDiSistema2024-IA-ZZ/Group-21
 
@@ -51,6 +65,7 @@
   date: [2024],
   location: "Python, Matplotlib, Scikit-learn, scipy, numpy, numba",
   description: [
+    #highlight(fill: red.lighten(80%))[The repository is currently private]
     // TODO: fix link
     - https://github.com/eduardz1/MLPR-Project
 
@@ -72,6 +87,7 @@
   location: "Javascript, React, Node.js, Express, SQLite",
   description: [
     - https://github.com/eduardz1/Meme-Game
+
     The projetc consists in implementing a videogame inspired by the board game "What do You Meme?".
     - The game is developed as a single page application using React.
     - The application interacts with an HTTP API implemented in Node + Express.
@@ -98,9 +114,11 @@
   title: [Project for the "Software Engineering" course at the Polytechnic University of Turin],
   society: "EZElectronics",
   date: "2024",
-  location: "Typescript, React, Node.js, Express, SQLite, Docker, Git, Gitlab CI/CD, Testing",
+  location: "Typescript, React, Node.js, Express, SQLite, Docker, Git, Gitlab CI/CD, Testing, Monorepo",
   description: [
-    - https://git-softeng.polito.it/se-2023-24/group-eng-24/ezelectronics
+    #highlight(fill: yellow.lighten(80%))[This is a re-upload of the original GitLab repository]
+
+    - https://github.com/eduardz1/EZElectronics
 
     Software engineering that consists in all the backend phase of software engineering, from the requirements to the implementation and testing (both unit and integration).
   ],

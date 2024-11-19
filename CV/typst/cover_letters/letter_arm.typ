@@ -6,9 +6,9 @@
   metadata,
   myAddress: "14 Rue Lebrix, Saint-Martin-d'Hères, France",
   recipientName: "ARM",
-  recipientAddress: "Trondheim, Norway",
+  recipientAddress: "Sophia Antipolis, France",
   date: datetime.today().display(),
-  subject: "Subject: CPU Microarchitecture and Design Intern",
+  subject: "Subject: SOftware Engineering Intern",
   signature: image("../src/signature.jpeg"),
 )
 
