@@ -1,27 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:style="http://www.eclipse.org/papyrus/infra/gmfdiag/style" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_rB_c0KHVEe-FpKz7PbfIVw" type="PapyrusUMLClassDiagram" name="Class Diagram" measurementUnit="Pixel">
-  <children xmi:type="notation:Shape" xmi:id="_Z59IYKHWEe-5VNcZnMsAJA" type="Package_Shape">
-    <children xmi:type="notation:DecorationNode" xmi:id="_Z6J8sKHWEe-5VNcZnMsAJA" type="Package_NameLabel"/>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_Z6LK0KHWEe-5VNcZnMsAJA" type="Package_PackagedElementCompartment">
-      <styles xmi:type="notation:TitleStyle" xmi:id="_Z6LK0aHWEe-5VNcZnMsAJA"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Z6LK0qHWEe-5VNcZnMsAJA"/>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:style="http://www.eclipse.org/papyrus/infra/gmfdiag/style" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <notation:Diagram xmi:id="_rB_c0KHVEe-FpKz7PbfIVw" type="PapyrusUMLClassDiagram" name="Class Diagram" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_Z59IYKHWEe-5VNcZnMsAJA" type="Package_Shape">
+      <children xmi:type="notation:DecorationNode" xmi:id="_Z6J8sKHWEe-5VNcZnMsAJA" type="Package_NameLabel"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_Z6LK0KHWEe-5VNcZnMsAJA" type="Package_PackagedElementCompartment">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_Z6LK0aHWEe-5VNcZnMsAJA"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Z6LK0qHWEe-5VNcZnMsAJA"/>
+      </children>
+      <element xmi:type="uml:Package" href="HospitalSystem.uml#_Z4JKgKHWEe-5VNcZnMsAJA"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Z59IYaHWEe-5VNcZnMsAJA" x="220" y="260"/>
     </children>
+    <children xmi:type="notation:Shape" xmi:id="_aW1RoKHWEe-5VNcZnMsAJA" type="Package_Shape">
+      <children xmi:type="notation:DecorationNode" xmi:id="_aW14sKHWEe-5VNcZnMsAJA" type="Package_NameLabel"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_aW14saHWEe-5VNcZnMsAJA" type="Package_PackagedElementCompartment">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_aW14sqHWEe-5VNcZnMsAJA"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aW14s6HWEe-5VNcZnMsAJA"/>
+      </children>
+      <element xmi:type="uml:Package" href="HospitalSystem.uml#_aWzccKHWEe-5VNcZnMsAJA"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aW1RoaHWEe-5VNcZnMsAJA" x="680" y="300"/>
+    </children>
+    <styles xmi:type="notation:StringValueStyle" xmi:id="_rB_c0aHVEe-FpKz7PbfIVw" name="diagram_compatibility_version" stringValue="1.4.0"/>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_rB_c0qHVEe-FpKz7PbfIVw"/>
+    <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="_rB_c06HVEe-FpKz7PbfIVw" diagramKindId="org.eclipse.papyrus.uml.diagram.class">
+      <owner xmi:type="uml:Model" href="HospitalSystem.uml#_q76C8KHVEe-FpKz7PbfIVw"/>
+    </styles>
+    <element xmi:type="uml:Model" href="HospitalSystem.uml#_q76C8KHVEe-FpKz7PbfIVw"/>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_LcfboK4_Ee-7q_ThvFNEZg" type="PapyrusUMLClassDiagram" name="Function View" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_FE4HYK5BEe-7q_ThvFNEZg" type="Class_Shape">
+      <children xmi:type="notation:DecorationNode" xmi:id="_FE6joK5BEe-7q_ThvFNEZg" type="Class_NameLabel"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_FE6joa5BEe-7q_ThvFNEZg" type="Class_FloatingNameLabel">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_FE6joq5BEe-7q_ThvFNEZg" y="15"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_FE7xwK5BEe-7q_ThvFNEZg" type="Class_AttributeCompartment">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_FE7xwa5BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_FE7xwq5BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_FE7xw65BEe-7q_ThvFNEZg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FE7xxK5BEe-7q_ThvFNEZg"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_FE7xxa5BEe-7q_ThvFNEZg" type="Class_OperationCompartment">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_FE7xxq5BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_FE7xx65BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_FE7xyK5BEe-7q_ThvFNEZg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FE7xya5BEe-7q_ThvFNEZg"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_FE7xyq5BEe-7q_ThvFNEZg" type="Class_NestedClassifierCompartment">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_FE7xy65BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_FE7xzK5BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_FE7xza5BEe-7q_ThvFNEZg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FE7xzq5BEe-7q_ThvFNEZg"/>
+      </children>
+      <element xmi:type="uml:Class" href="HospitalSystem.uml#_FEpd4K5BEe-7q_ThvFNEZg"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FE4HYa5BEe-7q_ThvFNEZg" x="140" y="260" width="261" height="141"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_HxkXIK5BEe-7q_ThvFNEZg" type="Class_Shape">
+      <children xmi:type="notation:DecorationNode" xmi:id="_HxkXIq5BEe-7q_ThvFNEZg" type="Class_NameLabel"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_HxkXI65BEe-7q_ThvFNEZg" type="Class_FloatingNameLabel">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_HxkXJK5BEe-7q_ThvFNEZg" y="15"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_HxkXJa5BEe-7q_ThvFNEZg" type="Class_AttributeCompartment">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_HxkXJq5BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_HxkXJ65BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_HxkXKK5BEe-7q_ThvFNEZg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HxkXKa5BEe-7q_ThvFNEZg"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_HxkXKq5BEe-7q_ThvFNEZg" type="Class_OperationCompartment">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_HxkXK65BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_HxkXLK5BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_HxkXLa5BEe-7q_ThvFNEZg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HxkXLq5BEe-7q_ThvFNEZg"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_HxkXL65BEe-7q_ThvFNEZg" type="Class_NestedClassifierCompartment">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_HxkXMK5BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_HxkXMa5BEe-7q_ThvFNEZg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_HxkXMq5BEe-7q_ThvFNEZg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HxkXM65BEe-7q_ThvFNEZg"/>
+      </children>
+      <element xmi:type="uml:Class" href="HospitalSystem.uml#_HxhT0K5BEe-7q_ThvFNEZg"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HxkXIa5BEe-7q_ThvFNEZg" x="720" y="240" width="281" height="161"/>
+    </children>
+    <styles xmi:type="notation:StringValueStyle" xmi:id="_Lcfboa4_Ee-7q_ThvFNEZg" name="diagram_compatibility_version" stringValue="1.4.0"/>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_Lcfboq4_Ee-7q_ThvFNEZg"/>
+    <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="_Lcfbo64_Ee-7q_ThvFNEZg" diagramKindId="org.eclipse.papyrus.uml.diagram.class">
+      <owner xmi:type="uml:Package" href="HospitalSystem.uml#_Z4JKgKHWEe-5VNcZnMsAJA"/>
+    </styles>
     <element xmi:type="uml:Package" href="HospitalSystem.uml#_Z4JKgKHWEe-5VNcZnMsAJA"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Z59IYaHWEe-5VNcZnMsAJA" x="200" y="320"/>
-  </children>
-  <children xmi:type="notation:Shape" xmi:id="_aW1RoKHWEe-5VNcZnMsAJA" type="Package_Shape">
-    <children xmi:type="notation:DecorationNode" xmi:id="_aW14sKHWEe-5VNcZnMsAJA" type="Package_NameLabel"/>
-    <children xmi:type="notation:BasicCompartment" xmi:id="_aW14saHWEe-5VNcZnMsAJA" type="Package_PackagedElementCompartment">
-      <styles xmi:type="notation:TitleStyle" xmi:id="_aW14sqHWEe-5VNcZnMsAJA"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aW14s6HWEe-5VNcZnMsAJA"/>
-    </children>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_iHCg8K4_Ee-7q_ThvFNEZg" type="PapyrusUMLClassDiagram" name="Policy View" measurementUnit="Pixel">
+    <styles xmi:type="notation:StringValueStyle" xmi:id="_iHCg8a4_Ee-7q_ThvFNEZg" name="diagram_compatibility_version" stringValue="1.4.0"/>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_iHCg8q4_Ee-7q_ThvFNEZg"/>
+    <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="_iHCg864_Ee-7q_ThvFNEZg" diagramKindId="org.eclipse.papyrus.uml.diagram.class">
+      <owner xmi:type="uml:Package" href="HospitalSystem.uml#_aWzccKHWEe-5VNcZnMsAJA"/>
+    </styles>
     <element xmi:type="uml:Package" href="HospitalSystem.uml#_aWzccKHWEe-5VNcZnMsAJA"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aW1RoaHWEe-5VNcZnMsAJA" x="680" y="300"/>
-  </children>
-  <styles xmi:type="notation:StringValueStyle" xmi:id="_rB_c0aHVEe-FpKz7PbfIVw" name="diagram_compatibility_version" stringValue="1.4.0"/>
-  <styles xmi:type="notation:DiagramStyle" xmi:id="_rB_c0qHVEe-FpKz7PbfIVw"/>
-  <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="_rB_c06HVEe-FpKz7PbfIVw" diagramKindId="org.eclipse.papyrus.uml.diagram.class">
-    <owner xmi:type="uml:Model" href="HospitalSystem.uml#_q76C8KHVEe-FpKz7PbfIVw"/>
-  </styles>
-  <element xmi:type="uml:Model" href="HospitalSystem.uml#_q76C8KHVEe-FpKz7PbfIVw"/>
-</notation:Diagram>
+  </notation:Diagram>
+</xmi:XMI>

@@ -3,6 +3,9 @@
   <packageImport xmi:type="uml:PackageImport" xmi:id="_rF8vwKHVEe-FpKz7PbfIVw">
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
   </packageImport>
-  <packagedElement xmi:type="uml:Package" xmi:id="_Z4JKgKHWEe-5VNcZnMsAJA" name="Functional"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_Z4JKgKHWEe-5VNcZnMsAJA" name="Functional">
+    <packagedElement xmi:type="uml:Class" xmi:id="_FEpd4K5BEe-7q_ThvFNEZg" name="Patient"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_HxhT0K5BEe-7q_ThvFNEZg" name="MedialRecord"/>
+  </packagedElement>
   <packagedElement xmi:type="uml:Package" xmi:id="_aWzccKHWEe-5VNcZnMsAJA" name="Policy"/>
 </uml:Model>
