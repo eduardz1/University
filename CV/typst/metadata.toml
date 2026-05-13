@@ -68,6 +68,7 @@ orcid = "0009-0008-4050-2298"
 # i.e. [[lang.ru]]
 # each section must contains the following fields
 [lang.en]
-header_quote = "Double degree Computer Engineering student looking for an internship, willing to relocate"
+# header_quote = "Double degree Computer Engineering student looking for an internship, willing to relocate"
+header_quote = ""
 cv_footer = "Curriculum vitae"
 letter_footer = "Cover letter"

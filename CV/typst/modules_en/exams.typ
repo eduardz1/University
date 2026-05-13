@@ -3,8 +3,6 @@
 #let cvSection = cvSection.with(metadata: metadata)
 #let cvEntry = cvEntry.with(metadata: metadata)
 
-#pagebreak()
-
 #cvSection("Exams")
 
 #show table.cell.where(y: 0): strong
@@ -64,7 +62,7 @@
 
 = Polytechnic University of Turin + Grenoble INP - Ensimag
 
-/ Mean grade: 29.4/30
+/ Mean grade: 29.29/30
 
 #table(
   columns: 6,
@@ -82,15 +80,16 @@
   [01SQJOV], [Data Science and Database Technology], [28/30], [22/02/2024],[8], [ING-INF/05],
   [01TXASM], [Data management and visualization], [-], [-],[8], [ING-INF/05],
   [01TXYOV], [Web Applications I], [30L/30], [28/06/2024],[6], [ING-INF/05],
-  [01URTOV], [Machine learning and pattern recognition], [-], [-],[6], [ING-INF/05],
+  [01URTOV], [Computational Intelligence], [-], [-],[6], [ING-INF/05],
   [02GOLOV], [Computer architectures], [30L/30], [04/09/2024],[10], [ING-INF/05],
   [02GRSOV], [System and Device Programming], [-], [-],[10], [ING-INF/05],
   [04GSPOV], [Software engineering],[30/30], [01/07/2024], [8], [ING-INF/05],
   table.cell(colspan: 6, inset: 1.5em, align: center + horizon)[ == SECOND YEAR],
-  [01HZNOV], [Large Language Models], [-], [-],[6], [ING-INF/05],
-  [01TYMOV], [Information systems security], [-], [-],[6], [ING-INF/05],
-  [01URVOV], [GPU programming], [-], [-],[6], [ING-INF/05],
-  [01URWOV], [Advanced Machine Learning], [-], [-],[6], [ING-INF/05],
+  [01HZNOV], [Large Language Models], [28/30], [17/03/2025],[6], [ING-INF/05],
+  [01TYMOV], [Information systems security], [30/30], [17/03/2025],[6], [ING-INF/05],
+  [01URVOV], [GPU programming], [30L/30], [17/03/2025],[6], [ING-INF/05],
+  [01URWOV], [Advanced Machine Learning], [30L/30], [17/03/2025],[6], [ING-INF/05],
+  [01URWOV], [Data Management and Visualization], [28/30], [17/03/2025],[8], [ING-INF/05],
   [08MBROV], [Thesis], [-], [-],[30], [\*\*\* N/A \*\*\*],
 )
 

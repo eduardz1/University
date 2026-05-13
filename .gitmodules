@@ -43,3 +43,6 @@
 [submodule "PoliTO/WA1/project"]
 	path = PoliTO/WA1/project
 	url = https://github.com/eduardz1/Meme-Game
+[submodule "PoliTO/CI/course-repo"]
+	path = PoliTO/CI/course-repo
+	url = https://github.com/squillero/computational-intelligence

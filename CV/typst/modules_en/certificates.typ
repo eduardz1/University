@@ -21,5 +21,5 @@
 
 #cvHonor(
   date: [2024],
-  title: [Winning team in the 120th anniversary of HKN international hackaton],
+  title: [Winning team in the 120th anniversary of HKN international hackathon],
 )

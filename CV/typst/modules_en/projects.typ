@@ -1,5 +1,6 @@
+
 // Imports
-#import "@preview/brilliant-cv:2.0.2": cvSection, cvEntry
+#import "@preview/brilliant-cv:2.0.2": cvEntry, cvSection
 #let metadata = toml("../metadata.toml")
 #let cvSection = cvSection.with(metadata: metadata)
 #let cvEntry = cvEntry.with(metadata: metadata)
@@ -14,6 +15,35 @@
   date: [2023 - Present],
   location: [Turin, Italy],
   description: "Member of the association at the Polytechnic University of Turin",
+)
+
+#cvEntry(
+  title: [Project for the course of "Computational Intelligence" at the Polytechnic University of Turin],
+  society: "Traveling Goblin Problem",
+  date: "2025",
+  location: "Python, Genetic Algorithms, Evolutionary Strategies",
+  description: [
+    - *Repository*: https://github.com/eduardz1/project-work
+    - *Report* in PDF format: https://github.com/user-attachments/files/24723192/Occhipinti_Eduard_Antonovic.pdf
+
+    The project consists in solving an optimization problem inspired by the Capacity Constrained Vehicle Routing Problem. The approach chosen is based on Genetic Algorithms.
+  ],
+)
+
+#cvEntry(
+  title: [Project for the course of "Large Scale Data Management and Distributed Systems" at the University of Grenoble Alpes],
+  society: "Spark Data Analysis",
+  date: "2025",
+  location: "Python, Spark, Hadoop, Kafka, Zookeeper, Docker, Google Cloud Platform",
+  description: [
+    - *Repository*: https://github.com/eduardz1/Spark-Data-Analysis
+    - *Documentation* using Sphinx and Github Pages: https://github.com/eduardz1/Spark-Data-Analysis/deployments/github-pages
+    - *Report* in PDF format: https://github.com/user-attachments/files/18396629/report.pdf
+
+    The project consists in analysing the Cluster Data 2011 and 2019 datasets by google. A part of the project also consists in simulating a real-time data stream with Kafka and Spark Streaming by treating the data as if it was coming from a real-time source.
+
+    The project is almost self-contained, requiring only to configure the Google Cloud Connector to access the data. Docker is also required to run the Spark Streaming simulation or, in alternative, a running Kafka broker and Zookeeper.
+  ],
 )
 
 #cvEntry(
@@ -34,11 +64,9 @@
   date: [2024],
   location: "C++, CUDA, CMake, LLVM, Clang, Ray/Path Tracing, Computer Graphics",
   description: [
-    #highlight(fill: red.lighten(80%))[The repository is currently private]
-    // TODO: fix link
     - https://github.com/eduardz1/CUDA-Path-Tracer
 
-    The project consists in the implementation of a path tracer in C++ and CUDA.
+    The project consists in the implementation of a path tracer in C++ and CUDA. The project explores modern features of CUDA, C++ and CMake. Both compilation with Clang and NVCC are supported and tested. A lot of emphasis is put on the performance of the code, various optimizations techniques were explored using the guides provided by NVIDIA (like tweaking block and grid sizes to achieve maximum occupacy, using the streaming API, taking advantage of the `thrust` library for parallel transformation and reductions, using pinned memory, etc.).
   ],
 )
 
@@ -65,8 +93,6 @@
   date: [2024],
   location: "Python, Matplotlib, Scikit-learn, scipy, numpy, numba",
   description: [
-    #highlight(fill: red.lighten(80%))[The repository is currently private]
-    // TODO: fix link
     - https://github.com/eduardz1/MLPR-Project
 
     The project consists in the study and implementation of different classifiers in the detection of false fingerprints given a dataset of labelled data.
@@ -116,7 +142,9 @@
   date: "2024",
   location: "Typescript, React, Node.js, Express, SQLite, Docker, Git, Gitlab CI/CD, Testing, Monorepo",
   description: [
-    #highlight(fill: yellow.lighten(80%))[This is a re-upload of the original GitLab repository]
+    #highlight(
+      fill: yellow.lighten(80%),
+    )[This is a re-upload of the original GitLab repository]
 
     - https://github.com/eduardz1/EZElectronics
 

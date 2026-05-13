@@ -14,14 +14,14 @@
 #cvSkill(
   type: [Other Languages],
   info: [
-    - Good experience with *C*, *Java*, *Python*, *Rust*, *SQL*, *Javascript*, *Typescript* and *Typst*
+    - Good experience with *C*, *Java*, *Python*, *Rust*, *Fortran*, *CUDA* for C++ and Fortran, *SQL*, *Javascript*, *Typescript* and *Typst*
       - Worked a lot with `numpy`, `tensorflow`, `scikit-learn`, `matplotlib`, `numba`, `seaborn`, `scipy`
       - Worked with *Big Data* frameworks, in particular *Apache Spark* and *Hadoop*
       - Worked with *React*
-    - Good knowledge of *Gradle*, *Makefile* and *Cargo* build tools, *Git* and *GitHub* workflow
+    - Good knowledge of *Gradle*, *Makefile* and *Cargo* build tools, *Git*, *GitHub* and *GitLab* workflow and CI/CD pipelines
     - Intermediate experience with *C++*, *R*, *Haskell* and *Agda*
     - Some experience with *ARM Assembly*, *InfluxQL*, *SPARQL*, *MQL*, *NoSQL* databases and *LaTeX*
-      - Experience with NoSQL time series databases like *InfluxDB* as part of my bahelor thesis
+      - Experience with NoSQL time series databases like *InfluxDB* as part of my bachelor thesis
       - Experience with *MongoDB*
   ],
 )
