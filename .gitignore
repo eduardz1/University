@@ -9,3 +9,7 @@
 # CMake build files
 build/
 .cache/
+
+# Scala
+.metals
+.scala-build
