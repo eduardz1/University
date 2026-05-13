@@ -16,8 +16,11 @@ Repository containing exercises, notes and all the projects (project are usually
   - [SO - Sistemi Operativi](UniTO/SO) con appunti (quasi) completi e [progetto](UniTO/SO/progetto)
   - [thesis](UniTO/thesis) tesi di laurea
 - [PoliTO - Master's Degree in Computer Engineering](PoliTO)
-  - [Architetture dei Sistemi di Elaborazione](PoliTO/ASE) with all the labs proposed during the course and the [extrapoints project](PoliTO/ASE/extrapoints/)
-  - [Big Data Processing and Analytics](PoliTO/BDPA/) with a [recap pdf for the exam](PoliTO/BDPA/exam_material.pdf) (open book), a folder with [exercises from the slides](PoliTO/BDPA/exercises/) and solutions to a lot of [exams](PoliTO/BDPA/exams/)
-  - [Data Science and Database Technologies](PoliTO/DSDBT/) with jupyter notebooks with solutions to queries of various [exams](PoliTO/DSDBT/exams/) and all the [homeworks](PoliTO/DSDBT/homeworks/) proposed during the course for extra points at the exam
-  - [Web Applications 1](PoliTO/WA1/) with submodules for all the course's [slides](PoliTO/WA1/slides/), [labs materials](PoliTO/WA1/labs/), [exercises](PoliTO/WA1/exercises/), the [lab project](PoliTO/WA1/lab_project/) and the [final project](PoliTO/WA1/project/)
-  - [Machine Learning and Pattern Recognition](PoliTO/MLPR/)
+  - [ASE - Architetture dei Sistemi di Elaborazione](PoliTO/ASE) with all the labs proposed during the course and the [extrapoints project](PoliTO/ASE/extrapoints/)
+  - [BDPA - Big Data Processing and Analytics](PoliTO/BDPA/) with a [recap pdf for the exam](PoliTO/BDPA/exam_material.pdf) (open book), a folder with [exercises from the slides](PoliTO/BDPA/exercises/) and solutions to a lot of [exams](PoliTO/BDPA/exams/)
+  - [DSDBT - Data Science and Database Technologies](PoliTO/DSDBT/) with jupyter notebooks with solutions to queries of various [exams](PoliTO/DSDBT/exams/) and all the [homeworks](PoliTO/DSDBT/homeworks/) proposed during the course for extra points at the exam
+  - [WA1 - Web Applications 1](PoliTO/WA1/) with submodules for all the course's [slides](PoliTO/WA1/slides/), [labs materials](PoliTO/WA1/labs/), [exercises](PoliTO/WA1/exercises/), the [lab project](PoliTO/WA1/lab_project/) and the [final project](PoliTO/WA1/project/)
+  - [MLPR - Machine Learning and Pattern Recognition](PoliTO/MLPR/)
+- [INP - UGA, ENSIMAG - Master Degree in Computer Science at Grenoble](ENSIMAG)
+  - [GPUC - GPU Computing](ENSIMAG/GPUC/) 
+  - [IS - Information Security](ENSIMAG/IS/)
