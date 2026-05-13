@@ -1,0 +1,218 @@
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> CH TXT hostname.bind @openbar.today
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 53417
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 95c384510054a63d01000000677e53b1ab010d86928c115f (good)
+;; QUESTION SECTION:
+;hostname.bind.			CH	TXT
+
+;; ANSWER SECTION:
+hostname.bind.		0	CH	TXT	"lig-groix.imag.fr"
+
+;; Query time: 176 msec
+;; SERVER: 129.88.46.51#53(openbar.today) (UDP)
+;; WHEN: Wed Jan 08 11:30:09 CET 2025
+;; MSG SIZE  rcvd: 100
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> CH TXT id.server @openbar.today
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 28094
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: b01097f645aff78b01000000677e53b19f1e519cd74c3fda (good)
+;; QUESTION SECTION:
+;id.server.			CH	TXT
+
+;; AUTHORITY SECTION:
+id.server.		86400	CH	SOA	id.server. hostmaster.id.server. 0 28800 7200 604800 86400
+
+;; Query time: 167 msec
+;; SERVER: 129.88.46.51#53(openbar.today) (UDP)
+;; WHEN: Wed Jan 08 11:30:09 CET 2025
+;; MSG SIZE  rcvd: 113
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> CH TXT authors.bind @openbar.today
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 54816
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 6932a7e485de012f01000000677e53b12b1fafaa2bd0de68 (good)
+;; QUESTION SECTION:
+;authors.bind.			CH	TXT
+
+;; AUTHORITY SECTION:
+authors.bind.		86400	CH	SOA	authors.bind. hostmaster.authors.bind. 0 28800 7200 604800 86400
+
+;; Query time: 185 msec
+;; SERVER: 129.88.46.51#53(openbar.today) (UDP)
+;; WHEN: Wed Jan 08 11:30:09 CET 2025
+;; MSG SIZE  rcvd: 116
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 AXFR openbar.today
+; (1 server found)
+;; global options: +cmd
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+openbar.today.		300	IN	MX	10 search.for.unusual.dns.records.
+openbar.today.		300	IN	MX	20 send.an.email.to.maciej.korczynski.at.univ-grenoble-alpes.fr.from.a.spoofed.domain.of.openbar.if.possible.
+openbar.today.		300	IN	NS	ns1.openbar.today.
+openbar.today.		300	IN	NS	ns2.openbar.today.
+openbar.today.		300	IN	A	129.88.46.51
+openbar.today.		300	IN	AAAA	2001:660:5301:46::46:51
+openbar.today.		300	IN	TXT	"v=spf1 a mx -all"
+openbar.today.		300	IN	TXT	"2) For example: assuming that openbar.today is vulnerable, add group[1-6].openbar.today and map it to the IP address of your server."
+openbar.today.		300	IN	TXT	"1) Using non-secure DNS dynamic updates (zone poisoning attack) add a subdomain to each vulnerable zone of other groups and openbar (if you find any)."
+openbar.today.		300	IN	TXT	"3) For one vulnerable domain (e.g., openbar.today), add a subdomain, map it to the IP address of your server AND deploy a simple website and the Let's Encrypt certificate on your website (hijacked domain)."
+flagAXFR.openbar.today.	300	IN	TXT	"flag123"
+ns1.openbar.today.	300	IN	A	129.88.46.51
+ns2.openbar.today.	300	IN	AAAA	2001:660:5301:46::46:51
+subdomain.openbar.today. 300	IN	NS	ns1.subdomain.openbar.today.
+ns1.subdomain.openbar.today. 300 IN	A	129.88.46.51
+www.openbar.today.	300	IN	A	129.88.46.51
+www.openbar.today.	300	IN	AAAA	2001:660:5301:46::46:51
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+;; Query time: 335 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (TCP)
+;; WHEN: Wed Jan 08 11:30:10 CET 2025
+;; XFR size: 19 records (messages 1, bytes 1115)
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @openbar.today HINFO
+; (2 servers found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 27640
+;; flags: qr rd ra ad; QUERY: 1, ANSWER: 13, AUTHORITY: 0, ADDITIONAL: 27
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 82495b83cc0bc1f901000000677e53b23f82bb62e108d718 (good)
+;; QUESTION SECTION:
+;.				IN	NS
+
+;; ANSWER SECTION:
+.			367546	IN	NS	j.root-servers.net.
+.			367546	IN	NS	d.root-servers.net.
+.			367546	IN	NS	k.root-servers.net.
+.			367546	IN	NS	h.root-servers.net.
+.			367546	IN	NS	a.root-servers.net.
+.			367546	IN	NS	b.root-servers.net.
+.			367546	IN	NS	c.root-servers.net.
+.			367546	IN	NS	e.root-servers.net.
+.			367546	IN	NS	m.root-servers.net.
+.			367546	IN	NS	l.root-servers.net.
+.			367546	IN	NS	i.root-servers.net.
+.			367546	IN	NS	f.root-servers.net.
+.			367546	IN	NS	g.root-servers.net.
+
+;; ADDITIONAL SECTION:
+a.root-servers.net.	367546	IN	A	198.41.0.4
+b.root-servers.net.	367546	IN	A	170.247.170.2
+c.root-servers.net.	367546	IN	A	192.33.4.12
+d.root-servers.net.	367546	IN	A	199.7.91.13
+e.root-servers.net.	367546	IN	A	192.203.230.10
+f.root-servers.net.	367546	IN	A	192.5.5.241
+g.root-servers.net.	367546	IN	A	192.112.36.4
+h.root-servers.net.	367546	IN	A	198.97.190.53
+i.root-servers.net.	367546	IN	A	192.36.148.17
+j.root-servers.net.	367546	IN	A	192.58.128.30
+k.root-servers.net.	367546	IN	A	193.0.14.129
+l.root-servers.net.	367546	IN	A	199.7.83.42
+m.root-servers.net.	367546	IN	A	202.12.27.33
+a.root-servers.net.	367546	IN	AAAA	2001:503:ba3e::2:30
+b.root-servers.net.	367546	IN	AAAA	2801:1b8:10::b
+c.root-servers.net.	367546	IN	AAAA	2001:500:2::c
+d.root-servers.net.	367546	IN	AAAA	2001:500:2d::d
+e.root-servers.net.	367546	IN	AAAA	2001:500:a8::e
+f.root-servers.net.	367546	IN	AAAA	2001:500:2f::f
+g.root-servers.net.	367546	IN	AAAA	2001:500:12::d0d
+h.root-servers.net.	367546	IN	AAAA	2001:500:1::53
+i.root-servers.net.	367546	IN	AAAA	2001:7fe::53
+j.root-servers.net.	367546	IN	AAAA	2001:503:c27::2:30
+k.root-servers.net.	367546	IN	AAAA	2001:7fd::1
+l.root-servers.net.	367546	IN	AAAA	2001:500:9f::42
+m.root-servers.net.	367546	IN	AAAA	2001:dc3::35
+
+;; Query time: 311 msec
+;; SERVER: 129.88.46.51#53(openbar.today) (UDP)
+;; WHEN: Wed Jan 08 11:30:10 CET 2025
+;; MSG SIZE  rcvd: 851
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @openbar.today TXT
+; (2 servers found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 54130
+;; flags: qr rd ra ad; QUERY: 1, ANSWER: 13, AUTHORITY: 0, ADDITIONAL: 27
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 81d7e1de5f01084901000000677e53b206cb53b7ce0bfb1b (good)
+;; QUESTION SECTION:
+;.				IN	NS
+
+;; ANSWER SECTION:
+.			367546	IN	NS	b.root-servers.net.
+.			367546	IN	NS	k.root-servers.net.
+.			367546	IN	NS	e.root-servers.net.
+.			367546	IN	NS	m.root-servers.net.
+.			367546	IN	NS	h.root-servers.net.
+.			367546	IN	NS	a.root-servers.net.
+.			367546	IN	NS	l.root-servers.net.
+.			367546	IN	NS	f.root-servers.net.
+.			367546	IN	NS	d.root-servers.net.
+.			367546	IN	NS	c.root-servers.net.
+.			367546	IN	NS	j.root-servers.net.
+.			367546	IN	NS	i.root-servers.net.
+.			367546	IN	NS	g.root-servers.net.
+
+;; ADDITIONAL SECTION:
+a.root-servers.net.	367546	IN	A	198.41.0.4
+b.root-servers.net.	367546	IN	A	170.247.170.2
+c.root-servers.net.	367546	IN	A	192.33.4.12
+d.root-servers.net.	367546	IN	A	199.7.91.13
+e.root-servers.net.	367546	IN	A	192.203.230.10
+f.root-servers.net.	367546	IN	A	192.5.5.241
+g.root-servers.net.	367546	IN	A	192.112.36.4
+h.root-servers.net.	367546	IN	A	198.97.190.53
+i.root-servers.net.	367546	IN	A	192.36.148.17
+j.root-servers.net.	367546	IN	A	192.58.128.30
+k.root-servers.net.	367546	IN	A	193.0.14.129
+l.root-servers.net.	367546	IN	A	199.7.83.42
+m.root-servers.net.	367546	IN	A	202.12.27.33
+a.root-servers.net.	367546	IN	AAAA	2001:503:ba3e::2:30
+b.root-servers.net.	367546	IN	AAAA	2801:1b8:10::b
+c.root-servers.net.	367546	IN	AAAA	2001:500:2::c
+d.root-servers.net.	367546	IN	AAAA	2001:500:2d::d
+e.root-servers.net.	367546	IN	AAAA	2001:500:a8::e
+f.root-servers.net.	367546	IN	AAAA	2001:500:2f::f
+g.root-servers.net.	367546	IN	AAAA	2001:500:12::d0d
+h.root-servers.net.	367546	IN	AAAA	2001:500:1::53
+i.root-servers.net.	367546	IN	AAAA	2001:7fe::53
+j.root-servers.net.	367546	IN	AAAA	2001:503:c27::2:30
+k.root-servers.net.	367546	IN	AAAA	2001:7fd::1
+l.root-servers.net.	367546	IN	AAAA	2001:500:9f::42
+m.root-servers.net.	367546	IN	AAAA	2001:dc3::35
+
+;; Query time: 199 msec
+;; SERVER: 129.88.46.51#53(openbar.today) (UDP)
+;; WHEN: Wed Jan 08 11:30:10 CET 2025
+;; MSG SIZE  rcvd: 851
+

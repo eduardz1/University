@@ -1,0 +1,166 @@
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @34.65.115.19 group1.hackmeifyoucan.pro
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 3948
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 0df73f1ccb4c6d1201000000677e5586388d73450807c371 (good)
+;; QUESTION SECTION:
+;group1.hackmeifyoucan.pro.	IN	A
+
+;; AUTHORITY SECTION:
+hackmeifyoucan.pro.	86400	IN	SOA	ns1.hackmeifyoucan.pro. admin.hackmeifyoucan.pro. 2024010401 7200 3600 1209600 86400
+
+;; Query time: 99 msec
+;; SERVER: 34.65.115.19#53(34.65.115.19) (UDP)
+;; WHEN: Wed Jan 08 11:37:58 CET 2025
+;; MSG SIZE  rcvd: 128
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @34.65.115.19 group2.hackmeifyoucan.pro
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 48437
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 1e85ed41a450194f01000000677e55868b82b8f6188e6294 (good)
+;; QUESTION SECTION:
+;group2.hackmeifyoucan.pro.	IN	A
+
+;; AUTHORITY SECTION:
+hackmeifyoucan.pro.	86400	IN	SOA	ns1.hackmeifyoucan.pro. admin.hackmeifyoucan.pro. 2024010401 7200 3600 1209600 86400
+
+;; Query time: 190 msec
+;; SERVER: 34.65.115.19#53(34.65.115.19) (UDP)
+;; WHEN: Wed Jan 08 11:37:58 CET 2025
+;; MSG SIZE  rcvd: 128
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @34.65.115.19 group3.hackmeifyoucan.pro
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 5152
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: d9c537158c465e1101000000677e558614f2738b1bb07c24 (good)
+;; QUESTION SECTION:
+;group3.hackmeifyoucan.pro.	IN	A
+
+;; AUTHORITY SECTION:
+hackmeifyoucan.pro.	86400	IN	SOA	ns1.hackmeifyoucan.pro. admin.hackmeifyoucan.pro. 2024010401 7200 3600 1209600 86400
+
+;; Query time: 96 msec
+;; SERVER: 34.65.115.19#53(34.65.115.19) (UDP)
+;; WHEN: Wed Jan 08 11:37:58 CET 2025
+;; MSG SIZE  rcvd: 128
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @34.65.115.19 group4.hackmeifyoucan.pro
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 3442
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 6e4977dbe5bad91e01000000677e55863724bb4923a53bdf (good)
+;; QUESTION SECTION:
+;group4.hackmeifyoucan.pro.	IN	A
+
+;; AUTHORITY SECTION:
+hackmeifyoucan.pro.	86400	IN	SOA	ns1.hackmeifyoucan.pro. admin.hackmeifyoucan.pro. 2024010401 7200 3600 1209600 86400
+
+;; Query time: 107 msec
+;; SERVER: 34.65.115.19#53(34.65.115.19) (UDP)
+;; WHEN: Wed Jan 08 11:37:58 CET 2025
+;; MSG SIZE  rcvd: 128
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @34.65.115.19 group5.hackmeifyoucan.pro
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 5849
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 1c349ecb2044c8c401000000677e558653782cce64934c11 (good)
+;; QUESTION SECTION:
+;group5.hackmeifyoucan.pro.	IN	A
+
+;; AUTHORITY SECTION:
+hackmeifyoucan.pro.	86400	IN	SOA	ns1.hackmeifyoucan.pro. admin.hackmeifyoucan.pro. 2024010401 7200 3600 1209600 86400
+
+;; Query time: 91 msec
+;; SERVER: 34.65.115.19#53(34.65.115.19) (UDP)
+;; WHEN: Wed Jan 08 11:37:58 CET 2025
+;; MSG SIZE  rcvd: 128
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @34.65.115.19 group6.hackmeifyoucan.pro
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 47609
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: c4c06746bea3cd1901000000677e55867a6e47af95f2351b (good)
+;; QUESTION SECTION:
+;group6.hackmeifyoucan.pro.	IN	A
+
+;; AUTHORITY SECTION:
+hackmeifyoucan.pro.	86400	IN	SOA	ns1.hackmeifyoucan.pro. admin.hackmeifyoucan.pro. 2024010401 7200 3600 1209600 86400
+
+;; Query time: 83 msec
+;; SERVER: 34.65.115.19#53(34.65.115.19) (UDP)
+;; WHEN: Wed Jan 08 11:37:58 CET 2025
+;; MSG SIZE  rcvd: 128
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @34.65.115.19 axfr hackmeifyoucan.pro
+; (1 server found)
+;; global options: +cmd
+; Transfer failed.
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @34.65.115.19 key.hackmeifyoucan.pro ANY
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 58122
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 8b97aa3c64fd52ae01000000677e5587cd7814b40175f49b (good)
+;; QUESTION SECTION:
+;key.hackmeifyoucan.pro.		IN	ANY
+
+;; AUTHORITY SECTION:
+hackmeifyoucan.pro.	86400	IN	SOA	ns1.hackmeifyoucan.pro. admin.hackmeifyoucan.pro. 2024010401 7200 3600 1209600 86400
+
+;; Query time: 94 msec
+;; SERVER: 34.65.115.19#53(34.65.115.19) (TCP)
+;; WHEN: Wed Jan 08 11:37:59 CET 2025
+;; MSG SIZE  rcvd: 125
+

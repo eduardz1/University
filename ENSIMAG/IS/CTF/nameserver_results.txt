@@ -1,0 +1,223 @@
+[*] Testing AXFR on 129.88.46.51
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 AXFR openbar.today
+; (1 server found)
+;; global options: +cmd
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+openbar.today.		300	IN	MX	10 search.for.unusual.dns.records.
+openbar.today.		300	IN	MX	20 send.an.email.to.maciej.korczynski.at.univ-grenoble-alpes.fr.from.a.spoofed.domain.of.openbar.if.possible.
+openbar.today.		300	IN	NS	ns1.openbar.today.
+openbar.today.		300	IN	NS	ns2.openbar.today.
+openbar.today.		300	IN	A	129.88.46.51
+openbar.today.		300	IN	AAAA	2001:660:5301:46::46:51
+openbar.today.		300	IN	TXT	"v=spf1 a mx -all"
+openbar.today.		300	IN	TXT	"2) For example: assuming that openbar.today is vulnerable, add group[1-6].openbar.today and map it to the IP address of your server."
+openbar.today.		300	IN	TXT	"1) Using non-secure DNS dynamic updates (zone poisoning attack) add a subdomain to each vulnerable zone of other groups and openbar (if you find any)."
+openbar.today.		300	IN	TXT	"3) For one vulnerable domain (e.g., openbar.today), add a subdomain, map it to the IP address of your server AND deploy a simple website and the Let's Encrypt certificate on your website (hijacked domain)."
+flagAXFR.openbar.today.	300	IN	TXT	"flag123"
+ns1.openbar.today.	300	IN	A	129.88.46.51
+ns2.openbar.today.	300	IN	AAAA	2001:660:5301:46::46:51
+subdomain.openbar.today. 300	IN	NS	ns1.subdomain.openbar.today.
+ns1.subdomain.openbar.today. 300 IN	A	129.88.46.51
+www.openbar.today.	300	IN	A	129.88.46.51
+www.openbar.today.	300	IN	AAAA	2001:660:5301:46::46:51
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+;; Query time: 159 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (TCP)
+;; WHEN: Wed Jan 08 11:32:51 CET 2025
+;; XFR size: 19 records (messages 1, bytes 1115)
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> -x 129.88.46.51
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 60332
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;51.46.88.129.in-addr.arpa.	IN	PTR
+
+;; ANSWER SECTION:
+51.46.88.129.in-addr.arpa. 1593	IN	PTR	lig-groix.imag.fr.
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)
+;; WHEN: Wed Jan 08 11:32:51 CET 2025
+;; MSG SIZE  rcvd: 85
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> -x 2001:660:5301:46::46:51
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35836
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;1.5.0.0.6.4.0.0.0.0.0.0.0.0.0.0.6.4.0.0.1.0.3.5.0.6.6.0.1.0.0.2.ip6.arpa. IN PTR
+
+;; ANSWER SECTION:
+1.5.0.0.6.4.0.0.0.0.0.0.0.0.0.0.6.4.0.0.1.0.3.5.0.6.6.0.1.0.0.2.ip6.arpa. 752 IN PTR lig-groix.imag.fr.
+
+;; Query time: 351 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)
+;; WHEN: Wed Jan 08 11:32:52 CET 2025
+;; MSG SIZE  rcvd: 132
+
+[*] Testing ns.openbar.today
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 ns.openbar.today ANY +nocookie
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 31173
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;ns.openbar.today.		IN	ANY
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 205 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (TCP)
+;; WHEN: Wed Jan 08 11:32:52 CET 2025
+;; MSG SIZE  rcvd: 91
+
+[*] Testing ns1.openbar.today
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 ns1.openbar.today ANY +nocookie
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 6318
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;ns1.openbar.today.		IN	ANY
+
+;; ANSWER SECTION:
+ns1.openbar.today.	300	IN	A	129.88.46.51
+
+;; Query time: 216 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (TCP)
+;; WHEN: Wed Jan 08 11:32:52 CET 2025
+;; MSG SIZE  rcvd: 62
+
+[*] Testing ns2.openbar.today
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 ns2.openbar.today ANY +nocookie
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35970
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;ns2.openbar.today.		IN	ANY
+
+;; ANSWER SECTION:
+ns2.openbar.today.	300	IN	AAAA	2001:660:5301:46::46:51
+
+;; Query time: 135 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (TCP)
+;; WHEN: Wed Jan 08 11:32:53 CET 2025
+;; MSG SIZE  rcvd: 74
+
+[*] Testing ns3.openbar.today
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 ns3.openbar.today ANY +nocookie
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 22080
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;ns3.openbar.today.		IN	ANY
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 180 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (TCP)
+;; WHEN: Wed Jan 08 11:32:53 CET 2025
+;; MSG SIZE  rcvd: 92
+
+[*] Testing dns1.openbar.today
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 dns1.openbar.today ANY +nocookie
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 22020
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;dns1.openbar.today.		IN	ANY
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 189 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (TCP)
+;; WHEN: Wed Jan 08 11:32:53 CET 2025
+;; MSG SIZE  rcvd: 93
+
+[*] Testing dns2.openbar.today
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 dns2.openbar.today ANY +nocookie
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 42959
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;dns2.openbar.today.		IN	ANY
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 297 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (TCP)
+;; WHEN: Wed Jan 08 11:32:54 CET 2025
+;; MSG SIZE  rcvd: 93
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 IXFR openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 8258
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 90fd84b9887500d701000000677e54569615b3a7bbb48716 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	A
+
+;; ANSWER SECTION:
+openbar.today.		300	IN	A	129.88.46.51
+
+;; Query time: 110 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:32:54 CET 2025
+;; MSG SIZE  rcvd: 86
+

@@ -1,0 +1,378 @@
+[*] Checking A records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 A openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 13621
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: c7be031a359feae001000000677e540d97df34957e0c608a (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	A
+
+;; ANSWER SECTION:
+openbar.today.		300	IN	A	129.88.46.51
+
+;; Query time: 192 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:42 CET 2025
+;; MSG SIZE  rcvd: 86
+
+[*] Checking AAAA records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 AAAA openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19648
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 3935dc3bd9d30c3801000000677e540ecfa880e9051bc884 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	AAAA
+
+;; ANSWER SECTION:
+openbar.today.		300	IN	AAAA	2001:660:5301:46::46:51
+
+;; Query time: 274 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:42 CET 2025
+;; MSG SIZE  rcvd: 98
+
+[*] Checking NS records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 NS openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 60074
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 3
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: cc4567434d82b46f01000000677e540e57a59908b8fa9525 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	NS
+
+;; ANSWER SECTION:
+openbar.today.		300	IN	NS	ns2.openbar.today.
+openbar.today.		300	IN	NS	ns1.openbar.today.
+
+;; ADDITIONAL SECTION:
+ns1.openbar.today.	300	IN	A	129.88.46.51
+ns2.openbar.today.	300	IN	AAAA	2001:660:5301:46::46:51
+
+;; Query time: 356 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:42 CET 2025
+;; MSG SIZE  rcvd: 150
+
+[*] Checking MX records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 MX openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 65221
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: f853c77dd16efe2701000000677e540eed155a032cb18063 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	MX
+
+;; ANSWER SECTION:
+openbar.today.		300	IN	MX	20 send.an.email.to.maciej.korczynski.at.univ-grenoble-alpes.fr.from.a.spoofed.domain.of.openbar.if.possible.
+openbar.today.		300	IN	MX	10 search.for.unusual.dns.records.
+
+;; Query time: 180 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:43 CET 2025
+;; MSG SIZE  rcvd: 237
+
+[*] Checking TXT records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 TXT openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 934
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 5a1e474dbdad177601000000677e540f98f3dcf4033a23e6 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	TXT
+
+;; ANSWER SECTION:
+openbar.today.		300	IN	TXT	"2) For example: assuming that openbar.today is vulnerable, add group[1-6].openbar.today and map it to the IP address of your server."
+openbar.today.		300	IN	TXT	"v=spf1 a mx -all"
+openbar.today.		300	IN	TXT	"3) For one vulnerable domain (e.g., openbar.today), add a subdomain, map it to the IP address of your server AND deploy a simple website and the Let's Encrypt certificate on your website (hijacked domain)."
+openbar.today.		300	IN	TXT	"1) Using non-secure DNS dynamic updates (zone poisoning attack) add a subdomain to each vulnerable zone of other groups and openbar (if you find any)."
+
+;; Query time: 276 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:43 CET 2025
+;; MSG SIZE  rcvd: 625
+
+[*] Checking SRV records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 SRV openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 26755
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 80e818ca884af18701000000677e540f1dfb6b49c6b2e4e3 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	SRV
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 219 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:43 CET 2025
+;; MSG SIZE  rcvd: 116
+
+[*] Checking PTR records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 PTR openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 51893
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 46c5bf5d678517b501000000677e540f395f0817c3e61b63 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	PTR
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 95 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:43 CET 2025
+;; MSG SIZE  rcvd: 116
+
+[*] Checking HINFO records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 HINFO openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 37779
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 170419e4168c346701000000677e540fb076810744d7b152 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	HINFO
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 104 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:43 CET 2025
+;; MSG SIZE  rcvd: 116
+
+[*] Checking SOA records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 SOA openbar.today
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 61634
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: dd38b3a6c9261c1901000000677e540fdb76b004204d6bf8 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	SOA
+
+;; ANSWER SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 210 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:44 CET 2025
+;; MSG SIZE  rcvd: 116
+
+[*] Checking DNSSEC DNSKEY records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 DNSKEY openbar.today +dnssec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 36449
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags: do; udp: 1232
+; COOKIE: 9ac1dc4ed4d4ad6901000000677e5410806b5961c1b3e1eb (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	DNSKEY
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 99 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:44 CET 2025
+;; MSG SIZE  rcvd: 116
+
+[*] Checking DNSSEC DS records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 DS openbar.today +dnssec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 52895
+;; flags: qr rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 6, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags: do; udp: 1232
+; COOKIE: 7c8850b3534d580801000000677e54105aba6a8174046086 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	DS
+
+;; AUTHORITY SECTION:
+today.			3600	IN	SOA	v0n0.nic.today. hostmaster.donuts.email. 1736331576 7200 900 1209600 3600
+today.			3600	IN	RRSIG	SOA 8 1 3600 20250129102546 20250108092546 24741 today. NORMGe12br2TgDFZsT4Eg1KqfhVjSn1FApzctIlrQxY3y5xxoojYCR+R /9askF7ptlcb2d/V+jL+YPJWMPzxcWhzC6yfhWPNY0Hm0XoXt9OETyQa DEoWu8499nxUJdjft/6fWfZnEpf44zZc1jBBmAmXxLAzWOylY6RNqzEx VLE=
+lpbrprm876rcijhheos9shevp6vh0g8r.today.	3600 IN	RRSIG NSEC3 8 2 3600 20250122161805 20250101151805 24741 today. Y5HRvAcXf9LRRwnCb4L3Ck7oRWPXBrV1mrN/oOCP2uCRRGZdh5zg//i7 uo/4AWOeXglS1ccQOt9Q7qrf497KC9zZpLN0ULm4RGMGQKCwpPq5Il4/ DveiFx+uNUcU6IW+yr/RAfagB/MaLcC8dXplijT4shV7hrTco23JqeUj a34=
+lpbrprm876rcijhheos9shevp6vh0g8r.today.	3600 IN	NSEC3 1 1 0 73 LRG2BBCVOJG4AD7N6FE4K3FJPKQ2FK6S NS DS RRSIG
+lu7v1ed4ckd9j6b5tabn3vjig90k5r5c.today.	3600 IN	RRSIG NSEC3 8 2 3600 20250129102546 20250108092546 24741 today. gJaRm5tRSlq6bmG0E6DHLpyFEyhAARyt/oiv70GoFkQsigTfVO5C9mIN B4W69LgoWoz3MOqkoOn7wonKJJf8LaPFozqLykcrsDiIo9avOBYcn8o0 RaaQjIWAlE60A/alWSMNal5dEXDoIId1P4g2Ccv/1y33veDZy6cy43s1 yBU=
+lu7v1ed4ckd9j6b5tabn3vjig90k5r5c.today.	3600 IN	NSEC3 1 1 0 73 LU9O0BQ8RHLNH1DSB4UNQHVO551B4VIB NS SOA RRSIG DNSKEY NSEC3PARAM
+
+;; Query time: 974 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:45 CET 2025
+;; MSG SIZE  rcvd: 799
+
+[*] Checking DNSSEC RRSIG records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 RRSIG openbar.today +dnssec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 62562
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags: do; udp: 1232
+; COOKIE: ca22170cfbcb03ec01000000677e5411a4e53780f97d57a5 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	RRSIG
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 276 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:45 CET 2025
+;; MSG SIZE  rcvd: 116
+
+[*] Checking DNSSEC NSEC records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 NSEC openbar.today +dnssec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 21808
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags: do; udp: 1232
+; COOKIE: d3751b76369d666401000000677e54119582c7d416ad1665 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	NSEC
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 182 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:45 CET 2025
+;; MSG SIZE  rcvd: 116
+
+[*] Checking DNSSEC NSEC3 records
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 NSEC3 openbar.today +dnssec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 45945
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags: do; udp: 1232
+; COOKIE: b511058bb41e9f5101000000677e541164364a9f0566c089 (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	NSEC3
+
+;; AUTHORITY SECTION:
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+
+;; Query time: 178 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:45 CET 2025
+;; MSG SIZE  rcvd: 116
+
+[*] Testing www.openbar.today (A)
+129.88.46.51
+[*] Testing www.openbar.today (AAAA)
+2001:660:5301:46::46:51
+[*] Testing www.openbar.today (TXT)
+[*] Testing dev.openbar.today (A)
+[*] Testing dev.openbar.today (AAAA)
+[*] Testing dev.openbar.today (TXT)
+[*] Testing stage.openbar.today (A)
+[*] Testing stage.openbar.today (AAAA)
+[*] Testing stage.openbar.today (TXT)
+[*] Testing test.openbar.today (A)
+[*] Testing test.openbar.today (AAAA)
+[*] Testing test.openbar.today (TXT)
+[*] Testing admin.openbar.today (A)
+[*] Testing admin.openbar.today (AAAA)
+[*] Testing admin.openbar.today (TXT)
+[*] Testing internal.openbar.today (A)
+[*] Testing internal.openbar.today (AAAA)
+[*] Testing internal.openbar.today (TXT)
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @129.88.46.51 openbar.today +dnssec +cd
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 37761
+;; flags: qr aa rd ra cd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags: do; udp: 1232
+; COOKIE: ac1797ced1d4db4801000000677e5416b7318f24707cd56e (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	A
+
+;; ANSWER SECTION:
+openbar.today.		300	IN	A	129.88.46.51
+
+;; Query time: 110 msec
+;; SERVER: 129.88.46.51#53(129.88.46.51) (UDP)
+;; WHEN: Wed Jan 08 11:31:50 CET 2025
+;; MSG SIZE  rcvd: 86
+

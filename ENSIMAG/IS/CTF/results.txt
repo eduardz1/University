@@ -1,0 +1,106 @@
+Testing AXFR on ns1.openbar.today....
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @ns1.openbar.today. AXFR openbar.today
+; (1 server found)
+;; global options: +cmd
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+openbar.today.		300	IN	MX	10 search.for.unusual.dns.records.
+openbar.today.		300	IN	MX	20 send.an.email.to.maciej.korczynski.at.univ-grenoble-alpes.fr.from.a.spoofed.domain.of.openbar.if.possible.
+openbar.today.		300	IN	NS	ns1.openbar.today.
+openbar.today.		300	IN	NS	ns2.openbar.today.
+openbar.today.		300	IN	A	129.88.46.51
+openbar.today.		300	IN	AAAA	2001:660:5301:46::46:51
+openbar.today.		300	IN	TXT	"v=spf1 a mx -all"
+openbar.today.		300	IN	TXT	"2) For example: assuming that openbar.today is vulnerable, add group[1-6].openbar.today and map it to the IP address of your server."
+openbar.today.		300	IN	TXT	"1) Using non-secure DNS dynamic updates (zone poisoning attack) add a subdomain to each vulnerable zone of other groups and openbar (if you find any)."
+openbar.today.		300	IN	TXT	"3) For one vulnerable domain (e.g., openbar.today), add a subdomain, map it to the IP address of your server AND deploy a simple website and the Let's Encrypt certificate on your website (hijacked domain)."
+flagAXFR.openbar.today.	300	IN	TXT	"flag123"
+ns1.openbar.today.	300	IN	A	129.88.46.51
+ns2.openbar.today.	300	IN	AAAA	2001:660:5301:46::46:51
+subdomain.openbar.today. 300	IN	NS	ns1.subdomain.openbar.today.
+ns1.subdomain.openbar.today. 300 IN	A	129.88.46.51
+www.openbar.today.	300	IN	A	129.88.46.51
+www.openbar.today.	300	IN	AAAA	2001:660:5301:46::46:51
+openbar.today.		300	IN	SOA	ns1.openbar.today. admin.openbar.today. 2019091832 604800 86400 2419200 300
+;; Query time: 430 msec
+;; SERVER: 129.88.46.51#53(ns1.openbar.today.) (TCP)
+;; WHEN: Wed Jan 08 11:16:09 CET 2025
+;; XFR size: 19 records (messages 1, bytes 1115)
+
+Testing AXFR on ns2.openbar.today....
+;; Connection to 2001:660:5301:46::46:51#53(2001:660:5301:46::46:51) for openbar.today failed: network unreachable.
+;; no servers could be reached
+
+;; Connection to 2001:660:5301:46::46:51#53(2001:660:5301:46::46:51) for openbar.today failed: network unreachable.
+;; no servers could be reached
+
+;; Connection to 2001:660:5301:46::46:51#53(2001:660:5301:46::46:51) for openbar.today failed: network unreachable.
+;; no servers could be reached
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> @openbar.today IXFR openbar.today
+; (2 servers found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 64060
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: f56031db6f68050f01000000677e5069dd8a925ee74a3d6d (good)
+;; QUESTION SECTION:
+;openbar.today.			IN	A
+
+;; ANSWER SECTION:
+openbar.today.		300	IN	A	129.88.46.51
+
+;; Query time: 187 msec
+;; SERVER: 129.88.46.51#53(openbar.today) (UDP)
+;; WHEN: Wed Jan 08 11:16:09 CET 2025
+;; MSG SIZE  rcvd: 86
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> +recurse @openbar.today test.com
+; (2 servers found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 53582
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 207e3f2c7a11940501000000677e50692896d0f458e24199 (good)
+;; QUESTION SECTION:
+;test.com.			IN	A
+
+;; ANSWER SECTION:
+test.com.		300	IN	A	34.224.149.186
+test.com.		300	IN	A	3.18.255.247
+
+;; Query time: 288 msec
+;; SERVER: 129.88.46.51#53(openbar.today) (UDP)
+;; WHEN: Wed Jan 08 11:16:10 CET 2025
+;; MSG SIZE  rcvd: 97
+
+
+; <<>> DiG 9.18.28-0ubuntu0.24.04.1-Ubuntu <<>> CH TXT version.bind @openbar.today
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40526
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 6ef5c7c5cc8f607201000000677e506a6a62c7a8684230ea (good)
+;; QUESTION SECTION:
+;version.bind.			CH	TXT
+
+;; ANSWER SECTION:
+version.bind.		0	CH	TXT	"chaos-flag0-openbar"
+
+;; Query time: 231 msec
+;; SERVER: 129.88.46.51#53(openbar.today) (UDP)
+;; WHEN: Wed Jan 08 11:16:10 CET 2025
+;; MSG SIZE  rcvd: 101
+

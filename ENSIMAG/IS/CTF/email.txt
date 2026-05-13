@@ -1,0 +1,6 @@
+From: admin@openbar.today
+To: maciej.korczynski@univ-grenoble-alpes.fr
+Subject: DNS Zone Update Test
+
+Testing DNS zone update capability from spoofed domain.
+My server IP: 37.162.70.247
